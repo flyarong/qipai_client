@@ -65,7 +65,6 @@ namespace Room
             }
 
             p.PlayerUi.visible = false;
-            //ui.GetChild("player" + (p.Index + 1)).visible = false;
             Data.Room.Players.Remove(p);
             
         }

@@ -29,7 +29,7 @@ namespace Game
             btnScore1.onClick.Add(onScore);
             btnScore2.onClick.Add(onScore);
         }
-        
+
         void Start()
         {
             EventCenter.AddListener<string>(NoticeType.RoomStart, GameStart);
@@ -48,7 +48,7 @@ namespace Game
         void GameStart(string roomId)
         {
             var d = new Api.Room().GetCards(roomId);
-            if (d["code"].n !=0)
+            if (d["code"].n != 0)
             {
                 Utils.MsgBox.ShowErr(d["str"].str);
                 return;
@@ -69,13 +69,16 @@ namespace Game
                     return;
                 }
             }
-            
+
             btnStart.visible = false;
             ui.GetChild("waitTips").visible = false;
         }
 
         void onScore(EventContext e)
         {
+            btnScore1.visible = false;
+            btnScore2.visible = false;
+
             GButton btn = e.sender as GButton;
             var d = new Api.Room().SetScore(Data.Room.Id, btn.title);
             if (d != null && d["code"] != null)
@@ -86,11 +89,20 @@ namespace Game
                     return;
                 }
             }
+
         }
 
         void SetScore(string roomId, string uid, string score)
         {
-                  
+            foreach (var p in Data.Room.Players)
+            {
+                if (p.UserInfo["id"].n + "" == uid)
+                {
+                    var scoreUi = p.PlayerUi.GetChild("setScore").asTextField;
+                    scoreUi.visible = true;
+                    scoreUi.text = score;
+                }
+            }
         }
 
         void SetScoreAll(string roomId)
