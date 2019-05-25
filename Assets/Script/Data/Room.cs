@@ -28,8 +28,7 @@ namespace Data
 
         public static List<Player> Players { get => players; set => players = value; }
         public static int DeskId { get => deskId; set => deskId = value; }
-
-
+        
     }
 
 }

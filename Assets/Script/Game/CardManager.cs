@@ -8,6 +8,8 @@ namespace Game
     {
         GComponent ui;
         List<GComponent> cardPlaces = new List<GComponent>();
+        Dictionary<string, List<GImage>> cardsUi = new Dictionary<string, List<GImage>>();
+
         private void Awake()
         {
             ui = GetComponent<UIPanel>().ui;
@@ -16,19 +18,28 @@ namespace Game
             {
                 cardPlaces.Add(ui.GetChild("card" + i).asCom);
             }
-
             EventCenter.AddListener<string, string>(NoticeType.PutCard, PutCard);
+            EventCenter.AddListener<string>(NoticeType.GameBegin, GameBegin);
         }
 
         private void OnDestroy()
         {
             EventCenter.RemoveListener<string, string>(NoticeType.PutCard, PutCard);
+            EventCenter.RemoveListener<string>(NoticeType.GameBegin, GameBegin);
         }
 
 
+        void GameBegin(string roomId)
+        {
+            if(roomId == Data.Room.Id + "")
+            {
+                return;
+            }
+            
+        }
+
         void PutCard(string deskId, string cards)
         {
-            
             Player player = null;
             foreach (var p in Data.Room.Players)
             {
@@ -43,6 +54,7 @@ namespace Game
                 return;
             }
 
+            List<GImage> cardImgs = new List<GImage>();
             var cp = cardPlaces[player.Index].position;
             foreach (var v in cards.Split('|'))
             {
@@ -56,9 +68,18 @@ namespace Game
                 card.AddRelation(GRoot.inst, RelationType.Middle_Middle);
                 card.AddRelation(GRoot.inst, RelationType.Center_Center);
                 ui.AddChild(card);
+                cardImgs.Add(card);
             }
-
-
+            if (cardsUi.ContainsKey(deskId))
+            {
+                foreach (var img in cardsUi[deskId])
+                {
+                    ui.RemoveChild(img);
+                }
+                cardsUi.Remove(deskId);
+            }
+            
+            cardsUi.Add(deskId, cardImgs);
         }
 
         string getName(int n)

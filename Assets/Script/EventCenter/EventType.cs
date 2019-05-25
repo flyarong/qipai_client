@@ -29,9 +29,12 @@ public enum NoticeType
     // 游戏开始
     RoomStart,
 
+    // 新游戏开局
+    GameBegin,
+
     // 有人下注
-    SetScore,
+    SetTimes,
 
     // 下注完毕
-    SetScoreAll,
+    SetTimesAll,
 }

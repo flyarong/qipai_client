@@ -32,17 +32,16 @@ namespace Game
 
         void Start()
         {
-            EventCenter.AddListener<string>(NoticeType.RoomStart, GameStart);
-            EventCenter.AddListener<string, string, string>(NoticeType.SetScore, SetScore);
-            EventCenter.AddListener<string>(NoticeType.SetScoreAll, SetScoreAll);
-
+            EventCenter.AddListener<string>(NoticeType.GameBegin, GameStart);
+            EventCenter.AddListener<string, string, string>(NoticeType.SetTimes, SetScore);
+            EventCenter.AddListener<string>(NoticeType.SetTimesAll, SetScoreAll);
         }
 
         private void OnDestroy()
         {
-            EventCenter.RemoveListener<string>(NoticeType.RoomStart, GameStart);
-            EventCenter.RemoveListener<string, string, string>(NoticeType.SetScore, SetScore);
-            EventCenter.RemoveListener<string>(NoticeType.SetScoreAll, SetScoreAll);
+            EventCenter.RemoveListener<string>(NoticeType.GameBegin, GameStart);
+            EventCenter.RemoveListener<string, string, string>(NoticeType.SetTimes, SetScore);
+            EventCenter.RemoveListener<string>(NoticeType.SetTimesAll, SetScoreAll);
         }
 
         void GameStart(string roomId)
@@ -55,6 +54,16 @@ namespace Game
             }
             btnScore1.visible = true;
             btnScore2.visible = true;
+
+
+            foreach (var p in Data.Room.Players)
+            {
+                var scoreUi = p.PlayerUi.GetChild("setScore").asTextField;
+                scoreUi.visible = false;
+
+            }
+
+
             EventCenter.Broadcast<string, string>(NoticeType.PutCard, Data.Room.DeskId + "", d["data"]["cards"].str);
         }
 
@@ -76,8 +85,6 @@ namespace Game
 
         void onScore(EventContext e)
         {
-            btnScore1.visible = false;
-            btnScore2.visible = false;
 
             GButton btn = e.sender as GButton;
             var d = new Api.Room().SetScore(Data.Room.Id, btn.title);
@@ -94,6 +101,13 @@ namespace Game
 
         void SetScore(string roomId, string uid, string score)
         {
+            // 隐藏自己的下注按钮
+            if (uid == Data.User.Id + "")
+            {
+                btnScore1.visible = false;
+                btnScore2.visible = false;
+            }
+
             foreach (var p in Data.Room.Players)
             {
                 if (p.UserInfo["id"].n + "" == uid)

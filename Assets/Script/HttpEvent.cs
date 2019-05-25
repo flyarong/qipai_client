@@ -52,11 +52,14 @@ public class HttpEvent : MonoBehaviour
             case "RoomStart":
                 EventCenter.Broadcast<string>(NoticeType.RoomStart, e["args"].list[0].str);
                 break;
-            case "SetScore":
-                EventCenter.Broadcast<string,string,string>(NoticeType.SetScore, e["args"].list[0].str, e["args"].list[1].str, e["args"].list[2].str);
+            case "GameBegin":
+                EventCenter.Broadcast<string>(NoticeType.GameBegin, e["args"].list[0].str);
                 break;
-            case "SetScoreAll":
-                EventCenter.Broadcast<string>(NoticeType.SetScoreAll, e["args"].list[0].str);
+            case "SetTimes":
+                EventCenter.Broadcast<string,string,string>(NoticeType.SetTimes, e["args"].list[0].str, e["args"].list[1].str, e["args"].list[2].str);
+                break;
+            case "SetTimesAll":
+                EventCenter.Broadcast<string>(NoticeType.SetTimesAll, e["args"].list[0].str);
                 break;
 
 
