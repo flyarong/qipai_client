@@ -30,8 +30,8 @@ namespace Room
         }
         private void Start()
         {
-            
-            
+
+
             EventCenter.Broadcast(NoticeType.RoomList);
         }
 
@@ -45,11 +45,11 @@ namespace Room
         {
             GComponent item = list.GetFromPool("ui://1ad63yxfbul8a7").asCom;
 
-            item.GetChild("id").asTextField.text = club["id"].n + "";
-            item.GetChild("score").asTextField.text = scores[(int)club["score"].n];
-            item.GetChild("pay").asTextField.text = club["pay"].n == 0 ? "老板" : "AA";
-            item.GetChild("count").asTextField.text = club["current"].n + "/" + club["count"].n + "";
-            item.GetChild("players").asTextField.text = club["players"].n + "";
+            item.GetChild("id").text = club["id"].n + "";
+            item.GetChild("score").text = scores[(int)club["score"].n];
+            item.GetChild("pay").text = club["pay"].n == 0 ? "老板" : "AA";
+            item.GetChild("count").text = club["current"].n + "/" + club["count"].n + "";
+            item.GetChild("players").text = club["players"].n + "";
             item.GetChild("btnInvite").onClick.Add(onInviteClick);
             list.AddChild(item);
         }
@@ -84,17 +84,14 @@ namespace Room
         void onClickItem(EventContext context)
         {
             var item = (GComponent)context.data;
-            var id = item.GetChild("id").asTextField.text;
+            var id = item.GetChild("id").text;
             var roomId = id;
             var j = new Api.Room().Join(roomId);
 
             if (j["code"].n != 0)
             {
-                if (j["msg"].str != "该用户已经进入房间，不得重复进入")
-                {
-                    Utils.MsgBox.ShowErr(j["msg"].str);
-                    return;
-                }
+                Utils.MsgBox.ShowErr(j["msg"].str);
+                return;
             }
 
             j = new Api.Room().SitDown(roomId);

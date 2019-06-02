@@ -8,7 +8,8 @@ namespace Data
 {
     public static class Room
     {
-        private static JSONObject info;
+
+        private static JSONObject info; // 房间信息
         private static List<Game.Player> players = new List<Game.Player>();
         private static int deskId; // 当前用户在第几个座位
         public static JSONObject Info { get => info; set => info = value; }

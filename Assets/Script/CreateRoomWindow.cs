@@ -84,7 +84,7 @@ public class CreateRoomWindow : Window
         {
             if (j["msg"].str == "该用户已经进入房间，不得重复进入")
             {
-                EventCenter.Broadcast<string>(NoticeType.JoinRoom, roomId);
+                EventCenter.Broadcast<string>(NoticeType.PlayerSitDown, roomId);
                 return;
             }
 

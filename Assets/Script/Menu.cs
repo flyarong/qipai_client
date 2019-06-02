@@ -20,6 +20,8 @@ public class Menu : MonoBehaviour
 
     void Awake()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         mainUI = GetComponent<UIPanel>().ui;
         createClubWindow = new CreateClubWindow();
         createRoomWindow = new CreateRoomWindow();

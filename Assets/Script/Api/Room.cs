@@ -130,9 +130,28 @@ namespace Api
             return new JSONObject(content);
         }
 
+        /// <summary>
+        /// 下注
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <param name="score"></param>
+        /// <returns></returns>
         public JSONObject SetScore(string roomId, string score)
         {
             var content = Client.Inst.PutContent("/rooms/" + roomId + "/score/" + score, null);
+            Debug.Log(content);
+            return new JSONObject(content);
+        }
+
+        /// <summary>
+        /// 抢庄
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <param name="times"></param>
+        /// <returns></returns>
+        public JSONObject SetTimes(string roomId, string times)
+        {
+            var content = Client.Inst.PutContent("/rooms/" + roomId + "/times/" + times, null);
             Debug.Log(content);
             return new JSONObject(content);
         }

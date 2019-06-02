@@ -10,7 +10,7 @@ public class HttpEvent : MonoBehaviour
         Data.Event.Start();
         Invoke("GetEvents", 0.1f);
     }
-    
+
 
     private void OnDestroy()
     {
@@ -22,7 +22,7 @@ public class HttpEvent : MonoBehaviour
     {
         var e = Data.Event.Get();
         doEvent(e);
-        Invoke("GetEvents", 0.1f);
+        Invoke("GetEvents", e == null ? 0.3f : 0);
     }
 
     void doEvent(JSONObject e)
@@ -31,7 +31,6 @@ public class HttpEvent : MonoBehaviour
         {
             return;
         }
-        Debug.Log("事件：" + e["name"].str);
         switch (e["name"].str)
         {
             case "RoomList":
@@ -41,13 +40,13 @@ public class HttpEvent : MonoBehaviour
                 EventCenter.Broadcast<string>(NoticeType.RoomDelete, e["args"].list[0].str);
                 break;
             case "RoomExit":
-                EventCenter.Broadcast<string,string>(NoticeType.RoomExit, e["args"].list[0].str, e["args"].list[1].str);
+                EventCenter.Broadcast<string, string>(NoticeType.RoomExit, e["args"].list[0].str, e["args"].list[1].str);
                 break;
             case "RoomCreate":
                 EventCenter.Broadcast<string>(NoticeType.RoomCreate, e["args"].list[0].str);
                 break;
-            case "RoomJoin":
-                EventCenter.Broadcast<string,string>(NoticeType.JoinRoom, e["args"].list[0].str, e["args"].list[1].str);
+            case "PlayerSitDown":
+                EventCenter.Broadcast<string, string>(NoticeType.PlayerSitDown, e["args"].list[0].str, e["args"].list[1].str);
                 break;
             case "RoomStart":
                 EventCenter.Broadcast<string>(NoticeType.RoomStart, e["args"].list[0].str);
@@ -55,14 +54,24 @@ public class HttpEvent : MonoBehaviour
             case "GameBegin":
                 EventCenter.Broadcast<string>(NoticeType.GameBegin, e["args"].list[0].str);
                 break;
+            case "GameOver":
+                EventCenter.Broadcast<string>(NoticeType.GameOver, e["args"].list[0].str);
+                break;
             case "SetTimes":
-                EventCenter.Broadcast<string,string,string>(NoticeType.SetTimes, e["args"].list[0].str, e["args"].list[1].str, e["args"].list[2].str);
+                EventCenter.Broadcast<string, string, string>(NoticeType.SetTimes, e["args"].list[0].str, e["args"].list[1].str, e["args"].list[2].str);
                 break;
-            case "SetTimesAll":
-                EventCenter.Broadcast<string>(NoticeType.SetTimesAll, e["args"].list[0].str);
+            case "SetBanker":
+                EventCenter.Broadcast<string, string>(NoticeType.SetBanker, e["args"].list[0].str, e["args"].list[1].str);
                 break;
-
-
+            case "SetScore":
+                EventCenter.Broadcast<string, string, string>(NoticeType.SetScore, e["args"].list[0].str, e["args"].list[1].str, e["args"].list[2].str);
+                break;
+            case "SetScoreAll":
+                EventCenter.Broadcast<string>(NoticeType.SetScoreAll, e["args"].list[0].str);
+                break;
+            case "CardTypes":
+                EventCenter.Broadcast<string, string>(NoticeType.CardTypes, e["args"].list[0].str, e["args"].list[1].str);
+                break;
         }
     }
 

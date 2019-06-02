@@ -9,17 +9,23 @@ namespace Game
         GComponent ui;
         List<GComponent> cardPlaces = new List<GComponent>();
         Dictionary<string, List<GImage>> cardsUi = new Dictionary<string, List<GImage>>();
-
+        Transition tPut;
         private void Awake()
         {
             ui = GetComponent<UIPanel>().ui;
-
+            tPut = ui.GetTransition("t1");
+            ui.GetChild("cardImg").sortingOrder = 1000;
             for (var i = 1; i < 11; i++)
             {
                 cardPlaces.Add(ui.GetChild("card" + i).asCom);
             }
             EventCenter.AddListener<string, string>(NoticeType.PutCard, PutCard);
             EventCenter.AddListener<string>(NoticeType.GameBegin, GameBegin);
+        }
+
+        private void Start()
+        {
+            
         }
 
         private void OnDestroy()
@@ -31,15 +37,16 @@ namespace Game
 
         void GameBegin(string roomId)
         {
-            if(roomId == Data.Room.Id + "")
+            if (roomId == Data.Room.Id + "")
             {
                 return;
             }
-            
+
         }
 
         void PutCard(string deskId, string cards)
         {
+            
             Player player = null;
             foreach (var p in Data.Room.Players)
             {
@@ -50,26 +57,46 @@ namespace Game
             }
             if (player == null)
             {
-                Debug.Log("发牌出错");
                 return;
             }
 
             List<GImage> cardImgs = new List<GImage>();
-            var cp = cardPlaces[player.Index].position;
+            var cp = cardPlaces[player.Index];
+            var cpos = cp.position;
             foreach (var v in cards.Split('|'))
             {
-                Debug.Log("v:" + v);
+                if (v == "-")
+                {
+                    cpos.x += player.DeskId == Data.Room.DeskId ? 40 : 15;
+                    continue;
+                }
+
                 var n = int.Parse(v);
                 string cardName = getName(n);
                 GImage card = UIPackage.CreateObject("qipai", cardName).asImage;
-                card.position = cp;
-                cp.x += 20;
-                card.SetScale(0.6f, 0.6f);
-                card.AddRelation(GRoot.inst, RelationType.Middle_Middle);
-                card.AddRelation(GRoot.inst, RelationType.Center_Center);
+                card.position = cpos;
+
+                if (player.DeskId == Data.Room.DeskId)
+                {
+                    cpos.x += 50;
+                   // card.SetScale(0.6f, 0.6f);
+                }
+                else
+                {
+                    cpos.x += 23;
+                    card.SetScale(0.6f, 0.6f);
+                }
+                
+                tPut.SetValue("end",cpos.x,cpos.y);
+                tPut.Play();
+
+                card.AddRelation(cp, RelationType.Middle_Middle);
+                card.AddRelation(cp, RelationType.Center_Center);
                 ui.AddChild(card);
                 cardImgs.Add(card);
+                
             }
+
             if (cardsUi.ContainsKey(deskId))
             {
                 foreach (var img in cardsUi[deskId])
@@ -78,7 +105,7 @@ namespace Game
                 }
                 cardsUi.Remove(deskId);
             }
-            
+
             cardsUi.Add(deskId, cardImgs);
         }
 

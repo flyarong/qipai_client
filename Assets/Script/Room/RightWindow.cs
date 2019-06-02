@@ -24,6 +24,12 @@ namespace Room
 
         void onQuitClick()
         {
+            if (Data.Room.Info["current"].n == Data.Room.Info["count"].n)
+            {
+                EventCenter.Broadcast<string, string>(NoticeType.RoomExit, Data.Room.Id, Data.User.Id + "");
+                Hide();
+                return;
+            }
             var j = new Api.Room().Exit(Data.Room.Id);
             if (j["code"].n != 0)
             {

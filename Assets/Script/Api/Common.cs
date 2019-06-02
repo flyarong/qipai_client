@@ -13,14 +13,22 @@ namespace Api
             try
             {
                 var content = Client.Inst.GetContent("/events");
-                Debug.Log(content);
+                if (content == null)
+                {
+                    return null;
+                }
+                if (!content.Contains("null"))
+                {
+                    Debug.Log(content);
+                }
+
                 return new JSONObject(content);
             }
             catch (IOException e)
             {
                 return null;
             }
-            
+
         }
     }
 }

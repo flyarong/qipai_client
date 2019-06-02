@@ -32,15 +32,22 @@ namespace Room
             btnScore1 = ui.GetChild("btnScore1").asButton;
             btnScore2 = ui.GetChild("btnScore2").asButton;
 
-            EventCenter.AddListener<string, string>(NoticeType.JoinRoom, RoomJoin);
+            EventCenter.AddListener<string>(NoticeType.GameBegin, GameBegin);
+            EventCenter.AddListener<string, string>(NoticeType.PlayerSitDown, RoomJoin);
             EventCenter.AddListener<string, string>(NoticeType.RoomExit, ExitRoom);
         }
 
         
         private void OnDestroy()
         {
+            EventCenter.RemoveListener<string>(NoticeType.GameBegin, GameBegin);
             EventCenter.RemoveListener<string, string>(NoticeType.RoomExit, ExitRoom);
-            EventCenter.RemoveListener<string, string>(NoticeType.JoinRoom, RoomJoin);
+            EventCenter.RemoveListener<string, string>(NoticeType.PlayerSitDown, RoomJoin);
+        }
+
+        void GameBegin(string roomId)
+        {
+            updataInfo();
         }
 
         void ExitRoom(string roomId, string uid)
@@ -147,7 +154,6 @@ namespace Room
             player.PlayerUi.GetChild("name").text = player.UserInfo["nick"].str;
             player.PlayerUi.GetChild("avatar").asLoader.url = "/static" + player.UserInfo["avatar"].str;
             
-
             Data.Room.Players.Add(player);
 
             return player;
@@ -160,13 +166,36 @@ namespace Room
 
         void initRoom()
         {
+            updataInfo();
+
+            // 如果是房主，显示开始按钮
+            if (Data.Room.Info["uid"].n == Data.User.Id)
+            {
+                btnStart.visible = true;
+            }
+
+            // 下注按钮积分初始化
+            var s = scores[(int)Data.Room.Info["score"].n];
+            var ss = s.Split('/');
+            btnScore1.title = ss[0];
+            btnScore2.title = ss[1];
+        }
+
+
+        
+        void updataInfo()
+        {
             var j = new Api.Room().GetRoom(Data.Room.Id);
             if (j["code"].n != 0)
             {
                 Utils.MsgBox.ShowErr(j["msg"].str);
                 return;
             }
-            var room = j["data"]["room"];
+
+            Data.Room.Info = j["data"]["room"];
+            Debug.Log(Data.Room.Info);
+            var room = Data.Room.Info;
+
             var text = "";
             if (Data.Club.Id == "")
             {
@@ -183,20 +212,7 @@ namespace Room
             text += "局数：" + room["current"].n + "/" + room["count"].n;
 
             ui.GetChild("infoText").text = text;
-
-            // 如果是房主，显示开始按钮
-            if (room["uid"].n == Data.User.Id)
-            {
-                btnStart.visible = true;
-            }
-
-            // 下注按钮积分初始化
-            var s = scores[(int)room["score"].n];
-            var ss = s.Split('/');
-            btnScore1.title = ss[0];
-            btnScore2.title = ss[1];
         }
-        
 
         void initPlayers()
         {

@@ -13,7 +13,7 @@ public enum NoticeType
     // 创建房间
     RoomCreate,
     // 进入房间
-    JoinRoom,
+    PlayerSitDown,
 
     // 退出房间
     RoomExit,
@@ -32,9 +32,21 @@ public enum NoticeType
     // 新游戏开局
     GameBegin,
 
-    // 有人下注
+    // 游戏结束
+    GameOver,
+
+    // 有人提交了抢庄倍数
     SetTimes,
 
-    // 下注完毕
-    SetTimesAll,
+    // 确定了庄家
+    SetBanker,
+
+    // 有人下注
+    SetScore,
+
+    // 全部下注完毕
+    SetScoreAll,
+
+    // 获取到牌型
+    CardTypes,
 }

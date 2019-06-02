@@ -8,19 +8,24 @@ namespace Game
     public class Player
     {
         private JSONObject userInfo; // 玩家信息
+
+        private int uid;//用户编号
         private GComponent playerUi; // 玩家头像等信息的ui
+        private bool isBanker;
         private int index; // 玩家在本地ui上的座位号
         private int deskId; // 玩家在服务器上的座位号
         private List<Card> cards = new List<Card>();
         private List<GObject> cardsUi = new List<GObject>();
 
-        public JSONObject UserInfo { get => userInfo; set => userInfo = value; }
+        public JSONObject UserInfo { get => userInfo; set { userInfo = value; uid = (int)userInfo["id"].n; } }
         public GComponent PlayerUi { get => playerUi; set => playerUi = value; }
         public List<Card> Cards { get => cards; set => cards = value; }
-    
+
         public int Index { get => index; set => index = value; }
         public int DeskId { get => deskId; set => deskId = value; }
         public List<GObject> CardsUi { get => cardsUi; set => cardsUi = value; }
+        public int Uid { get => uid; }
+        public bool IsBanker { get => isBanker; set => isBanker = value; }
 
         public override string ToString()
         {

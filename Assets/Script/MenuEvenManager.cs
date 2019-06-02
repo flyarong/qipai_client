@@ -7,7 +7,7 @@ public class MenuEvenManager : MonoBehaviour
     private void Awake()
     {
         EventCenter.AddListener<string>(NoticeType.RoomCreate, RoomCreate);
-        EventCenter.AddListener<string, string>(NoticeType.JoinRoom, RoomJoin);
+        EventCenter.AddListener<string, string>(NoticeType.PlayerSitDown, RoomJoin);
         EventCenter.AddListener<string>(NoticeType.JoinClub, JoinClub);
         EventCenter.AddListener<string>(NoticeType.RoomDelete, RoomDelete);
     }
@@ -15,7 +15,7 @@ public class MenuEvenManager : MonoBehaviour
     private void OnDestroy()
     {
         EventCenter.RemoveListener<string>(NoticeType.RoomCreate, RoomCreate);
-        EventCenter.RemoveListener<string,string>(NoticeType.JoinRoom, RoomJoin);
+        EventCenter.RemoveListener<string, string>(NoticeType.PlayerSitDown, RoomJoin);
         EventCenter.RemoveListener<string>(NoticeType.JoinClub, JoinClub);
         EventCenter.RemoveListener<string>(NoticeType.RoomDelete, RoomDelete);
     }
@@ -26,13 +26,10 @@ public class MenuEvenManager : MonoBehaviour
 
         if (j["code"].n != 0)
         {
-            if (j["msg"].str != "该用户已经进入房间，不得重复进入")
-            {
-                Utils.MsgBox.ShowErr(j["msg"].str);
-                return;
-            }
+            Utils.MsgBox.ShowErr(j["msg"].str);
+            return;
         }
-        
+
         j = new Api.Room().SitDown(roomId);
         if (j["code"].n != 0)
         {

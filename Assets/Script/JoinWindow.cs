@@ -12,7 +12,7 @@ public class JoinWindow : Window
         contentPane = UIPackage.CreateObject("qipai", "JoinWindow").asCom;
         Center();
         modal = true;
-        
+
         for (var i = 0; i < 10; i++)
         {
             this.contentPane.GetChild("btn" + i).onClick.Add(onBtnNubmerClick);
@@ -38,11 +38,8 @@ public class JoinWindow : Window
 
             if (j["code"].n != 0)
             {
-                if (j["msg"].str != "该用户已经进入房间，不得重复进入")
-                {
-                    Utils.MsgBox.ShowErr(j["msg"].str);
-                    return;
-                }
+                Utils.MsgBox.ShowErr(j["msg"].str);
+                return;
             }
 
             j = new Api.Room().SitDown(roomId);

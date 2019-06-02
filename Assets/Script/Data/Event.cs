@@ -15,7 +15,7 @@ namespace Data
         static Thread thread;
         private static void Add(JSONObject eventJson)
         {
-            if (eventJson["data"]["events"].list == null)
+            if (eventJson==null || eventJson["data"]["events"].list == null)
             {
                 return;
             }
@@ -30,6 +30,7 @@ namespace Data
 
         public static JSONObject Get()
         {
+            if (events == null) return null;
             lock (events)
             {
                 if (events.Count > 0)
