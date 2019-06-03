@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FairyGUI;
-using Api;
 using Data;
 
 public class CreateClubWindow : Window
@@ -73,15 +72,7 @@ public class CreateClubWindow : Window
             players = 10;
         }
 
-        var j = new Api.Club()
-            .Create(players, score, start, count, pay, king, sp, times);
-        if (j["code"].n != 0)
-        {
-            Utils.MsgBox.ShowErr(j["msg"].str);
-            return;
-        }
-
-        EventCenter.Broadcast(NoticeType.ClubList);
+        
         this.Hide();
 
     }

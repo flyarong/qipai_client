@@ -6,7 +6,8 @@ using System.Text.RegularExpressions;
 using System.Net.Http;
 using System;
 using UnityEngine.SceneManagement;
-using Api;
+using Network;
+using Network.Msg;
 
 public class Reg : MonoBehaviour
 {
@@ -18,6 +19,45 @@ public class Reg : MonoBehaviour
     GTextInput inputConfirm;
 
     ErrorWindow errorWindow;
+
+    private static bool b = false;
+
+    private void Awake()
+    {
+        Utils.Handler.Clear();
+        Utils.Handler.Add<ResReg>(MsgID.ResReg, Network.EventType.Network_OnResReg);
+        Utils.Handler.Add<ResCode>(MsgID.ResCode, Network.EventType.Network_OnResCode);
+        if (!b)
+        {
+            EventCenter ec = EventCenter.Inst;
+            ec.AddEventListener(Network.EventType.Network_OnResReg, OnResReg);
+            ec.AddEventListener(Network.EventType.Network_OnResCode, OnResCode);
+            b = true;
+        }
+    }
+
+    void OnResReg(EventArg arg)
+    {
+        var data = arg.GetValue<ResReg>();
+        if (data.code != 0)
+        {
+            Utils.MsgBox.ShowErr(data.msg, 2);
+            return;
+        }
+        
+        SceneManager.LoadScene("Login");
+    }
+    
+    void OnResCode(EventArg arg)
+    {
+        var data = arg.GetValue<ResCode>();
+        if (data==null)
+        {
+            return;
+        }
+        Utils.MsgBox.ShowErr(data.msg, 2);
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -42,81 +82,45 @@ public class Reg : MonoBehaviour
 
     void btnGetCodeClick()
     {
-        var j = Api.User.GetRegSmsCode(inputPhone.text);
-        ShowError(j["msg"].str);
+        Api.User.GetCode(inputPhone.text);
     }
 
     void btnRegClick()
     {
         if (inputNick.text.Length < 1 || inputNick.text.Length > 6)
         {
-            ShowError("昵称长度必须在1~6个字之间");
+            Utils.MsgBox.ShowErr("昵称长度必须在1~6个字之间");
             return;
         }
         else if (!Regex.IsMatch(inputPhone.text, @"^1[34578]\d{9}$"))
         {
-            ShowError("手机号格式不正确");
+            Utils.MsgBox.ShowErr("手机号格式不正确");
             return;
         }
         else if (!Regex.IsMatch(inputCode.text, @"\d+"))
         {
-            ShowError("请输入收到的数字验证码");
+            Utils.MsgBox.ShowErr("请输入收到的数字验证码");
             return;
         }
         else if (inputPass.text.Length < 6 || inputPass.text.Length > 30)
         {
-            ShowError("密码长度必须在6~30之间");
+            Utils.MsgBox.ShowErr("密码长度必须在6~30之间");
             return;
         }
         else if (inputPass.text != inputConfirm.text)
         {
-            ShowError("两次输入的密码不一致");
+            Utils.MsgBox.ShowErr("两次输入的密码不一致");
             return;
         }
 
+        Api.User.Reg(LoginType.MobilePass, inputNick.text, inputPhone.text, inputPass.text, inputCode.text);
 
-        doReg();
-
-    }
-
-
-    void doReg()
-    {
-        Client client = new Client("");
-
-        List<KeyValuePair<string, string>> paramList = new List<KeyValuePair<string, string>>();
-        paramList.Add(new KeyValuePair<string, string>("type", "1"));
-        paramList.Add(new KeyValuePair<string, string>("nick", inputNick.text));
-        paramList.Add(new KeyValuePair<string, string>("name", inputPhone.text));
-        paramList.Add(new KeyValuePair<string, string>("pass", inputPass.text));
-        paramList.Add(new KeyValuePair<string, string>("code", inputCode.text));
-        
-        string result = client.PostContent("/users", paramList);
-
-        JSONObject j = new JSONObject(result);
-
-        if (j["code"].n != 0)
-        {
-            ShowError(j["msg"].str);
-            return;
-        }
-
-        ShowError("注册成功");
-        SceneManager.LoadScene("Login");
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        Utils.Handler.HandleMessage();
     }
-
-    void ShowError(string msg)
-    {
-        errorWindow.Show();
-        errorWindow.SetMsg(msg);
-        errorWindow.position = new Vector3();
-        errorWindow.width = mainUI.width;
-        errorWindow.height = mainUI.height;
-    }
+    
 }

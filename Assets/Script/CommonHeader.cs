@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FairyGUI;
-using Api;
 
 public class CommonHeader : MonoBehaviour
 {

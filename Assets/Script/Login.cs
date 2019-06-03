@@ -5,8 +5,10 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using FairyGUI;
 using System.Text.RegularExpressions;
-using Api;
 using Utils;
+using Network;
+using Network.Msg;
+using System;
 
 public class Login : MonoBehaviour
 {
@@ -14,39 +16,36 @@ public class Login : MonoBehaviour
     GTextInput inputPass;
     GComponent mainUI;
 
+    private static bool b = false;
+   
     private void Awake()
     {
-        Data.Event.Start();
-        UIObjectFactory.SetLoaderExtension(typeof(Utils.HttpLoader));
-        Data.User.Token = PlayerPrefs.GetString("token");
-    }
+        Utils.Handler.Clear();
+        Utils.Handler.Add<ResLogin>(MsgID.ResLogin, Network.EventType.Network_OnResLogin);
+        Utils.Handler.Add<ResLoginByToken>(MsgID.ResLoginByToken, Network.EventType.Network_OnResLoginByToken);
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // 如果用户已经登录，就直接跳转到游戏菜单界面
-        if (Data.User.Token.Length > 0)
+        if (!b)
         {
-            string text = Client.Inst.GetContent("/users");
-            Debug.Log(text);
-            JSONObject j = new JSONObject(text);
-
-            if (j["code"].n != 0)
-            {
-                MsgBox.ShowErr(j["msg"].str);
-                PlayerPrefs.DeleteAll();
-                SceneManager.LoadScene("Login");
-                return;
-            }
-            SceneManager.LoadScene("Menu");
+            b = true;
+           
+            EventCenter ec = EventCenter.Inst;
+            ec.AddEventListener(Network.EventType.Network_OnResLogin, OnResLogin);
+            ec.AddEventListener(Network.EventType.Network_OnResLoginByToken, OnResLoginByToken);
+            
         }
+        
 
         mainUI = GetComponent<UIPanel>().ui;
-
-
+        mainUI.GetChild("btnReg").onClick.Add(() =>
+        {
+            Debug.Log("切换注册界面按钮被点击");
+            SceneManager.LoadScene("Reg");
+        });
+        UIObjectFactory.SetLoaderExtension(typeof(Utils.HttpLoader));
+        Data.User.Token = PlayerPrefs.GetString("token");
         inputPhone = mainUI.GetChild("inputPhone").asTextInput;
         inputPass = mainUI.GetChild("inputPass").asTextInput;
-        
+
         mainUI.GetChild("btnLogin").onClick.Add(LoginBtnClick);
 
         mainUI.GetChild("btnReg").onClick.Add(() =>
@@ -60,8 +59,46 @@ public class Login : MonoBehaviour
             SceneManager.LoadScene("Reset");
         });
     }
-    
 
+    private void OnResLoginByToken(EventArg arg)
+    {
+        var data = arg.GetValue<ResLoginByToken>();
+        if (data.code != 0)
+        {
+            MsgBox.ShowErr(data.msg, 2);
+            Data.User.Token = "";
+            return;
+        }
+        Debug.Log(data.code + "  " + data.msg + "   " + data.token);
+        Data.User.Token = data.token;
+        SceneManager.LoadScene("Menu");
+    }
+
+    private void Start()
+    {
+        Api.User.LoginByToken();
+    }
+
+    void OnResLogin(EventArg arg)
+    {
+        ResLogin data = arg.GetValue<ResLogin>();
+        
+        if (data.code != 0)
+        {
+            MsgBox.ShowErr(data.msg,2);
+            return;
+        }
+        Debug.Log(data.code + "  " + data.msg + "   " + data.token);
+        Data.User.Token = data.token;
+        SceneManager.LoadScene("Menu");
+    }
+
+    private void Update()
+    {
+        Handler.HandleMessage();
+    }
+    
+    
     void LoginBtnClick()
     {
         if (!Regex.IsMatch(inputPhone.text, @"^1[34578]\d{9}$"))
@@ -75,15 +112,10 @@ public class Login : MonoBehaviour
             return;
         }
 
-        var j = new Api.User().Login("1", inputPhone.text, inputPass.text);
-        if(j["code"].n != 0)
-        {
-            ShowError(j["msg"].str);
-            return;
-        }
-        SceneManager.LoadScene("Menu");
+        Api.User.Login(LoginType.MobilePass, inputPhone.text, inputPass.text);
+        
     }
-    
+
 
     void ShowError(string msg)
     {

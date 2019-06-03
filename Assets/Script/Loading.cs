@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Network;
 
 public class Loading : MonoBehaviour
 {
-    private float timer = 2;
+    private float timer = 1;
     private void Awake()
     {
-        Data.Event.Start();
+        //Data.Event.Start();
     }
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -23,7 +23,7 @@ public class Loading : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0)
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene("Login");
         }
     }
 }

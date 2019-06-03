@@ -26,72 +26,22 @@ public class CreateRoomWindow : Window
         countBox = this.contentPane.GetChild("count").asComboBox;
         startBox = this.contentPane.GetChild("start").asComboBox;
         timesBox = this.contentPane.GetChild("times").asComboBox;
-        kingBox = this.contentPane.GetChild("king").asComboBox;
-
-        for (var i = 0; i < 7; i++)
-        {
-            sps[i] = this.contentPane.GetChild("sp" + (i + 1)).asButton;
-        }
 
         this.contentPane.GetChild("btnCreateRoom").asButton.onClick.Add(onBtnCreateRoomClick);
     }
 
     private void onBtnCreateRoomClick()
     {
-        int roomType = roomTypeController.selectedIndex;
+        int type = roomTypeController.selectedIndex;
         int score = scoreBox.selectedIndex;
         int pay = payBox.selectedIndex;
         int count = countBox.selectedIndex;
         int start = startBox.selectedIndex;
         int times = timesBox.selectedIndex;
-        int king = kingBox.selectedIndex;
-        int sp = 0;
-        for (var i = 0; i < 7; i++)
-        {
-            if (sps[i].selected)
-            {
-                sp |= (1 << (6 - i));
-            }
-
-        }
-
-        int players = 6;
-        if (roomType == 0)
-        {
-            players = 6;
-        }
-        else if (roomType == 1)
-        {
-            players = 8;
-        }
-        else if (roomType == 2)
-        {
-            players = 10;
-        }
-
-        var j = new Api.Room()
-            .Create(players, score, start, count, pay, king, sp, times);
-        if (j["code"].n != 0)
-        {
-            Utils.MsgBox.ShowErr(j["msg"].str);
-            return;
-        }
-
-        var roomId = j["data"]["id"].n + "";
-        j = new Api.Room().Join(roomId);
-
-        if (j["code"].n != 0)
-        {
-            if (j["msg"].str == "该用户已经进入房间，不得重复进入")
-            {
-                EventCenter.Broadcast<string>(NoticeType.PlayerSitDown, roomId);
-                return;
-            }
-
-            Utils.MsgBox.ShowErr(j["msg"].str);
-            return;
-        }
         
-        this.Hide();
+        int players = 2*(type+3);
+        count = (count + 1) * 10;
+        Api.Room.Create(players, score, start, count, pay, times);      
+        
     }
 }
