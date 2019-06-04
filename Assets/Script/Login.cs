@@ -10,6 +10,7 @@ using Network;
 using Network.Msg;
 using System;
 using Notification;
+using Newtonsoft.Json;
 
 public class Login : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class Login : MonoBehaviour
     GComponent mainUI;
 
     private static bool b = false;
-   
+
     private void Awake()
     {
         BindListenners();
@@ -84,17 +85,13 @@ public class Login : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
-    private void Start()
-    {
-    }
-
     void OnResLogin(NotificationArg arg)
     {
         ResLogin data = arg.GetValue<ResLogin>();
-        
+
         if (data.code != 0)
         {
-            MsgBox.ShowErr(data.msg,2);
+            MsgBox.ShowErr(data.msg, 2);
             return;
         }
         Debug.Log(data.code + "  " + data.msg + "   " + data.token);
@@ -106,8 +103,8 @@ public class Login : MonoBehaviour
     {
         Handler.HandleMessage();
     }
-    
-    
+
+
     void LoginBtnClick()
     {
         if (!Regex.IsMatch(inputPhone.text, @"^1[34578]\d{9}$"))
@@ -122,7 +119,7 @@ public class Login : MonoBehaviour
         }
 
         Api.User.Login(LoginType.MobilePass, inputPhone.text, inputPass.text);
-        
+
     }
 
 

@@ -40,9 +40,9 @@
 
         ResCreateRoom,
         // 房间列表
-        ReqGetRoomList,
+        ReqRoomList,
 
-        ResGetRoomList,
+        ResRoomList,
         // 房间信息
         ReqRoom,
 

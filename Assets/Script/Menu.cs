@@ -103,7 +103,7 @@ public class Menu : MonoBehaviour
         Data.Room.Id = data.id;
 
         createRoomWindow.Hide();
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Room");
     }
 
     private void Start()

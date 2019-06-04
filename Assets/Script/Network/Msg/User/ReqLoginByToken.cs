@@ -36,7 +36,7 @@ namespace Network.Msg
 
         public override void FromData(byte[] data)
         {
-            var jsonString = System.Text.Encoding.Default.GetString(data);
+            var jsonString = System.Text.Encoding.UTF8.GetString(data);
             var jsonData = JsonUtility.FromJson<ResLoginByToken>(jsonString);
             this.code = jsonData.code;
             this.msg = jsonData.msg;

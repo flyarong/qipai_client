@@ -1,21 +1,17 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Network;
 
 public class Loading : MonoBehaviour
 {
     private float timer = 1;
     private void Awake()
     {
-        //Data.Network.Start();
+
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
+
+
 
     // Update is called once per frame
     void Update()

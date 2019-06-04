@@ -1,34 +1,22 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 using System.Collections.Generic;
 
 namespace Network.Msg
 {
-    public enum LoginType
-    {
-        MobilePass = 1, // 手机 密码登录
-        MobileCode = 2, // 手机 验证码登录
-        WeChat = 3, // 微信登录
-    }
-
     [Serializable]
-    public class ReqLogin : BaseMsg
+    public class ReqRoom : BaseMsg
     {
-        public LoginType type;
-        public string name;
-        public string pass;
+        public int id;
 
-        public ReqLogin(LoginType type, string name, string pass) : base(MsgID.ReqLogin)
+
+        public ReqRoom(int id) : base(MsgID.ReqRoom)
         {
-            this.type = type;
-            this.name = name;
-            this.pass = pass;
+            this.id = id;
         }
 
         public override void FromData(byte[] data)
         {
-
         }
 
         public override byte[] ToData()
@@ -38,23 +26,37 @@ namespace Network.Msg
         }
     }
 
-    public class ResLogin : BaseMsg
+    [Serializable]
+    public class RoomInfo
+    {
+        public int id;
+        public int score;
+        public int pay;
+        public int current;
+        public int count;
+        public int uid;
+        public int players;
+    }
+
+
+    [Serializable]
+    public class ResRoom : BaseMsg
     {
         public int code;
         public string msg;
-        public string token;
+        public RoomInfo room;
 
-        public ResLogin() : base(MsgID.ResLogin)
+        public ResRoom() : base(MsgID.ResRoom)
         {
         }
 
         public override void FromData(byte[] data)
         {
             var jsonString = System.Text.Encoding.UTF8.GetString(data);
-            ResLogin jsonData = JsonUtility.FromJson<ResLogin>(jsonString);
+            var jsonData = JsonUtility.FromJson<ResRoom>(jsonString);
             this.code = jsonData.code;
             this.msg = jsonData.msg;
-            this.token = jsonData.token;
+            this.room = jsonData.room;
         }
 
         public override byte[] ToData()
