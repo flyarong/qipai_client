@@ -28,7 +28,7 @@ namespace FairyGUI
 
 		void OnGUI()
 		{
-			Stage.inst.HandleGUIEvents(Event.current);
+            Stage.inst.HandleGUIEvents(UnityEngine.Event.current);
 		}
 
 #if !UNITY_5_4_OR_NEWER

@@ -9,6 +9,7 @@ using Utils;
 using Network;
 using Network.Msg;
 using System;
+using Notification;
 
 public class Login : MonoBehaviour
 {
@@ -20,20 +21,8 @@ public class Login : MonoBehaviour
    
     private void Awake()
     {
-        Utils.Handler.Clear();
-        Utils.Handler.Add<ResLogin>(MsgID.ResLogin, Network.EventType.Network_OnResLogin);
-        Utils.Handler.Add<ResLoginByToken>(MsgID.ResLoginByToken, Network.EventType.Network_OnResLoginByToken);
+        BindListenners();
 
-        if (!b)
-        {
-            b = true;
-           
-            EventCenter ec = EventCenter.Inst;
-            ec.AddEventListener(Network.EventType.Network_OnResLogin, OnResLogin);
-            ec.AddEventListener(Network.EventType.Network_OnResLoginByToken, OnResLoginByToken);
-            
-        }
-        
 
         mainUI = GetComponent<UIPanel>().ui;
         mainUI.GetChild("btnReg").onClick.Add(() =>
@@ -60,7 +49,28 @@ public class Login : MonoBehaviour
         });
     }
 
-    private void OnResLoginByToken(EventArg arg)
+    private void BindListenners()
+    {
+        Handler.Init();
+        Handler.Add<ResLogin>(MsgID.ResLogin, NotificationType.Network_OnResLogin);
+        Handler.Add<ResLoginByToken>(MsgID.ResLoginByToken, NotificationType.Network_OnResLoginByToken);
+
+        Handler.AddListenner(NotificationType.Network_OnConnected, OnConnected);
+        Handler.AddListenner(NotificationType.Network_OnDisconnected, OnDisconnected);
+        Handler.AddListenner(NotificationType.Network_OnResLoginByToken, OnResLoginByToken);
+        Handler.AddListenner(NotificationType.Network_OnResLogin, OnResLogin);
+    }
+
+    private void OnConnected(NotificationArg arg)
+    {
+        Api.User.LoginByToken();
+    }
+
+    private void OnDisconnected(NotificationArg arg)
+    {
+        Manager.Inst.Connect();
+    }
+    private void OnResLoginByToken(NotificationArg arg)
     {
         var data = arg.GetValue<ResLoginByToken>();
         if (data.code != 0)
@@ -76,10 +86,9 @@ public class Login : MonoBehaviour
 
     private void Start()
     {
-        Api.User.LoginByToken();
     }
 
-    void OnResLogin(EventArg arg)
+    void OnResLogin(NotificationArg arg)
     {
         ResLogin data = arg.GetValue<ResLogin>();
         

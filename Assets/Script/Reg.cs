@@ -8,7 +8,8 @@ using System;
 using UnityEngine.SceneManagement;
 using Network;
 using Network.Msg;
-
+using Notification;
+using Utils;
 public class Reg : MonoBehaviour
 {
     GComponent mainUI;
@@ -24,19 +25,21 @@ public class Reg : MonoBehaviour
 
     private void Awake()
     {
-        Utils.Handler.Clear();
-        Utils.Handler.Add<ResReg>(MsgID.ResReg, Network.EventType.Network_OnResReg);
-        Utils.Handler.Add<ResCode>(MsgID.ResCode, Network.EventType.Network_OnResCode);
-        if (!b)
-        {
-            EventCenter ec = EventCenter.Inst;
-            ec.AddEventListener(Network.EventType.Network_OnResReg, OnResReg);
-            ec.AddEventListener(Network.EventType.Network_OnResCode, OnResCode);
-            b = true;
-        }
+        BindListenners();
     }
 
-    void OnResReg(EventArg arg)
+    private void BindListenners()
+    {
+        Handler.Init();
+
+        Handler.Add<ResReg>(MsgID.ResReg, Notification.NotificationType.Network_OnResReg);
+        Handler.Add<ResCode>(MsgID.ResCode, Notification.NotificationType.Network_OnResCode);
+
+        Handler.AddListenner(Notification.NotificationType.Network_OnResReg, OnResReg);
+        Handler.AddListenner(Notification.NotificationType.Network_OnResCode, OnResCode);
+    }
+
+    void OnResReg(NotificationArg arg)
     {
         var data = arg.GetValue<ResReg>();
         if (data.code != 0)
@@ -48,7 +51,7 @@ public class Reg : MonoBehaviour
         SceneManager.LoadScene("Login");
     }
     
-    void OnResCode(EventArg arg)
+    void OnResCode(NotificationArg arg)
     {
         var data = arg.GetValue<ResCode>();
         if (data==null)

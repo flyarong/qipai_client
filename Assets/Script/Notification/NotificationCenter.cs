@@ -1,23 +1,27 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Network
+namespace Notification
 {
-    public class EventCenter
+    public class NotificationCenter
     {
-        private static EventCenter inst;
-        public static EventCenter Inst {
+        private static NotificationCenter inst;
+        public static NotificationCenter Inst {
             get
             {
                 if (inst == null)
                 {
-                    new EventCenter().Init();
+                    new NotificationCenter().Init();
                 }
                 return inst;
             }
+            set
+            {
+                inst = value;
+            }
         }
 
-        private Dictionary<EventType, EventHandler> handlers = new Dictionary<EventType, EventHandler>();
+        private Dictionary<NotificationType, NotificationHandler> handlers = new Dictionary<NotificationType, NotificationHandler>();
         private object thisLock = new object();
 
         public void Init()
@@ -28,7 +32,7 @@ namespace Network
             }
         }
 
-        public void AddEventListener(EventType type, EventHandler listener)
+        public void AddEventListener(NotificationType type, NotificationHandler listener)
         {
             if (handlers.ContainsKey(type))
             {
@@ -40,7 +44,7 @@ namespace Network
             }
         }
 
-        public void PushEvent(EventType type, object arg)
+        public void PushEvent(NotificationType type, object arg)
         {
             lock (thisLock)
             {
@@ -51,7 +55,7 @@ namespace Network
 
                 if (handlers[type] != null)
                 {
-                    handlers[type](new EventArg(arg));
+                    handlers[type](new NotificationArg(arg));
                 }
             }
         }

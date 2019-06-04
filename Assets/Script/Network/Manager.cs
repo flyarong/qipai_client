@@ -1,4 +1,5 @@
-﻿namespace Network
+﻿using Notification;
+namespace Network
 {
 
     using System;
@@ -55,6 +56,10 @@
         /// </summary>
         public void Connect()
         {
+            if (m_gameSocket == null)
+            {
+                return;
+            }
             TimeSpan timeout = new TimeSpan(0, 0, 5);
             m_gameSocket.Connect(host, port, timeout);
         }
@@ -73,13 +78,13 @@
 
         public void OnConnected(Message msg)
         {
-            EventCenter.Inst.PushEvent(EventType.Network_OnConnected, null);
+            NotificationCenter.Inst.PushEvent(NotificationType.Network_OnConnected, null);
         }
 
         public void OnDisconnect(Message msg)
         {
             m_gameSocket.Reset();
-            EventCenter.Inst.PushEvent(EventType.Network_OnDisconnected, null);
+            NotificationCenter.Inst.PushEvent(NotificationType.Network_OnDisconnected, null);
         }
 
         public void OnMessage(Message msg)

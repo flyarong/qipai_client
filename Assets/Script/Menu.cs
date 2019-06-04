@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using System;
 using Utils;
 using Network;
+using Notification;
 using Network.Msg;
 public class Menu : MonoBehaviour
 {
@@ -13,19 +14,11 @@ public class Menu : MonoBehaviour
     private CreateClubWindow createClubWindow;
     private CreateRoomWindow createRoomWindow;
     private JoinWindow joinWindow;
-    static bool b = false;
+
 
     void Awake()
     {
-        Handler.Clear();
-        Handler.Add<ResCreateRoom>(MsgID.ResCreateRoom, Network.EventType.Network_OnResCreateRoom);
-        if (!b)
-        {
-            b = true;
-            EventCenter ec = EventCenter.Inst;
-            ec.AddEventListener(Network.EventType.Network_OnResCreateRoom, OnResCreateRoom);
-            ec.AddEventListener(Network.EventType.Network_OnDisconnected, OnDisconnected);
-        }
+        BindListenners();
 
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
@@ -33,8 +26,8 @@ public class Menu : MonoBehaviour
         createClubWindow = new CreateClubWindow();
         createRoomWindow = new CreateRoomWindow();
         joinWindow = new JoinWindow();
-        
-        
+
+
         mainUI.GetChild("right").asCom.GetChild("btnCreateClub").onClick.Add(() =>
         {
             Debug.Log("创建茶楼按钮被点击");
@@ -62,12 +55,44 @@ public class Menu : MonoBehaviour
         });
     }
 
-    private void OnDisconnected(EventArg arg)
+    private void BindListenners()
+    {
+        Handler.Init();
+        Handler.Add<ResLoginByToken>(MsgID.ResLoginByToken, NotificationType.Network_OnResLoginByToken);
+        Handler.Add<ResCreateRoom>(MsgID.ResCreateRoom, NotificationType.Network_OnResCreateRoom);
+
+        Handler.AddListenner(NotificationType.Network_OnConnected, OnConnected);
+        Handler.AddListenner(NotificationType.Network_OnDisconnected, OnDisconnected);
+        Handler.AddListenner(NotificationType.Network_OnResLoginByToken, OnResLoginByToken);
+        Handler.AddListenner(NotificationType.Network_OnResCreateRoom, OnResCreateRoom);
+    }
+
+    private void OnConnected(NotificationArg arg)
+    {
+        Api.User.LoginByToken();
+    }
+
+    private void OnDisconnected(NotificationArg arg)
     {
         Manager.Inst.Connect();
     }
 
-    private void OnResCreateRoom(EventArg arg)
+    private void OnResLoginByToken(NotificationArg arg)
+    {
+        var data = arg.GetValue<ResLoginByToken>();
+        if (data.code != 0)
+        {
+            MsgBox.ShowErr(data.msg, 2);
+            Data.User.Token = "";
+            SceneManager.LoadScene("Login");
+            return;
+        }
+        Debug.Log(data.code + "  " + data.msg + "   " + data.token);
+        Data.User.Token = data.token;
+
+    }
+
+    private void OnResCreateRoom(NotificationArg arg)
     {
         var data = arg.GetValue<ResCreateRoom>();
         if (data.code != 0)
@@ -86,11 +111,11 @@ public class Menu : MonoBehaviour
 
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {
         Utils.Handler.HandleMessage();
     }
-    
+
 }

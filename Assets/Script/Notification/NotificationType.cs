@@ -1,6 +1,6 @@
-﻿namespace Network
+﻿namespace Notification
 {
-    public enum EventType
+    public enum NotificationType
     {
         Network_OnConnected,
         Network_OnDisconnected,

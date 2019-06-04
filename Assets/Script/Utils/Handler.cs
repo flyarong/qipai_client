@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System;
 using System.Reflection;
 using UnityEngine.SceneManagement;
+using Notification;
 
 namespace Utils
 {
@@ -13,7 +14,7 @@ namespace Utils
     public static class Handler
     {
 
-        private static Dictionary<MsgID, KeyValuePair<Network.EventType, string>> handlers = new Dictionary<MsgID, KeyValuePair<Network.EventType, string>>();
+        private static Dictionary<MsgID, KeyValuePair<Notification.NotificationType, string>> handlers = new Dictionary<MsgID, KeyValuePair<Notification.NotificationType, string>>();
         public static void HandleMessage()
         {
             Manager.Inst.HandleMessage(HandleMessage);
@@ -25,14 +26,7 @@ namespace Utils
             // 没有权限，统一退回到登录界面
             if(msgID == MsgID.NoPermission)
             {
-                if (Data.User.Token == "")
-                {
-                    SceneManager.LoadScene("Login");
-                }
-                else
-                {
-                    Api.User.LoginByToken();
-                }
+                SceneManager.LoadScene("Login");
                 return;
             }
             
@@ -51,12 +45,16 @@ namespace Utils
             object[] parameters = new object[] { msg };
             method.Invoke(obj, parameters);
 
-            EventCenter.Inst.PushEvent(kv.Key, obj);
+            NotificationCenter.Inst.PushEvent(kv.Key, obj);
         }
 
-        public static void Clear()
+        /// <summary>
+        /// 初始化时间处理器和消息字典，必须在Awake函数一开始调用
+        /// </summary>
+        public static void Init()
         {
             handlers.Clear();
+            NotificationCenter.Inst = null;
         }
 
         /// <summary>
@@ -65,9 +63,14 @@ namespace Utils
         /// <typeparam name="T">用什么类型接收服务端返回的数据</typeparam>
         /// <param name="msgId">消息类型编号</param>
         /// <param name="type">msgId消息和什么通知关联</param>
-        public static void Add<T>(MsgID msgId, Network.EventType type) where T : new()
+        public static void Add<T>(MsgID msgId, Notification.NotificationType type) where T : new()
         {
-            handlers.Add(msgId, new KeyValuePair<Network.EventType, string>(type, new T().GetType().FullName));
+            handlers.Add(msgId, new KeyValuePair<Notification.NotificationType, string>(type, new T().GetType().FullName));
+        }
+
+        public static void AddListenner(NotificationType type, Notification.NotificationHandler listener)
+        {
+            NotificationCenter.Inst.AddEventListener(type, listener);
         }
     }
 }

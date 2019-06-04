@@ -638,7 +638,7 @@ namespace FairyGUI
 			DispatchEvent("onStageResized", null);
 		}
 
-		internal void HandleGUIEvents(Event evt)
+		internal void HandleGUIEvents(UnityEngine.Event evt)
 		{
 			if (evt.rawType == EventType.KeyDown)
 			{

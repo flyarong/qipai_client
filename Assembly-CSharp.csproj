@@ -237,9 +237,9 @@
     <Compile Include="Assets\Script\Network\Msg\User\ReqLogin.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ReqLoginByToken.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ReqReg.cs" />
-    <Compile Include="Assets\Script\Notification\Event.cs" />
-    <Compile Include="Assets\Script\Notification\EventCenter.cs" />
-    <Compile Include="Assets\Script\Notification\EventType.cs" />
+    <Compile Include="Assets\Script\Notification\Notification.cs" />
+    <Compile Include="Assets\Script\Notification\NotificationCenter.cs" />
+    <Compile Include="Assets\Script\Notification\NotificationType.cs" />
     <Compile Include="Assets\Script\Reg.cs" />
     <Compile Include="Assets\Script\Reset.cs" />
     <Compile Include="Assets\Script\RollText.cs" />

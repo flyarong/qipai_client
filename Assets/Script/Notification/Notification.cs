@@ -1,28 +1,27 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Network
+namespace Notification
 {
-
-    public delegate void EventHandler(EventArg arg);
+    public delegate void NotificationHandler(NotificationArg arg);
 
     public class Event
     {
         public string type;
-        public EventArg arg;
+        public NotificationArg arg;
 
-        public Event(string _type, EventArg _arg)
+        public Event(string _type, NotificationArg _arg)
         {
             type = _type;
             arg = _arg;
         }
     }
 
-    public class EventArg
+    public class NotificationArg
     {
         private object value;
 
-        public EventArg(object v)
+        public NotificationArg(object v)
         {
             value = v;
         }

@@ -49,9 +49,16 @@ namespace Network
                 throw new ApplicationException("socket has already connected.");
             }
 
-            IAsyncResult result = m_socket.BeginConnect(host, port, new AsyncCallback(OnConnected), m_socket);
+            try
+            {
+                IAsyncResult result = m_socket.BeginConnect(host, port, new AsyncCallback(OnConnected), m_socket);
+                result.AsyncWaitHandle.WaitOne(timeout, true);
+            }
+            catch (ObjectDisposedException ex)
+            {
+                Debug.LogWarning(ex.Message);
+            }
 
-            result.AsyncWaitHandle.WaitOne(timeout, true);
         }
 
         private void OnConnected(IAsyncResult result)
