@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 using System.Collections.Generic;
+using System;
 
 namespace Network.Msg
 {
@@ -13,31 +13,6 @@ namespace Network.Msg
     }
 
     [Serializable]
-    public class ReqLogin : BaseMsg
-    {
-        public LoginType type;
-        public string name;
-        public string pass;
-
-        public ReqLogin(LoginType type, string name, string pass) : base(MsgID.ReqLogin)
-        {
-            this.type = type;
-            this.name = name;
-            this.pass = pass;
-        }
-
-        public override void FromData(byte[] data)
-        {
-
-        }
-
-        public override byte[] ToData()
-        {
-            var str = JsonUtility.ToJson(this);
-            return System.Text.Encoding.UTF8.GetBytes(str);
-        }
-    }
-
     public class ResLogin : BaseMsg
     {
         public int code;

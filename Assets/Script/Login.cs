@@ -18,13 +18,10 @@ public class Login : MonoBehaviour
     GTextInput inputPass;
     GComponent mainUI;
 
-    private static bool b = false;
-
     private void Awake()
     {
         BindListenners();
-
-
+        
         mainUI = GetComponent<UIPanel>().ui;
         mainUI.GetChild("btnReg").onClick.Add(() =>
         {

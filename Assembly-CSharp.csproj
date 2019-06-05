@@ -218,6 +218,7 @@
     <Compile Include="Assets\Script\CreateClubWindow.cs" />
     <Compile Include="Assets\Script\CreateRoomWindow.cs" />
     <Compile Include="Assets\Script\Data\Club.cs" />
+    <Compile Include="Assets\Script\Data\Player.cs" />
     <Compile Include="Assets\Script\Data\Room.cs" />
     <Compile Include="Assets\Script\Data\User.cs" />
     <Compile Include="Assets\Script\ErrorWindow.cs" />
@@ -232,14 +233,18 @@
     <Compile Include="Assets\Script\Network\Msg\BaseMsg.cs" />
     <Compile Include="Assets\Script\Network\Msg\ErrMsg.cs" />
     <Compile Include="Assets\Script\Network\Msg\MsgID.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\BroadcastSitRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ReqCreateRoom.cs" />
-    <Compile Include="Assets\Script\Network\Msg\Room\ReqJoinRoom.cs" />
-    <Compile Include="Assets\Script\Network\Msg\Room\ReqRoom.cs" />
-    <Compile Include="Assets\Script\Network\Msg\Room\ReqRoomList.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResJoinRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResLeaveRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResRoomList.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResSit.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ReqCode.cs" />
-    <Compile Include="Assets\Script\Network\Msg\User\ReqLogin.cs" />
-    <Compile Include="Assets\Script\Network\Msg\User\ReqLoginByToken.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ReqReg.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResLogin.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResLoginByToken.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResUserInfo.cs" />
     <Compile Include="Assets\Script\Notification\Notification.cs" />
     <Compile Include="Assets\Script\Notification\NotificationCenter.cs" />
     <Compile Include="Assets\Script\Notification\NotificationType.cs" />
@@ -255,6 +260,7 @@
     <Compile Include="Assets\Script\Utils\ConfirmWindow.cs" />
     <Compile Include="Assets\Script\Utils\Handler.cs" />
     <Compile Include="Assets\Script\Utils\HttpLoader.cs" />
+    <Compile Include="Assets\Script\Utils\Msg.cs" />
     <Compile Include="Assets\Script\Utils\Msgbox.cs" />
     <Compile Include="Assets\UnityPackages\JsonNetSample\JsonNetSample.cs" />
     <None Include="Assets\JSON\readme.txt" />
@@ -476,6 +482,9 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:/projects/unity/qipai/Assets/UnityPackages/JsonNet/Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
@@ -484,9 +493,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>D:/projects/unity/qipai/Assets/UnityPackages/JsonNet/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

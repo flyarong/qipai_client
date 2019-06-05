@@ -245,6 +245,9 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets/UnityPackages/JsonNet/Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
@@ -781,38 +784,41 @@
     <Compile Include="Assets\FairyGUI\Scripts\Utils\ZipReader.cs" />
     <Compile Include="Assets\JSON\JSONObject.cs" />
     <Compile Include="Assets\JSON\VectorTemplates.cs" />
-    <Compile Include="Assets\Script\Api\Client.cs" />
-    <Compile Include="Assets\Script\Api\Club.cs" />
-    <Compile Include="Assets\Script\Api\Common.cs" />
     <Compile Include="Assets\Script\Api\Room.cs" />
     <Compile Include="Assets\Script\Api\User.cs" />
-    <Compile Include="Assets\Script\Club\Club.cs" />
-    <Compile Include="Assets\Script\Club\ClubList.cs" />
-    <Compile Include="Assets\Script\Club\Footer.cs" />
-    <Compile Include="Assets\Script\Club\ManageWindow.cs" />
-    <Compile Include="Assets\Script\Club\TableList.cs" />
-    <Compile Include="Assets\Script\Club\UsersWindow.cs" />
     <Compile Include="Assets\Script\CommonHeader.cs" />
     <Compile Include="Assets\Script\CreateClubWindow.cs" />
     <Compile Include="Assets\Script\CreateRoomWindow.cs" />
     <Compile Include="Assets\Script\Data\Club.cs" />
-    <Compile Include="Assets\Script\Data\Event.cs" />
+    <Compile Include="Assets\Script\Data\Player.cs" />
     <Compile Include="Assets\Script\Data\Room.cs" />
     <Compile Include="Assets\Script\Data\User.cs" />
     <Compile Include="Assets\Script\ErrorWindow.cs" />
-    <Compile Include="Assets\Script\EventCenter\CallBack.cs" />
-    <Compile Include="Assets\Script\EventCenter\EventCenter.cs" />
-    <Compile Include="Assets\Script\EventCenter\EventType.cs" />
-    <Compile Include="Assets\Script\Game\Card.cs" />
-    <Compile Include="Assets\Script\Game\CardManager.cs" />
-    <Compile Include="Assets\Script\Game\Game.cs" />
-    <Compile Include="Assets\Script\Game\Player.cs" />
-    <Compile Include="Assets\Script\HttpEvent.cs" />
     <Compile Include="Assets\Script\JoinWindow.cs" />
     <Compile Include="Assets\Script\Loading.cs" />
     <Compile Include="Assets\Script\Login.cs" />
     <Compile Include="Assets\Script\Menu.cs" />
     <Compile Include="Assets\Script\MenuEvenManager.cs" />
+    <Compile Include="Assets\Script\Network\GameSocket.cs" />
+    <Compile Include="Assets\Script\Network\Manager.cs" />
+    <Compile Include="Assets\Script\Network\Message.cs" />
+    <Compile Include="Assets\Script\Network\Msg\BaseMsg.cs" />
+    <Compile Include="Assets\Script\Network\Msg\ErrMsg.cs" />
+    <Compile Include="Assets\Script\Network\Msg\MsgID.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ReqCreateRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResJoinRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResLeaveRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResRoomList.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResSit.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ReqCode.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ReqReg.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResLogin.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResLoginByToken.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResUserInfo.cs" />
+    <Compile Include="Assets\Script\Notification\Notification.cs" />
+    <Compile Include="Assets\Script\Notification\NotificationCenter.cs" />
+    <Compile Include="Assets\Script\Notification\NotificationType.cs" />
     <Compile Include="Assets\Script\Reg.cs" />
     <Compile Include="Assets\Script\Reset.cs" />
     <Compile Include="Assets\Script\RollText.cs" />
@@ -823,8 +829,11 @@
     <Compile Include="Assets\Script\SettingWindow.cs" />
     <Compile Include="Assets\Script\UserInfo.cs" />
     <Compile Include="Assets\Script\Utils\ConfirmWindow.cs" />
+    <Compile Include="Assets\Script\Utils\Handler.cs" />
     <Compile Include="Assets\Script\Utils\HttpLoader.cs" />
+    <Compile Include="Assets\Script\Utils\Msg.cs" />
     <Compile Include="Assets\Script\Utils\Msgbox.cs" />
+    <Compile Include="Assets\UnityPackages\JsonNetSample\JsonNetSample.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\FairyGUI\ReadMe - 3.4.0.txt" />

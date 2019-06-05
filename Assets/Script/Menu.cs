@@ -108,7 +108,10 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
-
+        if (Data.Room.Id > 0)
+        {
+            SceneManager.LoadScene("Room");
+        }
     }
 
 

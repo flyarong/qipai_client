@@ -4,30 +4,9 @@ using System.Collections.Generic;
 
 namespace Network.Msg
 {
-    [Serializable]
-    public class ReqRoom : BaseMsg
-    {
-        public int id;
-
-
-        public ReqRoom(int id) : base(MsgID.ReqRoom)
-        {
-            this.id = id;
-        }
-
-        public override void FromData(byte[] data)
-        {
-        }
-
-        public override byte[] ToData()
-        {
-            var str = JsonUtility.ToJson(this);
-            return System.Text.Encoding.UTF8.GetBytes(str);
-        }
-    }
 
     [Serializable]
-    public class RoomInfo
+    public class Room
     {
         public int id;
         public int score;
@@ -40,23 +19,23 @@ namespace Network.Msg
 
 
     [Serializable]
-    public class ResRoom : BaseMsg
+    public class ResRoomList : BaseMsg
     {
         public int code;
         public string msg;
-        public RoomInfo room;
+        public List<Room> rooms;
 
-        public ResRoom() : base(MsgID.ResRoom)
+        public ResRoomList() : base(MsgID.ResRoomList)
         {
         }
 
         public override void FromData(byte[] data)
         {
             var jsonString = System.Text.Encoding.UTF8.GetString(data);
-            var jsonData = JsonUtility.FromJson<ResRoom>(jsonString);
+            var jsonData = JsonUtility.FromJson<ResRoomList>(jsonString);
             this.code = jsonData.code;
             this.msg = jsonData.msg;
-            this.room = jsonData.room;
+            this.rooms = jsonData.rooms;
         }
 
         public override byte[] ToData()

@@ -10,8 +10,7 @@ namespace Api
         private static Manager Inst = Manager.Inst;
         public static void Login(LoginType type, string name, string pass)
         {
-            var msg = new ReqLogin(type, name, pass);
-            Inst.SendMessage(msg.ToMessage());
+            new Utils.Msg(MsgID.ReqLogin).Add("type", type).Add("name", name).Add("pass", pass).Send();
         }
 
         public static void LoginByToken()
@@ -19,8 +18,7 @@ namespace Api
             if (Data.User.Token == "") {
                 return;
             }
-            var msg = new ReqLoginByToken(Data.User.Token);
-            Inst.SendMessage(msg.ToMessage());
+            new Utils.Msg(MsgID.ReqLoginByToken).Add("token", Data.User.Token).Send();
         }
         
         public static void Reg(LoginType type, string nick, string name, string pass, string code)
@@ -37,6 +35,16 @@ namespace Api
         {
             var msg = new ReqCode(phone);
             Inst.SendMessage(msg.ToMessage());
+        }
+
+        public static void GetUserInfo(int uid)
+        {
+            var req = new Utils.Msg(MsgID.ReqUserInfo);
+            if (uid != Data.User.Id)
+            {
+                req.Add("id", uid);
+            }
+            req.Send();
         }
     }
 }

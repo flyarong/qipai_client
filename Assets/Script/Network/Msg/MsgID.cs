@@ -20,9 +20,9 @@
 
         ResBind,      // 响应绑定结果
 
-        ReqGetUserInfo, // 获取用户信息
+        ReqUserInfo, // 获取用户信息
 
-        ResGetUserInfo, // 响应用户信息
+        ResUserInfo, // 响应用户信息
 
         ReqCode,    // 请求手机验证码
 
@@ -30,7 +30,7 @@
 
         ReqLoginByToken, // 通过token登录
 
-        ResLoginByToken, 
+        ResLoginByToken,
 
 
         /*************房间相关************/
@@ -55,6 +55,8 @@
         // 广播进入房间
         BroadcastJoinRoom,
 
+        // 广播坐下
+        BroadcastSitRoom,
         // 坐下
         ReqSit,
 
@@ -65,7 +67,7 @@
 
         ResLeaveRoom,
         // 解散房间
-        ReqDeleteRoom,
+        ReqDeleteRoom1,
 
         ResDeleteRoom,
     }

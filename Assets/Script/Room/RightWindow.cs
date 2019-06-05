@@ -19,6 +19,7 @@ namespace Room
             this.modal = true;
             this.x = GRoot.inst.width - this.width;
             this.height = GRoot.inst.height;
+            
 
             contentPane.GetChild("btnQuit").onClick.Add(onQuitClick);
         }
@@ -37,7 +38,8 @@ namespace Room
             //    Utils.MsgBox.ShowErr(j["msg"].str);
             //    return;
             //}
-            SceneManager.LoadScene("Menu");
+
+            Api.Room.Leave(Data.Room.Id);
             Hide();
         }
 

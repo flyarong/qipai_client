@@ -12,5 +12,9 @@
         Network_OnResRoomList,
         Network_OnResRoom,
         Network_OnResJoinRoom,
+        Network_OnResSit,
+        Network_OnResLeaveRoom,
+        Network_OnResUserInfo,
+        Network_OnBroadcastSitRoom,
     }
 }

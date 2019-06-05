@@ -34,10 +34,10 @@ namespace Network.Msg
         }
     }
 
-    
-    
 
 
+
+    [Serializable]
     public class ResReg : ErrMsg
     {
         public ResReg() : base(MsgID.ResReg)

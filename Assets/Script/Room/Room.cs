@@ -7,6 +7,7 @@ using System;
 using Utils;
 using Notification;
 using Network.Msg;
+using Network;
 
 namespace Room
 {
@@ -45,11 +46,170 @@ namespace Room
         private void bindEvents()
         {
             Handler.Init();
+            Handler.Add<ResLoginByToken>(MsgID.ResLoginByToken, NotificationType.Network_OnResLoginByToken);
             Handler.Add<ResRoom>(MsgID.ResRoom, NotificationType.Network_OnResRoom);
             Handler.Add<ResJoinRoom>(MsgID.ResJoinRoom, NotificationType.Network_OnResJoinRoom);
+            Handler.Add<ResSit>(MsgID.ResSit, NotificationType.Network_OnResSit);
+            Handler.Add<ResLeaveRoom>(MsgID.ResLeaveRoom, NotificationType.Network_OnResLeaveRoom);
+            Handler.Add<ResUserInfo>(MsgID.ResUserInfo, NotificationType.Network_OnResUserInfo);
+            Handler.Add<BroadcastSitRoom>(MsgID.BroadcastSitRoom, NotificationType.Network_OnBroadcastSitRoom);
 
+            Handler.AddListenner(NotificationType.Network_OnConnected, OnConnected);
+            Handler.AddListenner(NotificationType.Network_OnDisconnected, OnDisconnected);
+            Handler.AddListenner(NotificationType.Network_OnResLoginByToken, OnResLoginByToken);
             Handler.AddListenner(NotificationType.Network_OnResRoom, OnResRoom);
             Handler.AddListenner(NotificationType.Network_OnResJoinRoom, OnResJoinRoom);
+            Handler.AddListenner(NotificationType.Network_OnResSit, OnResSit);
+            Handler.AddListenner(NotificationType.Network_OnResLeaveRoom, OnResLeaveRoom);
+            Handler.AddListenner(NotificationType.Network_OnResUserInfo, OnResUserInfo);
+            Handler.AddListenner(NotificationType.Network_OnBroadcastSitRoom, OnBroadcastSitRoom);
+        }
+
+        private void OnConnected(NotificationArg arg)
+        {
+            Api.User.LoginByToken();
+        }
+
+        private void OnDisconnected(NotificationArg arg)
+        {
+            Manager.Inst.Connect();
+        }
+
+        private void OnResLoginByToken(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResLoginByToken>();
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg, 2);
+                Data.User.Token = "";
+                SceneManager.LoadScene("Login");
+                return;
+            }
+            Data.User.Token = data.token;
+        }
+
+        private void OnBroadcastSitRoom(NotificationArg arg)
+        {
+            var data = arg.GetValue<BroadcastSitRoom>();
+
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                return;
+            }
+            if (data.roomId != Data.Room.Id)
+            {
+                Debug.LogWarning("收到不属于该房间的消息：BroadcastSitRoom");
+                return;
+            }
+            AddPlayer(data.deskId, data.uid);
+            Api.User.GetUserInfo(data.uid);
+        }
+
+        private void OnResUserInfo(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResUserInfo>();
+
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                return;
+            }
+
+            var p = Data.Room.GetPlayer(data.user.id);
+            if (p == null)
+            {
+                Debug.LogWarning("当前房间列表不存在该用户：" + data.user.id);
+                return;
+            }
+
+            Data.PlayerInfo info = new Data.PlayerInfo();
+            info.id = data.user.id;
+            info.nick = data.user.nick;
+            info.ip = data.user.ip;
+            info.card = data.user.card;
+            info.avatar = data.user.avatar;
+            info.address = data.user.address;
+            p.Info = info;
+
+            p.PlayerUi.GetChild("name").text = data.user.nick;
+            p.PlayerUi.GetChild("avatar").asLoader.url = "/static" + data.user.avatar;
+            p.PlayerUi.visible = true;
+
+        }
+
+        private void OnResLeaveRoom(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResLeaveRoom>();
+
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                return;
+            }
+
+            // 如果是自己退出，就返回菜单页
+            if (data.uid == Data.User.Id)
+            {
+                Data.Room.Id = 0;
+                Data.Room.info = null;
+                SceneManager.LoadScene("Menu");
+                return;
+            }
+
+            // 其他用户退出
+            var player = Data.Room.GetPlayer(data.uid);
+            if(player==null)
+            {
+                Debug.LogWarning("用户退出失败：" + data.uid);
+                return;
+            }
+            player.PlayerUi.visible = false;
+            Data.Room.Players.Remove(player);
+        }
+
+        /// <summary>
+        /// 请求退出房间
+        /// </summary>
+        private void exit()
+        {
+            Api.Room.Leave(Data.Room.Id);
+        }
+
+        private void OnResSit(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResSit>();
+
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                if (data.msg == "您当前正在其他房间")
+                {
+                    Data.Room.Id = data.roomId;
+                    Data.Room.info = null;
+                    SceneManager.LoadScene("Menu");
+                    return;
+                }
+                exit();
+                return;
+            }
+            Data.Room.DeskId = data.deskId;
+            addPlayers(data.players);
+        }
+
+        // 添加玩家
+        void addPlayers(List<PlayerInfo> players)
+        {
+            Data.Room.RemoveAllPlayers();
+            foreach (var p in players)
+            {
+                AddPlayer(p.deskId, p.uid);
+            }
+
+            foreach (var p in players)
+            {
+                Api.User.GetUserInfo(p.uid);
+            }
         }
 
         private void OnResJoinRoom(NotificationArg arg)
@@ -59,9 +219,38 @@ namespace Room
             if (data.code != 0)
             {
                 MsgBox.ShowErr(data.msg);
+                exit();
                 return;
             }
 
+            Api.Room.GetRoom(Data.Room.Id);
+            Api.Room.Sit(Data.Room.Id);
+
+            // 暂时不用围观功能，所以后面两句不需要调用
+
+            //Data.Room.RemoveAllPlayers();
+            //addPlayers(data.players);
+        }
+
+        Data.Player AddPlayer(int deskId, int uid)
+        {
+            Data.Player player = new Data.Player();
+            Data.PlayerInfo info = new Data.PlayerInfo();
+            info.id = uid;
+
+            player.Info = info;
+            player.DeskId = deskId;
+            player.Index = player.DeskId - Data.Room.DeskId;
+            if (player.Index < 0)
+            {
+                player.Index = 10 + player.Index;
+            }
+
+            player.PlayerUi = ui.GetChild("player" + (player.Index + 1)).asCom;
+            
+            Data.Room.Players.Add(player);
+            
+            return player;
         }
 
         private void OnResRoom(NotificationArg arg)
@@ -71,13 +260,14 @@ namespace Room
             if (data.code != 0)
             {
                 MsgBox.ShowErr(data.msg);
+                exit();
                 return;
             }
 
             var room = data.room;
 
             Data.Room.info = room;
-            
+
             var text = "";
             if (Data.Club.Id == "")
             {
@@ -94,11 +284,14 @@ namespace Room
             text += "局数：" + room.current + "/" + room.count;
 
             ui.GetChild("infoText").text = text;
+
+            // 获取房间信息成功后，坐下
+            Api.Room.Sit(Data.Room.Id);
         }
 
         private void Start()
         {
-            Api.Room.GetRoom(Data.Room.Id);
+            Api.Room.JoinRoom(Data.Room.Id);
         }
 
         void onSettingClick()
@@ -204,33 +397,7 @@ namespace Room
         //    return null;
         //}
 
-        //Game.Player GetPlayer(int deskId, int uid)
-        //{
 
-        //    Game.Player player = new Game.Player();
-        //    player.DeskId = deskId;
-        //    player.Index = player.DeskId - Data.Room.DeskId;
-        //    if (player.Index < 0)
-        //    {
-        //        player.Index = 10 + player.Index;
-        //    }
-
-        //    player.PlayerUi = ui.GetChild("player" + (player.Index + 1)).asCom;
-        //    var user = new Api.User().GetUserInfo(uid + "");
-        //    if (user["code"].n != 0)
-        //    {
-        //        Utils.MsgBox.ShowErr(user["msg"].str);
-        //        return null;
-        //    }
-        //    player.PlayerUi.visible = true;
-        //    player.UserInfo = user["data"]["user"];
-        //    player.PlayerUi.GetChild("name").text = player.UserInfo["nick"].str;
-        //    player.PlayerUi.GetChild("avatar").asLoader.url = "/static" + player.UserInfo["avatar"].str;
-
-        //    Data.Room.Players.Add(player);
-
-        //    return player;
-        //}
 
 
 

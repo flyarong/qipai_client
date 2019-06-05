@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Network.Msg;
 
 namespace Data
 {
@@ -9,6 +10,7 @@ namespace Data
         // 用户位置
         private static int pos;
         private static int id;
+        private static Network.Msg.UserInfo info = null;
         private static string token;
         public static int Pos { get => pos; set => pos = value; }
 
@@ -28,6 +30,8 @@ namespace Data
                 PlayerPrefs.SetString("token", token);
             }
         }
+
+        public static Network.Msg.UserInfo Info { get => info; set => info = value; }
     }
 
 }
