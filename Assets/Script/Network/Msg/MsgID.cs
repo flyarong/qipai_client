@@ -67,8 +67,34 @@
 
         ResLeaveRoom,
         // 解散房间
-        ReqDeleteRoom1,
+        ReqDeleteRoom,
 
         ResDeleteRoom,
+
+
+        /**************游戏相关**************/
+        // 开始游戏
+        ReqGameStart = 301,
+
+        ResGameStart,
+        // 发牌，一张一张发
+        PutCard,
+
+        // 获取指定用户的纸牌
+        ReqUserCards,
+
+        ResUserCards,
+
+        // 抢庄
+        ReqTimes,
+
+        BroadcastTimes,
+        // 广播谁是庄家
+        BroadcastBanker,
+
+        // 下注
+        ReqSetScore,
+        // 广播下注的大小
+        BroadcastSetScore,
     }
 }

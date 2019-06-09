@@ -24,6 +24,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Reset.unity
     guid: af2c2531527242a4caf244f4c0026809
   - enabled: 1
-    path: Assets/Scenes/Room.unity
+    path: Assets/Scenes/Game.unity
     guid: 780ff0e76c1b81546929dbcd533c649c
   m_configObjects: {}

@@ -16,5 +16,8 @@
         Network_OnResLeaveRoom,
         Network_OnResUserInfo,
         Network_OnBroadcastSitRoom,
+        Network_OnResDeleteRoom,
+        Network_OnResGameStart,
+        Network_OnBroadcastTimes,
     }
 }

@@ -9,7 +9,7 @@ using Notification;
 using System;
 using Utils;
 
-namespace Room
+namespace Game
 {
     public class RoomList : MonoBehaviour
     {
@@ -114,7 +114,7 @@ namespace Room
             var id = item.GetChild("id").text;
             var roomId = id;
             Data.Room.Id = int.Parse(roomId);
-            SceneManager.LoadScene("Room");
+            SceneManager.LoadScene("Game");
         }
 
         void onInviteClick(EventContext context)

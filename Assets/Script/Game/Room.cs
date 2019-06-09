@@ -9,14 +9,13 @@ using Notification;
 using Network.Msg;
 using Network;
 
-namespace Room
+namespace Game
 {
     public class Room : MonoBehaviour
     {
         GComponent ui;
         GButton btnStart;
         RightWindow right;
-        GButton btnScore1, btnScore2;
         private string[] scores = {
             "1/2",
             "2/4",
@@ -35,13 +34,10 @@ namespace Room
             right = new RightWindow();
             ui.GetChild("btnSetting").onClick.Add(onSettingClick);
             btnStart = ui.GetChild("btnStart").asButton;
-            btnScore1 = ui.GetChild("btnScore1").asButton;
-            btnScore2 = ui.GetChild("btnScore2").asButton;
-
-            //EventCenter.AddListener<string>(NoticeType.GameBegin, GameBegin);
-            //EventCenter.AddListener<string, string>(NoticeType.PlayerSitDown, RoomJoin);
-            //EventCenter.AddListener<string, string>(NoticeType.RoomExit, ExitRoom);
+            
         }
+
+      
 
         private void bindEvents()
         {
@@ -53,6 +49,7 @@ namespace Room
             Handler.Add<ResLeaveRoom>(MsgID.ResLeaveRoom, NotificationType.Network_OnResLeaveRoom);
             Handler.Add<ResUserInfo>(MsgID.ResUserInfo, NotificationType.Network_OnResUserInfo);
             Handler.Add<BroadcastSitRoom>(MsgID.BroadcastSitRoom, NotificationType.Network_OnBroadcastSitRoom);
+            Handler.Add<ResDeleteRoom>(MsgID.ResDeleteRoom, NotificationType.Network_OnResDeleteRoom);
 
             Handler.AddListenner(NotificationType.Network_OnConnected, OnConnected);
             Handler.AddListenner(NotificationType.Network_OnDisconnected, OnDisconnected);
@@ -63,6 +60,25 @@ namespace Room
             Handler.AddListenner(NotificationType.Network_OnResLeaveRoom, OnResLeaveRoom);
             Handler.AddListenner(NotificationType.Network_OnResUserInfo, OnResUserInfo);
             Handler.AddListenner(NotificationType.Network_OnBroadcastSitRoom, OnBroadcastSitRoom);
+            Handler.AddListenner(NotificationType.Network_OnResDeleteRoom, OnResDeleteRoom);
+        }
+
+        private void OnResDeleteRoom(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResDeleteRoom>();
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg, 2);
+                return;
+            }
+            if (data.roomId != Data.Room.Id)
+            {
+                Debug.LogWarning("收到不属于该房间的消息：ResDeleteRoom");
+                return;
+            }
+            MsgBox.ShowErr("房间已解散",1);
+            Data.Room.Id = 0;
+            SceneManager.LoadScene("Menu");
         }
 
         private void OnConnected(NotificationArg arg)
@@ -193,8 +209,16 @@ namespace Room
                 exit();
                 return;
             }
+            
             Data.Room.DeskId = data.deskId;
             addPlayers(data.players);
+        
+            // 如果是房主，显示开始按钮
+            if (data.uid == Data.User.Id)
+            {
+                btnStart.visible = true;
+            }
+            
         }
 
         // 添加玩家

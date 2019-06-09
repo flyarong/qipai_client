@@ -212,6 +212,7 @@
     <Compile Include="Assets\FairyGUI\Scripts\Utils\ZipReader.cs" />
     <Compile Include="Assets\JSON\JSONObject.cs" />
     <Compile Include="Assets\JSON\VectorTemplates.cs" />
+    <Compile Include="Assets\Script\Api\Game.cs" />
     <Compile Include="Assets\Script\Api\Room.cs" />
     <Compile Include="Assets\Script\Api\User.cs" />
     <Compile Include="Assets\Script\CommonHeader.cs" />
@@ -222,6 +223,13 @@
     <Compile Include="Assets\Script\Data\Room.cs" />
     <Compile Include="Assets\Script\Data\User.cs" />
     <Compile Include="Assets\Script\ErrorWindow.cs" />
+    <Compile Include="Assets\Script\Game\Card.cs" />
+    <Compile Include="Assets\Script\Game\CardManager.cs" />
+    <Compile Include="Assets\Script\Game\Game.cs" />
+    <Compile Include="Assets\Script\Game\Player.cs" />
+    <Compile Include="Assets\Script\Game\RightWindow.cs" />
+    <Compile Include="Assets\Script\Game\Room.cs" />
+    <Compile Include="Assets\Script\Game\RoomList.cs" />
     <Compile Include="Assets\Script\JoinWindow.cs" />
     <Compile Include="Assets\Script\Loading.cs" />
     <Compile Include="Assets\Script\Login.cs" />
@@ -232,9 +240,13 @@
     <Compile Include="Assets\Script\Network\Message.cs" />
     <Compile Include="Assets\Script\Network\Msg\BaseMsg.cs" />
     <Compile Include="Assets\Script\Network\Msg\ErrMsg.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastBanker.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\ResBroadcastTimes.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\ResGameInfo.cs" />
     <Compile Include="Assets\Script\Network\Msg\MsgID.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\BroadcastSitRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ReqCreateRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResDeleteRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ResJoinRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ResLeaveRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ResRoom.cs" />
@@ -251,9 +263,6 @@
     <Compile Include="Assets\Script\Reg.cs" />
     <Compile Include="Assets\Script\Reset.cs" />
     <Compile Include="Assets\Script\RollText.cs" />
-    <Compile Include="Assets\Script\Room\RightWindow.cs" />
-    <Compile Include="Assets\Script\Room\Room.cs" />
-    <Compile Include="Assets\Script\Room\RoomList.cs" />
     <Compile Include="Assets\Script\RoomEventManager.cs" />
     <Compile Include="Assets\Script\SettingWindow.cs" />
     <Compile Include="Assets\Script\UserInfo.cs" />

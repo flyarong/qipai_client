@@ -72,5 +72,16 @@ namespace Api
             }
             new Utils.Msg(MsgID.ReqLeaveRoom).Add("id", roomId).Send();
         }
+
+        public static void Delete(int roomId)
+        {
+            if (roomId <= 0)
+            {
+                Debug.LogWarning("不合法的roomid: " + roomId);
+                SceneManager.LoadScene("Menu");
+                return;
+            }
+            new Utils.Msg(MsgID.ReqDeleteRoom).Add("id", roomId).Send();
+        }
     }
 }

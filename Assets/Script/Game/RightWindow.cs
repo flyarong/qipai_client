@@ -2,8 +2,9 @@
 using System.Collections;
 using FairyGUI;
 using UnityEngine.SceneManagement;
+using System;
 
-namespace Room
+namespace Game
 {
     public class RightWindow : Window
     {
@@ -22,23 +23,17 @@ namespace Room
             
 
             contentPane.GetChild("btnQuit").onClick.Add(onQuitClick);
+            contentPane.GetChild("btnDelete").onClick.Add(onDeleteClick);
+        }
+
+        private void onDeleteClick(EventContext context)
+        {
+            Api.Room.Delete(Data.Room.Id);
+            Hide();
         }
 
         void onQuitClick()
         {
-            //if (Data.Room.Info["current"].n == Data.Room.Info["count"].n)
-            //{
-            //    EventCenter.Broadcast<string, string>(NoticeType.RoomExit, Data.Room.Id, Data.User.Id + "");
-            //    Hide();
-            //    return;
-            //}
-            //var j = new Api.Room().Exit(Data.Room.Id);
-            //if (j["code"].n != 0)
-            //{
-            //    Utils.MsgBox.ShowErr(j["msg"].str);
-            //    return;
-            //}
-
             Api.Room.Leave(Data.Room.Id);
             Hide();
         }

@@ -11,7 +11,6 @@ namespace Utils
             GRoot.inst.ShowPopup(errorWindow);
             errorWindow.SetMsg(msg);
             errorWindow.T = time;
-            errorWindow.Center();
         }
     }
 }

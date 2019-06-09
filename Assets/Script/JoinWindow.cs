@@ -35,7 +35,7 @@ public class JoinWindow : Window
             var roomId = textField.text;
 
             Data.Room.Id = int.Parse(roomId);
-            SceneManager.LoadScene("Room");
+            SceneManager.LoadScene("Game");
         }
     }
 
