@@ -241,6 +241,10 @@
     <Compile Include="Assets\Script\Network\Msg\BaseMsg.cs" />
     <Compile Include="Assets\Script\Network\Msg\ErrMsg.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastBanker.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastCompareCard.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastGameOver.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastScore.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastShowCard.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\ResBroadcastTimes.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\ResGameInfo.cs" />
     <Compile Include="Assets\Script\Network\Msg\MsgID.cs" />

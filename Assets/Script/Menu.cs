@@ -14,7 +14,7 @@ public class Menu : MonoBehaviour
     private CreateClubWindow createClubWindow;
     private CreateRoomWindow createRoomWindow;
     private JoinWindow joinWindow;
-
+    GComponent list;
 
     void Awake()
     {
@@ -26,6 +26,15 @@ public class Menu : MonoBehaviour
         createClubWindow = new CreateClubWindow();
         createRoomWindow = new CreateRoomWindow();
         joinWindow = new JoinWindow();
+        list = mainUI.GetChild("list").asCom;
+
+        // 让茶楼和房间列表选项卡固定在用户选择的页面
+        var clubOrRoom = list.GetController("tab");
+        clubOrRoom.onChanged.Set(()=> {
+            PlayerPrefs.SetInt("clubOrRoom", clubOrRoom.selectedIndex);
+        });
+        clubOrRoom.selectedIndex = PlayerPrefs.GetInt("clubOrRoom");
+
 
 
         mainUI.GetChild("right").asCom.GetChild("btnCreateClub").onClick.Add(() =>
@@ -54,6 +63,7 @@ public class Menu : MonoBehaviour
             joinWindow.Center();
         });
     }
+    
 
     private void BindListenners()
     {
@@ -103,15 +113,20 @@ public class Menu : MonoBehaviour
         Data.Room.Id = data.id;
 
         createRoomWindow.Hide();
+        toGame();
+    }
+    void toGame()
+    {
         SceneManager.LoadScene("Game");
     }
-
     private void Start()
     {
+        
         if (Data.Room.Id > 0)
         {
-            SceneManager.LoadScene("Game");
+            Invoke("toGame", 1);
         }
+        
     }
 
 

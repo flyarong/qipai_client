@@ -21,8 +21,6 @@ public class Reg : MonoBehaviour
 
     ErrorWindow errorWindow;
 
-    private static bool b = false;
-
     private void Awake()
     {
         BindListenners();

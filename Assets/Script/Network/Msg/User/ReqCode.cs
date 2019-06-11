@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using Newtonsoft.Json;
 
 namespace Network.Msg
 {
@@ -30,7 +31,7 @@ namespace Network.Msg
 
         public override byte[] ToData()
         {
-            var str = JsonUtility.ToJson(this);
+            var str = JsonConvert.SerializeObject(this);
             return System.Text.Encoding.UTF8.GetBytes(str);
         }
     }

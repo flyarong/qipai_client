@@ -16,6 +16,7 @@ namespace Game
         GComponent ui;
         GButton btnStart;
         RightWindow right;
+        AudioSource roomAudio;
         private string[] scores = {
             "1/2",
             "2/4",
@@ -28,7 +29,8 @@ namespace Game
         private void Awake()
         {
             bindEvents();
-
+            GameObject audioObj = new GameObject("roomAudio");
+            roomAudio = audioObj.AddComponent<AudioSource>();
             //Data.Room.Players.Clear();
             ui = GetComponent<UIPanel>().ui;
             right = new RightWindow();
@@ -120,6 +122,9 @@ namespace Game
             }
             AddPlayer(data.deskId, data.uid);
             Api.User.GetUserInfo(data.uid);
+
+            roomAudio.clip = Resources.Load<AudioClip>("Game/audio/game_sit");
+            roomAudio.Play();
         }
 
         private void OnResUserInfo(NotificationArg arg)
@@ -158,12 +163,11 @@ namespace Game
         {
             var data = arg.GetValue<ResLeaveRoom>();
 
-            if (data.code != 0)
+            if (data.code != 0 && data.msg!="该房间不存在")
             {
                 MsgBox.ShowErr(data.msg);
                 return;
             }
-
             // 如果是自己退出，就返回菜单页
             if (data.uid == Data.User.Id)
             {
@@ -181,7 +185,7 @@ namespace Game
                 return;
             }
             player.PlayerUi.visible = false;
-            Data.Room.Players.Remove(player);
+            Data.Room.Players.Remove(data.uid);
         }
 
         /// <summary>
@@ -213,12 +217,11 @@ namespace Game
             Data.Room.DeskId = data.deskId;
             addPlayers(data.players);
         
-            // 如果是房主，显示开始按钮
-            if (data.uid == Data.User.Id)
+            // 如果是房主,并且游戏未开始，显示开始按钮
+            if (data.uid == Data.Room.info.uid && Data.Room.info.current==0)
             {
                 btnStart.visible = true;
             }
-            
         }
 
         // 添加玩家
@@ -271,8 +274,11 @@ namespace Game
             }
 
             player.PlayerUi = ui.GetChild("player" + (player.Index + 1)).asCom;
-            
-            Data.Room.Players.Add(player);
+
+            if (!Data.Room.Players.ContainsKey(uid))
+            {
+                Data.Room.Players.Add(uid, player);
+            }
             
             return player;
         }
@@ -291,6 +297,7 @@ namespace Game
             var room = data.room;
 
             Data.Room.info = room;
+            
 
             var text = "";
             if (Data.Club.Id == "")
@@ -309,8 +316,12 @@ namespace Game
 
             ui.GetChild("infoText").text = text;
 
-            // 获取房间信息成功后，坐下
-            Api.Room.Sit(Data.Room.Id);
+
+            if (Data.Room.GetPlayer(Data.User.Id) == null)
+            {
+               Api.Room.Sit(Data.Room.Id);
+            }
+            
         }
 
         private void Start()
@@ -327,171 +338,7 @@ namespace Game
         {
             Handler.HandleMessage();
         }
-
-        //private void OnDestroy()
-        //{
-        //EventCenter.RemoveListener<string>(NoticeType.GameBegin, GameBegin);
-        //EventCenter.RemoveListener<string, string>(NoticeType.RoomExit, ExitRoom);
-        //EventCenter.RemoveListener<string, string>(NoticeType.PlayerSitDown, RoomJoin);
-        //}
-
-        //void GameBegin(string roomId)
-        //{
-        //    updataInfo();
-        //}
-
-        //void ExitRoom(string roomId, string uid)
-        //{
-        //    Debug.Log(uid + " 退出 " + roomId);
-
-        //    if (uid == Data.User.Id + "")
-        //    {
-        //        SceneManager.LoadScene("Menu");
-        //        return;
-        //    }
-
-        //    if (roomId != Data.Room.Id)
-        //    {
-        //        return;
-        //    }
-        //    var p = GetPlayer(int.Parse(uid));
-        //    if (p == null)
-        //    {
-        //        Utils.MsgBox.ShowErr("获取玩家失败");
-        //        return;
-        //    }
-
-        //    p.PlayerUi.visible = false;
-        //    Data.Room.Players.Remove(p);
-
-        //}
-
-        //void RoomJoin(string roomId, string uid)
-        //{
-        //    if (roomId != Data.Room.Id)
-        //    {
-        //        Debug.Log("不是本房间的消息");
-        //        return;
-        //    }
-        //    var j = new Api.Room().Player(Data.Room.Id, uid);
-        //    if (j == null)
-        //    {
-        //        Utils.MsgBox.ShowErr("网络出现状况");
-        //        return;
-        //    }
-        //    else if (j["code"].n != 0)
-        //    {
-        //        Utils.MsgBox.ShowErr(j["msg"].str);
-        //        return;
-        //    }
-        //    var p = j["data"]["player"];
-        //    GetPlayer((int)p["desk_id"].n, (int)p["uid"].n);
-        //}
-
-        //private void Start()
-        //{
-        //initRoom();
-        //var j = new Api.Room().Player(Data.Room.Id);
-        //if (j == null)
-        //{
-        //    Utils.MsgBox.ShowErr("网络出现状况");
-        //    return;
-        //}
-        //else if (j["code"].n != 0)
-        //{
-        //    Utils.MsgBox.ShowErr(j["msg"].str);
-        //    return;
-        //}
-        //var p = j["data"]["player"];
-        //Data.Room.DeskId = (int)p["desk_id"].n;
-
-        //initPlayers();
-        //}
-
-        //Game.Player GetPlayer(int uid)
-        //{
-        //    foreach (var p in Data.Room.Players)
-        //    {
-        //        // 只返回可见的，隐藏的都是离开的
-        //        if (p.UserInfo["id"].n == uid)
-        //        {
-        //            return p;
-        //        }
-        //    }
-        //    return null;
-        //}
-
-
-
-
-
-        //void initRoom()
-        //{
-        //    updataInfo();
-
-        //    // 如果是房主，显示开始按钮
-        //    if (Data.Room.Info["uid"].n == Data.User.Id)
-        //    {
-        //        btnStart.visible = true;
-        //    }
-
-        //    // 下注按钮积分初始化
-        //    var s = scores[(int)Data.Room.Info["score"].n];
-        //    var ss = s.Split('/');
-        //    btnScore1.title = ss[0];
-        //    btnScore2.title = ss[1];
-        //}
-
-
-
-        //void updataInfo()
-        //{
-        //    var j = new Api.Room().GetRoom(Data.Room.Id);
-        //    if (j["code"].n != 0)
-        //    {
-        //        Utils.MsgBox.ShowErr(j["msg"].str);
-        //        return;
-        //    }
-
-        //    Data.Room.Info = j["data"]["room"];
-        //    Debug.Log(Data.Room.Info);
-        //    var room = Data.Room.Info;
-
-        //    var text = "";
-        //    if (Data.Club.Id == "")
-        //    {
-        //        text += "房号：" + room["id"];
-        //    }
-        //    else
-        //    {
-        //        text += "茶楼：" + Data.Club.Id + "  第" + room["id"] + "桌";
-        //    }
-
-        //    text += "\n";
-        //    text += "底分：" + scores[(int)room["score"].n];
-        //    text += "\n";
-        //    text += "局数：" + room["current"].n + "/" + room["count"].n;
-
-        //    ui.GetChild("infoText").text = text;
-        //}
-
-        //void initPlayers()
-        //{
-        //    var j = new Api.Room().Players(Data.Room.Id);
-        //    if (j["code"].n != 0)
-        //    {
-        //        Utils.MsgBox.ShowErr(j["msg"].str);
-        //        return;
-        //    }
-
-        //    var players = j["data"]["players"].list;
-
-        //    foreach (var p in players)
-        //    {
-        //        GetPlayer((int)p["desk_id"].n, (int)p["uid"].n);
-        //    }
-        //}
-
+        
 
     }
 

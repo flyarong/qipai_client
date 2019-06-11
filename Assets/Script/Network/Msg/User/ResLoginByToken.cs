@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Network.Msg
 {
@@ -15,7 +15,7 @@ namespace Network.Msg
         public override void FromData(byte[] data)
         {
             var jsonString = System.Text.Encoding.UTF8.GetString(data);
-            var jsonData = JsonUtility.FromJson<ResLoginByToken>(jsonString);
+            var jsonData = JsonConvert.DeserializeObject<ResLoginByToken>(jsonString);
             this.code = jsonData.code;
             this.msg = jsonData.msg;
             this.token = jsonData.token;

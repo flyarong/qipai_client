@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Network.Msg
 {
@@ -31,7 +30,7 @@ namespace Network.Msg
         public override void FromData(byte[] data)
         {
             var jsonString = System.Text.Encoding.UTF8.GetString(data);
-            var jsonData = JsonUtility.FromJson<ResRoom>(jsonString);
+            var jsonData = JsonConvert.DeserializeObject<ResRoom>(jsonString);
             this.code = jsonData.code;
             this.msg = jsonData.msg;
             this.room = jsonData.room;

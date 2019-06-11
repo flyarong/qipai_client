@@ -1,33 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Network.Msg
 {
-    public enum LoginType
-    {
-        MobilePass = 1, // 手机 密码登录
-        MobileCode = 2, // 手机 验证码登录
-        WeChat = 3, // 微信登录
-    }
-
     [Serializable]
-    public class ResLogin : BaseMsg
+    public class BroadcastCompareCard : BaseMsg
     {
         public int code;
         public string msg;
-        public string token;
+        public List<GameInfo> games;
 
-        public ResLogin() : base(MsgID.ResLogin)
+        public BroadcastCompareCard() : base(MsgID.BroadcastCompareCard)
         {
         }
 
         public override void FromData(byte[] data)
         {
             var jsonString = System.Text.Encoding.UTF8.GetString(data);
-            ResLogin jsonData = JsonConvert.DeserializeObject<ResLogin>(jsonString);
+            var jsonData = JsonConvert.DeserializeObject<BroadcastCompareCard>(jsonString);
             this.code = jsonData.code;
             this.msg = jsonData.msg;
-            this.token = jsonData.token;
+            this.games = jsonData.games;
         }
 
         public override byte[] ToData()

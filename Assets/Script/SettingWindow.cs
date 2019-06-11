@@ -24,6 +24,5 @@ public class SettingWindow : Window
         });
         this.Center();
         this.modal = true;
-
     }
 }

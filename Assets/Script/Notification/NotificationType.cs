@@ -19,5 +19,10 @@
         Network_OnResDeleteRoom,
         Network_OnResGameStart,
         Network_OnBroadcastTimes,
+        Network_OnBroadcastScore,
+        Network_OnBroadcastBanker,
+        Network_OnBroadcastShowCard,
+        Network_OnBroadcastCompareCard,
+        Network_OnBroadcastGameOver,
     }
 }

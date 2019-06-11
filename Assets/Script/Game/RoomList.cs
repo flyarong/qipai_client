@@ -50,7 +50,10 @@ namespace Game
                 MsgBox.ShowErr(data.msg, 2);
                 return;
             }
-
+            if (data.rooms == null)
+            {
+                return;
+            }
             foreach(var room in data.rooms)
             {
                 addRoomItem(room);

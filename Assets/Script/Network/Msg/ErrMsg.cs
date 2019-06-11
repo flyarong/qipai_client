@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json;
 
 namespace Network.Msg
 {
@@ -14,9 +14,9 @@ namespace Network.Msg
         public override void FromData(byte[] data)
         {
             var jsonString = System.Text.Encoding.UTF8.GetString(data);
-            ResLogin jsonData = JsonUtility.FromJson<ResLogin>(jsonString);
-            this.code = jsonData.code;
-            this.msg = jsonData.msg;
+            ResLogin jsonData = JsonConvert.DeserializeObject<ResLogin>(jsonString);
+            code = jsonData.code;
+            msg = jsonData.msg;
         }
 
         public override byte[] ToData()

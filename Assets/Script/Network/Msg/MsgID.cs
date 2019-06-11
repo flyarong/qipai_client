@@ -77,16 +77,9 @@
         ReqGameStart = 301,
 
         ResGameStart,
-        // 发牌，一张一张发
-        PutCard,
-
-        // 获取指定用户的纸牌
-        ReqUserCards,
-
-        ResUserCards,
 
         // 抢庄
-        ReqTimes,
+        ReqSetTimes,
 
         BroadcastTimes,
         // 广播谁是庄家
@@ -95,6 +88,16 @@
         // 下注
         ReqSetScore,
         // 广播下注的大小
-        BroadcastSetScore,
+        BroadcastScore,
+
+        BroadcastShowCard,     // 广播看牌，下注完毕，可以看自己的牌
+
+        BroadcastCompareCard,  // 比牌，返回所有人牌型及大小输赢积分，前端展示比牌结果
+
+        BroadcastGameOver,     // 游戏结束
+
+        ReqGameResult, // 请求游戏战绩
+
+        ResGameResult, // 返回游戏战绩
     }
 }

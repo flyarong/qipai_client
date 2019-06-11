@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using Newtonsoft.Json;
 
 namespace Network.Msg

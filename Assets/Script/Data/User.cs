@@ -31,7 +31,7 @@ namespace Data
             }
         }
 
-        public static Network.Msg.UserInfo Info { get => info; set => info = value; }
+        public static Network.Msg.UserInfo Info { get => info; set { info = value; id = info.id; } }
     }
 
 }

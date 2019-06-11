@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Network.Msg
 {
@@ -25,7 +25,7 @@ namespace Network.Msg
         public override void FromData(byte[] data)
         {
             var jsonString = System.Text.Encoding.UTF8.GetString(data);
-            var jsonData = JsonUtility.FromJson<ResJoinRoom>(jsonString);
+            var jsonData = JsonConvert.DeserializeObject<ResJoinRoom>(jsonString);
             this.code = jsonData.code;
             this.msg = jsonData.msg;
             this.players = jsonData.players;

@@ -1,34 +1,26 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace Network.Msg
 {
     [Serializable]
-    public class ResSit : BaseMsg
+    public class BroadcastGameOver : BaseMsg
     {
         public int code;
         public string msg;
         public int roomId;
-        public int deskId;
-        public int uid;
-        public List<PlayerInfo> players;
 
-        public ResSit() : base(MsgID.ResSit)
+        public BroadcastGameOver() : base(MsgID.BroadcastGameOver)
         {
         }
 
         public override void FromData(byte[] data)
         {
             var jsonString = System.Text.Encoding.UTF8.GetString(data);
-            var jsonData = JsonConvert.DeserializeObject<ResSit>(jsonString);
+            var jsonData = JsonConvert.DeserializeObject<BroadcastGameOver>(jsonString);
             code = jsonData.code;
             msg = jsonData.msg;
             roomId = jsonData.roomId;
-            deskId = jsonData.deskId;
-            players = jsonData.players;
-            uid = jsonData.uid;
         }
 
         public override byte[] ToData()
