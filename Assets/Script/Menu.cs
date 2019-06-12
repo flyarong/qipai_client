@@ -110,7 +110,7 @@ public class Menu : MonoBehaviour
             MsgBox.ShowErr(data.msg, 2);
             return;
         }
-        Data.Room.Id = data.id;
+        Data.Game.Id = data.id;
 
         createRoomWindow.Hide();
         toGame();
@@ -122,7 +122,7 @@ public class Menu : MonoBehaviour
     private void Start()
     {
         
-        if (Data.Room.Id > 0)
+        if (Data.Game.Id > 0)
         {
             Invoke("toGame", 1);
         }

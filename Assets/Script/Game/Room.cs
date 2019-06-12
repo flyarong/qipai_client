@@ -73,13 +73,13 @@ namespace Game
                 MsgBox.ShowErr(data.msg, 2);
                 return;
             }
-            if (data.roomId != Data.Room.Id)
+            if (data.roomId != Data.Game.Id)
             {
                 Debug.LogWarning("收到不属于该房间的消息：ResDeleteRoom");
                 return;
             }
             MsgBox.ShowErr("房间已解散",1);
-            Data.Room.Id = 0;
+            Data.Game.Id = 0;
             SceneManager.LoadScene("Menu");
         }
 
@@ -115,7 +115,7 @@ namespace Game
                 MsgBox.ShowErr(data.msg);
                 return;
             }
-            if (data.roomId != Data.Room.Id)
+            if (data.roomId != Data.Game.Id)
             {
                 Debug.LogWarning("收到不属于该房间的消息：BroadcastSitRoom");
                 return;
@@ -137,7 +137,7 @@ namespace Game
                 return;
             }
 
-            var p = Data.Room.GetPlayer(data.user.id);
+            var p = Data.Game.GetPlayer(data.user.id);
             if (p == null)
             {
                 Debug.LogWarning("当前房间列表不存在该用户：" + data.user.id);
@@ -171,21 +171,21 @@ namespace Game
             // 如果是自己退出，就返回菜单页
             if (data.uid == Data.User.Id)
             {
-                Data.Room.Id = 0;
-                Data.Room.info = null;
+                Data.Game.Id = 0;
+                Data.Game.info = null;
                 SceneManager.LoadScene("Menu");
                 return;
             }
 
             // 其他用户退出
-            var player = Data.Room.GetPlayer(data.uid);
+            var player = Data.Game.GetPlayer(data.uid);
             if(player==null)
             {
                 Debug.LogWarning("用户退出失败：" + data.uid);
                 return;
             }
             player.PlayerUi.visible = false;
-            Data.Room.Players.Remove(data.uid);
+            Data.Game.Players.Remove(data.uid);
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace Game
         /// </summary>
         private void exit()
         {
-            Api.Room.Leave(Data.Room.Id);
+            Api.Room.Leave(Data.Game.Id);
         }
 
         private void OnResSit(NotificationArg arg)
@@ -205,8 +205,8 @@ namespace Game
                 MsgBox.ShowErr(data.msg);
                 if (data.msg == "您当前正在其他房间")
                 {
-                    Data.Room.Id = data.roomId;
-                    Data.Room.info = null;
+                    Data.Game.Id = data.roomId;
+                    Data.Game.info = null;
                     SceneManager.LoadScene("Menu");
                     return;
                 }
@@ -214,11 +214,11 @@ namespace Game
                 return;
             }
             
-            Data.Room.DeskId = data.deskId;
+            Data.Game.DeskId = data.deskId;
             addPlayers(data.players);
         
             // 如果是房主,并且游戏未开始，显示开始按钮
-            if (data.uid == Data.Room.info.uid && Data.Room.info.current==0)
+            if (data.uid == Data.Game.info.uid && Data.Game.info.current==0)
             {
                 btnStart.visible = true;
             }
@@ -227,7 +227,7 @@ namespace Game
         // 添加玩家
         void addPlayers(List<PlayerInfo> players)
         {
-            Data.Room.RemoveAllPlayers();
+            Data.Game.RemoveAllPlayers();
             foreach (var p in players)
             {
                 AddPlayer(p.deskId, p.uid);
@@ -250,8 +250,8 @@ namespace Game
                 return;
             }
 
-            Api.Room.GetRoom(Data.Room.Id);
-            Api.Room.Sit(Data.Room.Id);
+            Api.Room.GetRoom(Data.Game.Id);
+            Api.Room.Sit(Data.Game.Id);
 
             // 暂时不用围观功能，所以后面两句不需要调用
 
@@ -267,7 +267,7 @@ namespace Game
 
             player.Info = info;
             player.DeskId = deskId;
-            player.Index = player.DeskId - Data.Room.DeskId;
+            player.Index = player.DeskId - Data.Game.DeskId;
             if (player.Index < 0)
             {
                 player.Index = 10 + player.Index;
@@ -275,9 +275,9 @@ namespace Game
 
             player.PlayerUi = ui.GetChild("player" + (player.Index + 1)).asCom;
 
-            if (!Data.Room.Players.ContainsKey(uid))
+            if (!Data.Game.Players.ContainsKey(uid))
             {
-                Data.Room.Players.Add(uid, player);
+                Data.Game.Players.Add(uid, player);
             }
             
             return player;
@@ -296,7 +296,7 @@ namespace Game
 
             var room = data.room;
 
-            Data.Room.info = room;
+            Data.Game.info = room;
             
 
             var text = "";
@@ -317,16 +317,16 @@ namespace Game
             ui.GetChild("infoText").text = text;
 
 
-            if (Data.Room.GetPlayer(Data.User.Id) == null)
+            if (Data.Game.GetPlayer(Data.User.Id) == null)
             {
-               Api.Room.Sit(Data.Room.Id);
+               Api.Room.Sit(Data.Game.Id);
             }
             
         }
 
         private void Start()
         {
-            Api.Room.JoinRoom(Data.Room.Id);
+            Api.Room.JoinRoom(Data.Game.Id);
         }
 
         void onSettingClick()

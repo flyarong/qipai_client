@@ -34,7 +34,7 @@ public class JoinWindow : Window
             Hide();
             var roomId = textField.text;
 
-            Data.Room.Id = int.Parse(roomId);
+            Data.Game.Id = int.Parse(roomId);
             SceneManager.LoadScene("Game");
         }
     }

@@ -47,7 +47,7 @@ namespace Api
                 SceneManager.LoadScene("Menu");
                 return;
             }
-            new Utils.Msg(MsgID.ReqJoinRoom).Add("id", roomId).Send();
+            new Utils.Msg(MsgID.ReqJoinRoom).Add("roomId", roomId).Send();
         }
 
         public static void Sit(int roomId)

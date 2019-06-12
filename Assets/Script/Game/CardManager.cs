@@ -33,7 +33,7 @@ namespace Game
 
         void GameBegin(string roomId)
         {
-            if (roomId == Data.Room.Id + "")
+            if (roomId == Data.Game.Id + "")
             {
                 return;
             }

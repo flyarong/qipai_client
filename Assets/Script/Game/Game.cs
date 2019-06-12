@@ -18,7 +18,8 @@ namespace Game
         AudioSource gameAudio;
         List<GComponent> cardPlaces = new List<GComponent>();
         Dictionary<int, List<GImage>> cardsUi = new Dictionary<int, List<GImage>>();
-        Transition tPut;
+        GComponent cardCenter;  // 桌子中心牌堆的位置
+        GImage centerCard;// 桌子中心的牌，用于模拟发牌
         GButton btnStart;
         GComponent tips;
 
@@ -38,10 +39,10 @@ namespace Game
             gameAudio = audioObj.AddComponent<AudioSource>();
 
             ui = GetComponent<UIPanel>().ui;
-            tPut = ui.GetTransition("t1");
             tips = ui.GetChild("tips").asCom;
+            tips.sortingOrder = 1000;
+            cardCenter = ui.GetChild("cardCenter").asCom;
 
-            ui.GetChild("cardImg").sortingOrder = 1000;
             for (var i = 1; i < 11; i++)
             {
                 cardPlaces.Add(ui.GetChild("card" + i).asCom);
@@ -80,6 +81,7 @@ namespace Game
             Handler.AddListenner(NotificationType.Network_OnBroadcastShowCard, OnBroadcastShowCard);
             Handler.AddListenner(NotificationType.Network_OnBroadcastCompareCard, OnBroadcastCompareCard);
             Handler.AddListenner(NotificationType.Network_OnBroadcastGameOver, OnBroadcastGameOver);
+
         }
 
         private void OnBroadcastGameOver(NotificationArg arg)
@@ -90,13 +92,13 @@ namespace Game
                 MsgBox.ShowErr(data.msg, 2);
                 return;
             }
-            if (data.roomId != Data.Room.Id)
+            if (data.roomId != Data.Game.Id)
             {
                 Debug.Log("收到不属于该房间的消息，来自房间号：" + data.roomId);
                 return;
             }
 
-            Data.Room.Id = 0;
+            Data.Game.Id = 0;
             SceneManager.LoadScene("Menu");
         }
 
@@ -114,6 +116,12 @@ namespace Game
                 var me = game.playerId == Data.User.Id;
                 PutCard(game.deskId, game.cards, game.cardType, me);
                 showNiu(game.playerId, game.cardType);
+                Debug.Log(game.playerId + ":" + game.totalScore);
+
+                Data.Game.TotalScore.Add(Data.Game.Id, game.playerId, game.totalScore);
+
+                var p = Data.Game.GetPlayer(game.playerId);
+                p.PlayerUi.GetChild("score").text = Data.Game.TotalScore.Get(Data.Game.Id, game.playerId) + "";
             }
 
         }
@@ -121,7 +129,7 @@ namespace Game
         // 显示指定玩家的牌型图标
         void showNiu(int uid, int type)
         {
-            var p = Data.Room.GetPlayer(uid);
+            var p = Data.Game.GetPlayer(uid);
             if (p == null)
             {
                 return;
@@ -134,9 +142,9 @@ namespace Game
         // 隐藏所有玩家的牌型图标
         void hideNius()
         {
-            foreach (var uid in Data.Room.Players.Keys)
+            foreach (var uid in Data.Game.Players.Keys)
             {
-                var niu = Data.Room.GetPlayer(uid).PlayerUi.GetChild("niu").asCom;
+                var niu = Data.Game.GetPlayer(uid).PlayerUi.GetChild("niu").asCom;
                 niu.visible = false;
             }
         }
@@ -151,7 +159,7 @@ namespace Game
             }
             var game = data.game;
 
-            foreach (var p in Data.Room.Players.Values)
+            foreach (var p in Data.Game.Players.Values)
             {
                 if (p.Info.id != game.playerId)
                 {
@@ -188,18 +196,17 @@ namespace Game
         }
 
 
-
         void onBtnTimesClick(EventContext e)
         {
             GButton btn = e.sender as GButton;
-            Api.Game.SetTimes(Data.Room.Id, int.Parse(btn.data + ""));
+            Api.Game.SetTimes(Data.Game.Id, int.Parse(btn.data + ""));
         }
 
         void onScore(EventContext e)
         {
 
             GButton btn = e.sender as GButton;
-            Api.Game.SetScore(Data.Room.Id, int.Parse(btn.title));
+            Api.Game.SetScore(Data.Game.Id, int.Parse(btn.title));
         }
 
 
@@ -219,7 +226,7 @@ namespace Game
             }
 
 
-            foreach (var p in Data.Room.Players.Values)
+            foreach (var p in Data.Game.Players.Values)
             {
                 if (p.Info.id == data.game.playerId)
                 {
@@ -252,7 +259,7 @@ namespace Game
 
         private void onBtnStartClick(EventContext context)
         {
-            Api.Game.Start(Data.Room.Id);
+            Api.Game.Start(Data.Game.Id);
         }
         private void OnResGameStart(NotificationArg arg)
         {
@@ -265,29 +272,29 @@ namespace Game
             }
 
             // 每次游戏开始，都更新一下房间信息
-            Api.Room.GetRoom(Data.Room.Id);
+            Api.Room.GetRoom(Data.Game.Id);
 
             // 播放开始音乐
             gameAudio.clip = Resources.Load<AudioClip>("Game/audio/game_start");
             gameAudio.Play();
 
-            foreach (var p in Data.Room.Players.Values)
+            foreach (var p in Data.Game.Players.Values)
             {
                 if (p.DeskId == data.game.deskId)
                 {
-                    PutCard(p.DeskId, data.game.cards+"|-|-1");
+                    PutCard(p.DeskId, data.game.cards + "|-|-1", true);
                 }
                 else
                 {
-                    PutCard(p.DeskId, "-1|-1|-1|-1|-1");
+                    PutCard(p.DeskId, "-1|-1|-1|-1|-1", true);
                 }
             }
-
+            showCenterCard();
             btnStart.visible = false;
             hideNius();
 
             // 下注按钮积分初始化
-            var s = scores[Data.Room.info.score];
+            var s = scores[Data.Game.info.score];
             var ss = s.Split('/');
             btnScore1.title = ss[0];
             btnScore2.title = ss[1];
@@ -297,7 +304,7 @@ namespace Game
             nTimesTips = 10;
             showSetTimesTips();
 
-            foreach (var p in Data.Room.Players.Values)
+            foreach (var p in Data.Game.Players.Values)
             {
                 // 隐藏用户头像上方的积分图标
                 p.PlayerUi.GetChild("setScore").visible = false;
@@ -313,13 +320,13 @@ namespace Game
 
         void ShowSetTimes(int roomId, int uid, int times)
         {
-            var tc = Data.Room.GetPlayer(uid).PlayerUi.GetController("times");
+            var tc = Data.Game.GetPlayer(uid).PlayerUi.GetController("times");
             tc.selectedIndex = times + 1;
         }
 
         void ShowSetScore(int roomId, int uid, int score)
         {
-            var p = Data.Room.GetPlayer(uid);
+            var p = Data.Game.GetPlayer(uid);
             var scoreUi = p.PlayerUi.GetChild("setScore").asTextField;
             scoreUi.visible = true;
             scoreUi.text = score + "";
@@ -413,11 +420,17 @@ namespace Game
             PutCard(deskId, pxStr);
         }
 
-        void PutCard(int deskId, string cards)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deskId"></param>
+        /// <param name="cards"></param>
+        /// <param name="action">是否执行发牌动画</param>
+        void PutCard(int deskId, string cards, bool action = false)
         {
 
             Data.Player player = null;
-            foreach (var p in Data.Room.Players.Values)
+            foreach (var p in Data.Game.Players.Values)
             {
                 if (p.DeskId == deskId)
                 {
@@ -436,7 +449,7 @@ namespace Game
             {
                 if (v == "-")
                 {
-                    cpos.x += player.DeskId == Data.Room.DeskId ? 40 : 15;
+                    cpos.x += player.DeskId == Data.Game.DeskId ? 40 : 15;
                     continue;
                 }
 
@@ -445,25 +458,27 @@ namespace Game
                 GImage card = UIPackage.CreateObject("qipai", cardName).asImage;
                 card.position = cpos;
 
-                if (player.DeskId == Data.Room.DeskId)
+                var scale = 1.0f;
+                if (player.DeskId == Data.Game.DeskId)
                 {
                     cpos.x += 50;
-                    // card.SetScale(0.6f, 0.6f);
                 }
                 else
                 {
                     cpos.x += 23;
-                    card.SetScale(0.6f, 0.6f);
+                    scale = 0.6f;
                 }
 
-                tPut.SetValue("end", cpos.x, cpos.y);
-                tPut.Play();
+                if (action)
+                {
+                    //putCardAction(cpos, scale);
+                }
 
+                card.SetScale(scale, scale);
                 card.AddRelation(cp, RelationType.Middle_Middle);
                 card.AddRelation(cp, RelationType.Center_Center);
                 ui.AddChild(card);
                 cardImgs.Add(card);
-
             }
 
             if (cardsUi.ContainsKey(deskId))
@@ -476,6 +491,41 @@ namespace Game
             }
 
             cardsUi.Add(deskId, cardImgs);
+        }
+
+        void showCenterCard()
+        {
+
+            GImage card1 = UIPackage.CreateObject("qipai", "Card_0").asImage;
+            card1.position = cardCenter.position;
+            card1.AddRelation(cardCenter, RelationType.Middle_Middle);
+            card1.AddRelation(cardCenter, RelationType.Center_Center);
+            ui.AddChild(card1);
+
+            centerCard = UIPackage.CreateObject("qipai", "Card_0").asImage;
+            centerCard.position = cardCenter.position;
+            centerCard.AddRelation(cardCenter, RelationType.Middle_Middle);
+            centerCard.AddRelation(cardCenter, RelationType.Center_Center);
+            ui.AddChild(centerCard);
+
+        }
+
+        /// <summary>
+        /// 发牌动画
+        /// </summary>
+        /// <param name="pos">牌发到哪里</param>
+        /// <param name="scale">发到目的地牌的大小</param>
+        void putCardAction(Vector3 pos, float scale)
+        {
+            var tPos = cardCenter.position;
+            for (var i = 0; i < 100; i++)
+            {
+                tPos.x++;
+                tPos.y++;
+                centerCard.SetPosition(tPos.x, tPos.y, tPos.z);
+            }
+            centerCard.SetScale(scale, scale);
+            //centerCard.position = cardCenter.position;
         }
 
         string getName(int n)

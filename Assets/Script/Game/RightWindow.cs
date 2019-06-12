@@ -28,13 +28,13 @@ namespace Game
 
         private void onDeleteClick(EventContext context)
         {
-            Api.Room.Delete(Data.Room.Id);
+            Api.Room.Delete(Data.Game.Id);
             Hide();
         }
 
         void onQuitClick()
         {
-            Api.Room.Leave(Data.Room.Id);
+            Api.Room.Leave(Data.Game.Id);
             Hide();
         }
 

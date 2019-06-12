@@ -116,7 +116,7 @@ namespace Game
             var item = (GComponent)context.data;
             var id = item.GetChild("id").text;
             var roomId = id;
-            Data.Room.Id = int.Parse(roomId);
+            Data.Game.Id = int.Parse(roomId);
             SceneManager.LoadScene("Game");
         }
 
