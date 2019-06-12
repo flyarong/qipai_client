@@ -97,7 +97,7 @@ namespace Game
                 Debug.Log("收到不属于该房间的消息，来自房间号：" + data.roomId);
                 return;
             }
-
+            Data.Game.TotalScore.Clear();
             Data.Game.Id = 0;
             SceneManager.LoadScene("Menu");
         }
@@ -126,6 +126,8 @@ namespace Game
 
         }
 
+
+        List<GComponent> nius = new List<GComponent>();
         // 显示指定玩家的牌型图标
         void showNiu(int uid, int type)
         {
@@ -134,18 +136,38 @@ namespace Game
             {
                 return;
             }
-            var niu = p.PlayerUi.GetChild("niu").asCom;
+
+            GComponent niu = UIPackage.CreateObject("qipai", "niu").asCom;
+            var cp = cardPlaces[p.Index];
+            var cpos = cp.position;
             niu.GetController("niu").selectedIndex = type;
             niu.visible = true;
+            if (uid == Data.User.Id)
+            {
+                cpos.y += 65;
+                cpos.x += 65;
+                niu.SetScale(1.4f, 1.4f);
+            }
+            else
+            {
+                cpos.y += 45;
+                cpos.x += 30;
+                niu.SetScale(0.8f, 0.8f);
+            }
+
+            niu.position = cpos;
+            niu.AddRelation(cp, RelationType.Middle_Middle, true);
+            niu.AddRelation(cp, RelationType.Center_Center, true);
+            ui.AddChild(niu);
+            nius.Add(niu);
         }
 
         // 隐藏所有玩家的牌型图标
         void hideNius()
         {
-            foreach (var uid in Data.Game.Players.Keys)
+            foreach (var niu in nius)
             {
-                var niu = Data.Game.GetPlayer(uid).PlayerUi.GetChild("niu").asCom;
-                niu.visible = false;
+                ui.RemoveChild(niu);
             }
         }
 
@@ -232,6 +254,12 @@ namespace Game
                 {
                     p.IsBanker = true;
                     p.PlayerUi.GetChild("zhuang").visible = true;
+                }
+                else
+                {
+                    // 隐藏所有闲家家抢庄倍数
+                    var tc = p.PlayerUi.GetController("times");
+                    tc.selectedIndex = 0;
                 }
             }
 
@@ -568,6 +596,7 @@ namespace Game
             this.CancelInvoke();
             tips.visible = false;
         }
+
     }
 
 }
