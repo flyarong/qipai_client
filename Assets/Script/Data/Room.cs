@@ -40,7 +40,23 @@ namespace Data
     /// </summary>
     public class TotalScore
     {
-        // 增加积分
+        // 设置积分
+        public void Set(int roomId, int uid, int score)
+        {
+            var key = "Game_TotalScore_" + roomId + "_" + uid;
+            if (!PlayerPrefs.HasKey(key))
+            {
+                PlayerPrefs.SetInt(key, 0);
+            }
+            PlayerPrefs.SetInt(key, score);
+
+            if (!PlayerPrefs.HasKey("Game_TotalScores"))
+            {
+                PlayerPrefs.SetString("Game_TotalScores", "");
+            }
+            PlayerPrefs.SetString("Game_TotalScores", PlayerPrefs.GetString("Game_TotalScores") + roomId + "_" + uid + "|");
+        }
+         // 增加积分
         public void Add(int roomId, int uid, int score)
         {
             var key = "Game_TotalScore_" + roomId + "_" + uid;

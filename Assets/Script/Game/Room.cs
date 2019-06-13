@@ -216,6 +216,8 @@ namespace Game
             
             Data.Game.DeskId = data.deskId;
             addPlayers(data.players);
+
+            
         
             // 如果是房主,并且游戏未开始，显示开始按钮
             if (data.uid == Data.Game.info.uid && Data.Game.info.current==0)
@@ -230,6 +232,7 @@ namespace Game
             Data.Game.RemoveAllPlayers();
             foreach (var p in players)
             {
+                Data.Game.TotalScore.Set(Data.Game.Id,p.uid,p.totalScore);
                 AddPlayer(p.deskId, p.uid);
             }
 
@@ -274,7 +277,7 @@ namespace Game
             }
 
             player.PlayerUi = ui.GetChild("player" + (player.Index + 1)).asCom;
-
+            player.PlayerUi.sortingOrder = 2000;
             if (!Data.Game.Players.ContainsKey(uid))
             {
                 Data.Game.Players.Add(uid, player);

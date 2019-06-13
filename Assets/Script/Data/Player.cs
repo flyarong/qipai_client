@@ -1,6 +1,7 @@
 ﻿using FairyGUI;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Data
 {
@@ -24,8 +25,19 @@ namespace Data
         private int deskId; // 玩家在服务器上的座位号
         //private List<Card> cards = new List<Card>();
         private List<GObject> cardsUi = new List<GObject>();
-
-        public GComponent PlayerUi { get => playerUi; set => playerUi = value; }
+        public Vector3 zhuangPos; // 庄家图标所在位置
+        public Vector3 scorePos; // 积分图标所在位置
+        public GComponent PlayerUi
+        {
+            get => playerUi; set
+            {
+                playerUi = value;
+                var zhuang = playerUi.GetChild("zhuang");
+                var score = playerUi.GetChild("score");
+                zhuangPos = zhuang.position;
+                scorePos = score.position;
+            }
+        }
         //public List<Card> Cards { get => cards; set => cards = value; }
 
         public int Index { get => index; set => index = value; }

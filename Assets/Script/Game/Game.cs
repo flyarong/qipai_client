@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Utils;
 using Network.Msg;
 using Notification;
-using System;
 using System.Collections.Generic;
 using FairyGUI;
 using UnityEngine.SceneManagement;
@@ -18,8 +16,7 @@ namespace Game
         AudioSource gameAudio;
         List<GComponent> cardPlaces = new List<GComponent>();
         Dictionary<int, List<GImage>> cardsUi = new Dictionary<int, List<GImage>>();
-        GComponent cardCenter;  // 桌子中心牌堆的位置
-        GImage centerCard;// 桌子中心的牌，用于模拟发牌
+        GComponent cardCenterPlace;  // 桌子中心牌堆的位置
         GButton btnStart;
         GComponent tips;
 
@@ -41,7 +38,7 @@ namespace Game
             ui = GetComponent<UIPanel>().ui;
             tips = ui.GetChild("tips").asCom;
             tips.sortingOrder = 1000;
-            cardCenter = ui.GetChild("cardCenter").asCom;
+            cardCenterPlace = ui.GetChild("cardCenter").asCom;
 
             for (var i = 1; i < 11; i++)
             {
@@ -84,6 +81,7 @@ namespace Game
 
         }
 
+
         private void OnBroadcastGameOver(NotificationArg arg)
         {
             var data = arg.GetValue<BroadcastGameOver>();
@@ -110,6 +108,11 @@ namespace Game
                 MsgBox.ShowErr(data.msg, 2);
                 return;
             }
+
+            // 隐藏网络延迟导致迟收到选庄包显示的下注按钮
+            hideSetScoreTips();
+            ui.GetChild("btnScores").visible = false; 
+
             var games = data.games;
             foreach (var game in games)
             {
@@ -121,7 +124,22 @@ namespace Game
                 Data.Game.TotalScore.Add(Data.Game.Id, game.playerId, game.totalScore);
 
                 var p = Data.Game.GetPlayer(game.playerId);
-                p.PlayerUi.GetChild("score").text = Data.Game.TotalScore.Get(Data.Game.Id, game.playerId) + "";
+                var scoreUi = p.PlayerUi.GetChild("score");
+
+                var offsetY = -40;
+                if (game.totalScore > 0)
+                {
+                    scoreUi.text = "+" + game.totalScore;
+                }
+                else
+                {
+                    scoreUi.text = "" + game.totalScore;
+                }
+                scoreUi.TweenMoveY(p.scorePos.y + offsetY, 1f).OnComplete(() =>
+                {
+                    scoreUi.position = p.scorePos;
+                    scoreUi.text = Data.Game.TotalScore.Get(Data.Game.Id, game.playerId) + "";
+                });
             }
 
         }
@@ -253,7 +271,18 @@ namespace Game
                 if (p.Info.id == data.game.playerId)
                 {
                     p.IsBanker = true;
-                    p.PlayerUi.GetChild("zhuang").visible = true;
+
+                    var zhuang = p.PlayerUi.GetChild("zhuang");
+                    var zScale = zhuang.scale;
+                    zhuang.position = zhuang.GlobalToLocal(cardCenterPlace.position);
+                    
+                    zhuang.SetScale(4f, 4f);
+                    zhuang.visible = true;
+
+                    zhuang.TweenMove(new Vector2(p.zhuangPos.x, p.zhuangPos.y), 0.5f);
+                    zhuang.TweenScale(new Vector2(zScale.x, zScale.y), 0.5f).OnComplete(()=> {
+                        zhuang.SetScale(1f, 1f);
+                    });
                 }
                 else
                 {
@@ -317,7 +346,6 @@ namespace Game
                     PutCard(p.DeskId, "-1|-1|-1|-1|-1", true);
                 }
             }
-            showCenterCard();
             btnStart.visible = false;
             hideNius();
 
@@ -473,6 +501,7 @@ namespace Game
             List<GImage> cardImgs = new List<GImage>();
             var cp = cardPlaces[player.Index];
             var cpos = cp.position;
+            var tpos = cpos; // 记录牌动画的目的点
             foreach (var v in cards.Split('|'))
             {
                 if (v == "-")
@@ -484,8 +513,9 @@ namespace Game
                 var n = int.Parse(v);
                 string cardName = getName(n);
                 GImage card = UIPackage.CreateObject("qipai", cardName).asImage;
-                card.position = cpos;
 
+                card.position = cpos;
+                tpos = cpos;
                 var scale = 1.0f;
                 if (player.DeskId == Data.Game.DeskId)
                 {
@@ -499,10 +529,16 @@ namespace Game
 
                 if (action)
                 {
-                    //putCardAction(cpos, scale);
+                    card.position = cardCenterPlace.position;
+                    card.TweenMove(new Vector2(tpos.x, tpos.y), 0.3f);
+                    card.TweenScale(new Vector2(scale, scale), 0.3f);
+                }
+                else
+                {
+                    card.SetScale(scale, scale);
                 }
 
-                card.SetScale(scale, scale);
+
                 card.AddRelation(cp, RelationType.Middle_Middle);
                 card.AddRelation(cp, RelationType.Center_Center);
                 ui.AddChild(card);
@@ -521,40 +557,6 @@ namespace Game
             cardsUi.Add(deskId, cardImgs);
         }
 
-        void showCenterCard()
-        {
-
-            GImage card1 = UIPackage.CreateObject("qipai", "Card_0").asImage;
-            card1.position = cardCenter.position;
-            card1.AddRelation(cardCenter, RelationType.Middle_Middle);
-            card1.AddRelation(cardCenter, RelationType.Center_Center);
-            ui.AddChild(card1);
-
-            centerCard = UIPackage.CreateObject("qipai", "Card_0").asImage;
-            centerCard.position = cardCenter.position;
-            centerCard.AddRelation(cardCenter, RelationType.Middle_Middle);
-            centerCard.AddRelation(cardCenter, RelationType.Center_Center);
-            ui.AddChild(centerCard);
-
-        }
-
-        /// <summary>
-        /// 发牌动画
-        /// </summary>
-        /// <param name="pos">牌发到哪里</param>
-        /// <param name="scale">发到目的地牌的大小</param>
-        void putCardAction(Vector3 pos, float scale)
-        {
-            var tPos = cardCenter.position;
-            for (var i = 0; i < 100; i++)
-            {
-                tPos.x++;
-                tPos.y++;
-                centerCard.SetPosition(tPos.x, tPos.y, tPos.z);
-            }
-            centerCard.SetScale(scale, scale);
-            //centerCard.position = cardCenter.position;
-        }
 
         string getName(int n)
         {

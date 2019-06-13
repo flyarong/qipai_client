@@ -9,6 +9,7 @@ namespace Network.Msg
     {
         public int uid;
         public int deskId;
+        public int totalScore;
     }
 
     [Serializable]
