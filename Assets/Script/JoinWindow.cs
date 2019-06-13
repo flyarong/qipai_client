@@ -17,6 +17,8 @@ public class JoinWindow : Window
         {
             this.contentPane.GetChild("btn" + i).onClick.Add(onBtnNubmerClick);
         }
+        contentPane.GetChild("reInput").onClick.Add(onBtnNubmerClick);
+        contentPane.GetChild("del").onClick.Add(onBtnNubmerClick);
         textField = contentPane.GetChild("text").asTextField;
     }
 
@@ -25,6 +27,19 @@ public class JoinWindow : Window
         var btn = context.sender as GButton;
         if (textField.text.Length >= 6)
         {
+            return;
+        }
+        
+
+        if(btn.title == "reInput")
+        {
+            textField.text = "";
+            return;
+        }
+        else if (btn.title == "del")
+        {
+            if (textField.text.Length == 0) return;
+            textField.text = textField.text.Substring(0, textField.text.Length - 1);
             return;
         }
 
