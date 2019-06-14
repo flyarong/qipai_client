@@ -24,5 +24,7 @@
         Network_OnBroadcastShowCard,
         Network_OnBroadcastCompareCard,
         Network_OnBroadcastGameOver,
+        Network_OnCreateClub,
+        Network_OnResClubs,
     }
 }

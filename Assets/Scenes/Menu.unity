@@ -411,13 +411,11 @@ GameObject:
   - component: {fileID: 1263811940}
   - component: {fileID: 1263811939}
   - component: {fileID: 1263811938}
-  - component: {fileID: 1263811946}
-  - component: {fileID: 1263811944}
   - component: {fileID: 1263811945}
   - component: {fileID: 1263811941}
   - component: {fileID: 1263811942}
   - component: {fileID: 1263811943}
-  - component: {fileID: 1263811947}
+  - component: {fileID: 1263811944}
   m_Layer: 5
   m_Name: UIPanel
   m_TagString: Untagged
@@ -531,7 +529,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1263811937}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67911d17eecd8654d82271f54be318e9, type: 3}
+  m_Script: {fileID: 11500000, guid: a75a12cb0dd1f994aa29a00971a639cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1263811945
@@ -544,30 +542,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7776f37e9b5e1f42b62e52d038f697f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1263811946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1263811937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 561db700d108bd2449ae08433b76609c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1263811947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1263811937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 100fd779b9785214997ec725230d9fb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1964623521
@@ -651,7 +625,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964623521}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.352834, y: -5, z: 0}
+  m_LocalPosition: {x: 9.439935, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

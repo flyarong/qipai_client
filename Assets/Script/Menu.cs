@@ -70,11 +70,26 @@ public class Menu : MonoBehaviour
         Handler.Init();
         Handler.Add<ResLoginByToken>(MsgID.ResLoginByToken, NotificationType.Network_OnResLoginByToken);
         Handler.Add<ResCreateRoom>(MsgID.ResCreateRoom, NotificationType.Network_OnResCreateRoom);
+        Handler.Add<ResCreateRoom>(MsgID.ResCreateClub, NotificationType.Network_OnCreateClub);
 
         Handler.AddListenner(NotificationType.Network_OnConnected, OnConnected);
         Handler.AddListenner(NotificationType.Network_OnDisconnected, OnDisconnected);
         Handler.AddListenner(NotificationType.Network_OnResLoginByToken, OnResLoginByToken);
         Handler.AddListenner(NotificationType.Network_OnResCreateRoom, OnResCreateRoom);
+        Handler.AddListenner(NotificationType.Network_OnCreateClub, OnCreateClub);
+    }
+
+    private void OnCreateClub(NotificationArg arg)
+    {
+        var data = arg.GetValue<ResCreateRoom>();
+        if (data.code != 0)
+        {
+            MsgBox.ShowErr(data.msg, 2);
+            return;
+        }
+        Data.Game.Id = data.id;
+
+        createClubWindow.Hide();
     }
 
     private void OnConnected(NotificationArg arg)

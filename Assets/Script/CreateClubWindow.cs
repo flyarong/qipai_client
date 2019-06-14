@@ -11,8 +11,6 @@ public class CreateClubWindow : Window
     GComboBox payBox; // 房费付款方式
     GComboBox countBox; // 局数
     GComboBox timesBox; // 翻倍规则
-    GComboBox kingBox; // 王癞模式
-    GButton[] sps = new GButton[7];
     public CreateClubWindow()
     {
 
@@ -29,14 +27,17 @@ public class CreateClubWindow : Window
         payBox = this.contentPane.GetChild("pay").asComboBox;
         countBox = this.contentPane.GetChild("count").asComboBox;
         timesBox = this.contentPane.GetChild("times").asComboBox;
-        kingBox = this.contentPane.GetChild("king").asComboBox;
 
-        for (var i = 0; i < 7; i++)
-        {
-            sps[i] = this.contentPane.GetChild("sp" + (i + 1)).asButton;
-        }
-
+        countBox.onChanged.Add(onCountBoxChanged);
+        roomTypeController.onChanged.Add(onCountBoxChanged);
         this.contentPane.GetChild("btnCreateClub").asButton.onClick.Add(onBtnCreateClubClick);
+    }
+    private void onCountBoxChanged(EventContext context)
+    {
+        payBox.items = new string[] {
+            "房主付(" +((countBox.selectedIndex+1)*(roomTypeController.selectedIndex+3)) +"钻)",
+            "AA支付("+(countBox.selectedIndex+1)+"钻)"
+        };
     }
 
     private void onBtnCreateClubClick()
@@ -47,33 +48,10 @@ public class CreateClubWindow : Window
         int count = countBox.selectedIndex;
         int start = 1; // 固定只有首位可以开始游戏
         int times = timesBox.selectedIndex;
-        int king = kingBox.selectedIndex;
-        int sp = 0;
-        for (var i = 0; i < 7; i++)
-        {
-            if (sps[i].selected)
-            {
-                sp |= (1 << (6 - i));
-            }
 
-        }
+        int players = (roomType + 3) * 2 ;
+        count = (count + 1) * 10;
 
-        int players = 6;
-        if (roomType == 0)
-        {
-            players = 6;
-        }
-        else if (roomType == 1)
-        {
-            players = 8;
-        }
-        else if (roomType == 2)
-        {
-            players = 10;
-        }
-
-        
-        this.Hide();
-
+        Api.Club.Create(players, score, start, count, pay, times);
     }
 }

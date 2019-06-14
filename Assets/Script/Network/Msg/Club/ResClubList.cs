@@ -1,40 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Network.Msg
 {
+
     [Serializable]
-    public class RoomInfo
+    public class Club
     {
         public int id;
         public int score;
         public int pay;
-        public int current;
         public int count;
-        public int uid;
-        public int startType;
-        public int players;
+        public int bossUid;
+        public string boss;
     }
-
-
+    
     [Serializable]
-    public class ResRoom : BaseMsg
+    public class ResClubList : BaseMsg
     {
         public int code;
         public string msg;
-        public RoomInfo room;
+        public List<Club> clubs;
 
-        public ResRoom() : base(MsgID.ResRoom)
+        public ResClubList() : base(MsgID.ResClubs)
         {
         }
 
         public override void FromData(byte[] data)
         {
             var jsonString = System.Text.Encoding.UTF8.GetString(data);
-            var jsonData = JsonConvert.DeserializeObject<ResRoom>(jsonString);
+            var jsonData = JsonConvert.DeserializeObject<ResClubList>(jsonString);
             this.code = jsonData.code;
             this.msg = jsonData.msg;
-            this.room = jsonData.room;
+            this.clubs = jsonData.clubs;
         }
 
         public override byte[] ToData()
@@ -42,6 +41,4 @@ namespace Network.Msg
             return new byte[0];
         }
     }
-
-
 }

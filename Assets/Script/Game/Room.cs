@@ -36,10 +36,10 @@ namespace Game
             right = new RightWindow();
             ui.GetChild("btnSetting").onClick.Add(onSettingClick);
             btnStart = ui.GetChild("btnStart").asButton;
-            
+
         }
 
-      
+
 
         private void bindEvents()
         {
@@ -78,7 +78,7 @@ namespace Game
                 Debug.LogWarning("收到不属于该房间的消息：ResDeleteRoom");
                 return;
             }
-            MsgBox.ShowErr("房间已解散",1);
+            MsgBox.ShowErr("房间已解散", 1);
             Data.Game.Id = 0;
             SceneManager.LoadScene("Menu");
         }
@@ -163,7 +163,7 @@ namespace Game
         {
             var data = arg.GetValue<ResLeaveRoom>();
 
-            if (data.code != 0 && data.msg!="该房间不存在")
+            if (data.code != 0 && data.msg != "该房间不存在")
             {
                 MsgBox.ShowErr(data.msg);
                 return;
@@ -179,7 +179,7 @@ namespace Game
 
             // 其他用户退出
             var player = Data.Game.GetPlayer(data.uid);
-            if(player==null)
+            if (player == null)
             {
                 Debug.LogWarning("用户退出失败：" + data.uid);
                 return;
@@ -213,14 +213,14 @@ namespace Game
                 exit();
                 return;
             }
-            
+
             Data.Game.DeskId = data.deskId;
             addPlayers(data.players);
 
-            
-        
-            // 如果是房主,并且游戏未开始，显示开始按钮
-            if (data.uid == Data.Game.info.uid && Data.Game.info.current==0)
+
+
+            // 如果是房主或者房间是首位开始类型的,并且游戏未开始，显示开始按钮
+            if ((data.uid == Data.Game.info.uid || Data.Game.info.startType == 1) && Data.Game.info.current == 0)
             {
                 btnStart.visible = true;
             }
@@ -232,7 +232,7 @@ namespace Game
             Data.Game.RemoveAllPlayers();
             foreach (var p in players)
             {
-                Data.Game.TotalScore.Set(Data.Game.Id,p.uid,p.totalScore);
+                Data.Game.TotalScore.Set(Data.Game.Id, p.uid, p.totalScore);
                 AddPlayer(p.deskId, p.uid);
             }
 
@@ -282,7 +282,7 @@ namespace Game
             {
                 Data.Game.Players.Add(uid, player);
             }
-            
+
             return player;
         }
 
@@ -300,10 +300,10 @@ namespace Game
             var room = data.room;
 
             Data.Game.info = room;
-            
+
 
             var text = "";
-            if (Data.Club.Id == "")
+            if (Data.Club.Id == 0)
             {
                 text += "房号：" + room.id;
             }
@@ -322,9 +322,9 @@ namespace Game
 
             if (Data.Game.GetPlayer(Data.User.Id) == null)
             {
-               Api.Room.Sit(Data.Game.Id);
+                Api.Room.Sit(Data.Game.Id);
             }
-            
+
         }
 
         private void Start()
@@ -341,7 +341,7 @@ namespace Game
         {
             Handler.HandleMessage();
         }
-        
+
 
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FairyGUI;
+using System;
 
 public class CreateRoomWindow : Window
 {
@@ -26,8 +27,17 @@ public class CreateRoomWindow : Window
         countBox = this.contentPane.GetChild("count").asComboBox;
         startBox = this.contentPane.GetChild("start").asComboBox;
         timesBox = this.contentPane.GetChild("times").asComboBox;
-
+        countBox.onChanged.Add(onCountBoxChanged);
+        roomTypeController.onChanged.Add(onCountBoxChanged);
         this.contentPane.GetChild("btnCreateRoom").asButton.onClick.Add(onBtnCreateRoomClick);
+    }
+
+    private void onCountBoxChanged(EventContext context)
+    {
+        payBox.items = new string[] {
+            "房主付(" +((countBox.selectedIndex+1)*(roomTypeController.selectedIndex+3)) +"钻)",
+            "AA支付("+(countBox.selectedIndex+1)+"钻)"
+        };
     }
 
     private void onBtnCreateRoomClick()
@@ -38,10 +48,10 @@ public class CreateRoomWindow : Window
         int count = countBox.selectedIndex;
         int start = startBox.selectedIndex;
         int times = timesBox.selectedIndex;
-        
-        int players = 2*(type+3);
+
+        int players = 2 * (type + 3);
         count = (count + 1) * 10;
-        Api.Room.Create(players, score, start, count, pay, times);      
-        
+        Api.Room.Create(players, score, start, count, pay, times);
+
     }
 }
