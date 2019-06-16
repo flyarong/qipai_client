@@ -13,11 +13,23 @@ public class UserInfo : MonoBehaviour
 
     private void Awake()
     {
-        Handler.Add<ResUserInfo>(MsgID.ResUserInfo, NotificationType.Network_OnResUserInfo);
+        mainUI = GetComponent<UIPanel>().ui;
+    }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        Handler.Add<ResUserInfo>(MsgID.ResUserInfo, NotificationType.Network_OnResUserInfo);
         Handler.AddListenner(NotificationType.Network_OnResUserInfo, OnResUserInfo);
 
-        mainUI = GetComponent<UIPanel>().ui;
+        if (Data.User.Info == null)
+        {
+            Api.User.GetUserInfo(Data.User.Id);
+        }
+        else
+        {
+            updateInfo();
+        }
     }
 
     private void OnResUserInfo(NotificationArg arg)
@@ -42,18 +54,7 @@ public class UserInfo : MonoBehaviour
         userInfo.GetChild("textGold").asTextField.text = Data.User.Info.card + "";
         userInfo.GetChild("imgAvatar").asLoader.url = "/static" + Data.User.Info.avatar;
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (Data.User.Info == null)
-        {
-            Api.User.GetUserInfo(Data.User.Id);
-        }
-        else
-        {
-            updateInfo();
-        }
-    }
+   
     // Update is called once per frame
     void Update()
     {

@@ -216,7 +216,11 @@
     <Compile Include="Assets\Script\Api\Game.cs" />
     <Compile Include="Assets\Script\Api\Room.cs" />
     <Compile Include="Assets\Script\Api\User.cs" />
+    <Compile Include="Assets\Script\Club\Club.cs" />
     <Compile Include="Assets\Script\Club\ClubList.cs" />
+    <Compile Include="Assets\Script\Club\Footer.cs" />
+    <Compile Include="Assets\Script\Club\ManageWindow.cs" />
+    <Compile Include="Assets\Script\Club\UsersWindow.cs" />
     <Compile Include="Assets\Script\CommonHeader.cs" />
     <Compile Include="Assets\Script\CreateClubWindow.cs" />
     <Compile Include="Assets\Script\CreateRoomWindow.cs" />
@@ -240,7 +244,12 @@
     <Compile Include="Assets\Script\Network\Manager.cs" />
     <Compile Include="Assets\Script\Network\Message.cs" />
     <Compile Include="Assets\Script\Network\Msg\BaseMsg.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\BroadcastJoinClub.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResClubList.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClubUsers.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResCreateClub.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResEditClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\ErrMsg.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastBanker.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastCompareCard.cs" />

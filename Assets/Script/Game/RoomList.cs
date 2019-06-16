@@ -67,7 +67,7 @@ namespace Game
 
         void addRoomItem(Network.Msg.Room room)
         {
-            GComponent item = list.GetFromPool("ui://1ad63yxfbul8a7").asCom;
+            GComponent item = list.AddItemFromPool().asCom;
 
             item.GetChild("id").text = room.id + "";
             item.GetChild("score").text = scores[room.score];

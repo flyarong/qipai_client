@@ -219,8 +219,12 @@ namespace Game
 
 
 
-            // 如果是房主或者房间是首位开始类型的,并且游戏未开始，显示开始按钮
-            if ((data.uid == Data.Game.info.uid || Data.Game.info.startType == 1) && Data.Game.info.current == 0)
+            // 如果是首位开始类型的房间，自己也是第一个来的,就显示开始按钮
+            if (Data.Game.info.startType == 1 && data.players.Count == 1 && Data.Game.info.current == 0)
+            {
+                btnStart.visible = true;
+            }
+            else if (Data.Game.info.startType == 0 && data.uid == Data.Game.info.uid && Data.Game.info.current == 0) // 老板开始游戏并且自己是老板，就显示开始按钮
             {
                 btnStart.visible = true;
             }
@@ -303,14 +307,11 @@ namespace Game
 
 
             var text = "";
-            if (Data.Club.Id == 0)
+            if (Data.Club.Id > 0)
             {
-                text += "房号：" + room.id;
+                text += "茶楼：" + Data.Club.Id + "\n";
             }
-            else
-            {
-                text += "茶楼：" + Data.Club.Id + "  第" + room.id + "桌";
-            }
+            text += "房号：" + room.id;
 
             text += "\n";
             text += "底分：" + scores[room.score];

@@ -53,15 +53,15 @@ namespace Club
             {
                 return;
             }
-            foreach (var room in data.clubs)
+            foreach (var club in data.clubs)
             {
-                addClubItem(room);
+                addClubItem(club);
             }
         }
 
         private void addClubItem(Network.Msg.Club club)
         {
-            GComponent item = list.GetFromPool("ui://1ad63yxfbul89b").asCom;
+            GComponent item = list.AddItemFromPool().asCom;
 
             item.GetChild("id").asTextField.text = club.id+"";
             item.GetChild("score").asTextField.text = scores[club.score];

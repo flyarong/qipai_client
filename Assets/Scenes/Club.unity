@@ -124,10 +124,9 @@ GameObject:
   - component: {fileID: 68352512}
   - component: {fileID: 68352515}
   - component: {fileID: 68352516}
-  - component: {fileID: 68352517}
   - component: {fileID: 68352514}
   - component: {fileID: 68352518}
-  - component: {fileID: 68352519}
+  - component: {fileID: 68352517}
   m_Layer: 5
   m_Name: UIPanel
   m_TagString: Untagged
@@ -171,7 +170,7 @@ Transform:
   m_GameObject: {fileID: 68352511}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.015455951, y: 0.015455951, z: 0.015455951}
+  m_LocalScale: {x: 0.0147929, y: 0.0147929, z: 0.0147929}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -217,7 +216,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 68352511}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7633132cadfbfa640850e74ec22cb7bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 843eb593fe1e4bb468a8a13dc4c9183b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &68352517
@@ -229,7 +228,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 68352511}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9caf774aee5046b4f9b7c971f2e26555, type: 3}
+  m_Script: {fileID: 11500000, guid: 7188e82ec30baba4dbc2c679856b5e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &68352518
@@ -242,18 +241,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f80e175206756e849a438c8f29057771, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &68352519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 68352511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 928652c47581ef640a3cf988c32264b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &428034320
@@ -419,7 +406,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387227567}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.860896, y: -5, z: 0}
+  m_LocalPosition: {x: 10.221893, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

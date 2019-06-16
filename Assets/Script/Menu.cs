@@ -30,7 +30,8 @@ public class Menu : MonoBehaviour
 
         // 让茶楼和房间列表选项卡固定在用户选择的页面
         var clubOrRoom = list.GetController("tab");
-        clubOrRoom.onChanged.Set(()=> {
+        clubOrRoom.onChanged.Set(() =>
+        {
             PlayerPrefs.SetInt("clubOrRoom", clubOrRoom.selectedIndex);
         });
         clubOrRoom.selectedIndex = PlayerPrefs.GetInt("clubOrRoom");
@@ -59,37 +60,44 @@ public class Menu : MonoBehaviour
 
         mainUI.GetChild("right").asCom.GetChild("btnJoinRoom").onClick.Add(() =>
         {
+            PlayerPrefs.SetString("joinType", "room");
+            joinWindow.Show();
+            joinWindow.Center();
+        });
+
+        mainUI.GetChild("right").asCom.GetChild("btnJoinClub").onClick.Add(() =>
+        {
+            PlayerPrefs.SetString("joinType", "club");
             joinWindow.Show();
             joinWindow.Center();
         });
     }
-    
 
     private void BindListenners()
     {
         Handler.Init();
         Handler.Add<ResLoginByToken>(MsgID.ResLoginByToken, NotificationType.Network_OnResLoginByToken);
         Handler.Add<ResCreateRoom>(MsgID.ResCreateRoom, NotificationType.Network_OnResCreateRoom);
-        Handler.Add<ResCreateRoom>(MsgID.ResCreateClub, NotificationType.Network_OnCreateClub);
+        Handler.Add<ResCreateClub>(MsgID.ResCreateClub, NotificationType.Network_OnResCreateClub);
 
         Handler.AddListenner(NotificationType.Network_OnConnected, OnConnected);
         Handler.AddListenner(NotificationType.Network_OnDisconnected, OnDisconnected);
         Handler.AddListenner(NotificationType.Network_OnResLoginByToken, OnResLoginByToken);
         Handler.AddListenner(NotificationType.Network_OnResCreateRoom, OnResCreateRoom);
-        Handler.AddListenner(NotificationType.Network_OnCreateClub, OnCreateClub);
+        Handler.AddListenner(NotificationType.Network_OnResCreateClub, OnResCreateClub);
     }
 
-    private void OnCreateClub(NotificationArg arg)
+    private void OnResCreateClub(NotificationArg arg)
     {
-        var data = arg.GetValue<ResCreateRoom>();
+        var data = arg.GetValue<ResCreateClub>();
         if (data.code != 0)
         {
             MsgBox.ShowErr(data.msg, 2);
             return;
         }
-        Data.Game.Id = data.id;
-
+        Data.Club.Id = data.clubId;
         createClubWindow.Hide();
+        SceneManager.LoadScene("Club");
     }
 
     private void OnConnected(NotificationArg arg)
@@ -130,18 +138,29 @@ public class Menu : MonoBehaviour
         createRoomWindow.Hide();
         toGame();
     }
+
     void toGame()
     {
         SceneManager.LoadScene("Game");
     }
+
+    void toClub()
+    {
+        SceneManager.LoadScene("Club");
+    }
     private void Start()
     {
-        
+
+
         if (Data.Game.Id > 0)
         {
-            Invoke("toGame", 1);
+            Invoke("toGame", 0.5f);
         }
-        
+        else if (Data.Club.Id > 0)
+        {
+            Invoke("toClub", 0.5f);
+        }
+
     }
 
 

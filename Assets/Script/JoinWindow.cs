@@ -29,9 +29,9 @@ public class JoinWindow : Window
         {
             return;
         }
-        
 
-        if(btn.title == "reInput")
+
+        if (btn.title == "reInput")
         {
             textField.text = "";
             return;
@@ -47,10 +47,19 @@ public class JoinWindow : Window
         if (textField.text.Length == 6)
         {
             Hide();
-            var roomId = textField.text;
+            var id = textField.text;
 
-            Data.Game.Id = int.Parse(roomId);
-            SceneManager.LoadScene("Game");
+            if (PlayerPrefs.GetString("joinType") == "room")
+            {
+                Data.Game.Id = int.Parse(id);
+                SceneManager.LoadScene("Game");
+            }
+            else
+            {
+                Data.Club.Id = int.Parse(id);
+                SceneManager.LoadScene("Club");
+            }
+
         }
     }
 
