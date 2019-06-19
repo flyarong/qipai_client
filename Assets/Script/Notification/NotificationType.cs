@@ -33,5 +33,6 @@
         Network_OnBroadcastDelClub,
         Network_OnResEditClubUser,
         Network_OnResCreateClubRoom,
+        Network_OnResGameResult,
     }
 }

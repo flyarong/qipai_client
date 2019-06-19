@@ -83,6 +83,12 @@
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>D:/projects/unity/qipai/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
+    <Reference Include="Editor">
+      <HintPath>D:/projects/unity/qipai/Library/ScriptAssemblies/Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="XiaomiSupport">
+      <HintPath>D:/projects/unity/qipai/Library/ScriptAssemblies/XiaomiSupport.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
@@ -346,6 +352,12 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll</HintPath>
+    </Reference>
+    <Reference Include="ChannelPurchase">
+      <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.xiaomi@1.0.3/ChannelPurchase.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityStore">
+      <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.xiaomi@1.0.3/UnityStore.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

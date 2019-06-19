@@ -45,5 +45,14 @@ namespace Api
 
             new Utils.Msg(MsgID.ReqSetScore).Add("roomId", roomId).Add("score", score).Send();
         }
+
+        /// <summary>
+        /// 请求游戏战绩结果
+        /// </summary>
+        /// <param name="page"></param>
+        public static void GetGameResult(int page = 1)
+        {
+            new Utils.Msg(MsgID.ReqGameResult).Add("page", page).Send();
+        }
     }
 }

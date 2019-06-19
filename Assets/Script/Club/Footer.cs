@@ -27,6 +27,7 @@ namespace Club
             var footer = mainUI.GetChild("footer").asCom;
             btnManage = footer.GetChild("btnManage").asButton;
             btnManage.onClick.Add(onBtnManageClick);
+           
             footer.GetChild("btnUsers").asButton.onClick.Add(onBtnUsersClick);
         }
         

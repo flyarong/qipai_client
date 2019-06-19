@@ -237,6 +237,7 @@
     <Compile Include="Assets\Script\Game\RightWindow.cs" />
     <Compile Include="Assets\Script\Game\Room.cs" />
     <Compile Include="Assets\Script\Game\RoomList.cs" />
+    <Compile Include="Assets\Script\History.cs" />
     <Compile Include="Assets\Script\JoinWindow.cs" />
     <Compile Include="Assets\Script\Loading.cs" />
     <Compile Include="Assets\Script\Login.cs" />
@@ -261,7 +262,8 @@
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastScore.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastShowCard.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\ResBroadcastTimes.cs" />
-    <Compile Include="Assets\Script\Network\Msg\Game\ResGameInfo.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\ResGameResult.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\ResGameStart.cs" />
     <Compile Include="Assets\Script\Network\Msg\MsgID.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\BroadcastSitRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ReqCreateRoom.cs" />
@@ -311,6 +313,12 @@
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>D:/projects/unity/qipai/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+    </Reference>
+    <Reference Include="Editor">
+      <HintPath>D:/projects/unity/qipai/Library/ScriptAssemblies/Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="XiaomiSupport">
+      <HintPath>D:/projects/unity/qipai/Library/ScriptAssemblies/XiaomiSupport.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -524,6 +532,12 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
+    </Reference>
+    <Reference Include="ChannelPurchase">
+      <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.xiaomi@1.0.3/ChannelPurchase.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityStore">
+      <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.xiaomi@1.0.3/UnityStore.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

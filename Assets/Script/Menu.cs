@@ -71,6 +71,12 @@ public class Menu : MonoBehaviour
             joinWindow.Show();
             joinWindow.Center();
         });
+
+
+        var footer = mainUI.GetChild("footer").asCom;
+        footer.GetChild("btnHistory").onClick.Add(()=> {
+            SceneManager.LoadScene("History");
+        });
     }
 
     private void BindListenners()
@@ -148,10 +154,9 @@ public class Menu : MonoBehaviour
     {
         SceneManager.LoadScene("Club");
     }
+
     private void Start()
     {
-
-
         if (Data.Game.Id > 0)
         {
             Invoke("toGame", 0.5f);
