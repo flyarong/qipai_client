@@ -3,6 +3,7 @@ using System.Collections;
 using FairyGUI;
 using Api;
 using System.Collections.Generic;
+using System;
 
 namespace Club
 {
@@ -23,13 +24,27 @@ namespace Club
             this.Center();
             this.modal = true;
 
-            
+
         }
 
         protected override void OnShown()
         {
             setting = this.contentPane.GetChild("setting").asCom;
-            setting.GetChild("btnSave").asButton.onClick.Add(onBtnSaveClick);
+            var btnSave = setting.GetChild("btnSave").asButton;
+            var btnLeave = setting.GetChild("btnLeave").asButton; // 离开茶楼
+            var btnDelete = setting.GetChild("btnDelete").asButton; // 解散茶楼
+            btnSave.onClick.Add(onBtnSaveClick);
+            btnDelete.onClick.Add(onBtnDeleteClick);
+            btnLeave.onClick.Add(onBtnLeaveClick);
+
+            if (Data.Club.IsBoss)
+            {
+                btnDelete.visible = true;
+            }
+            else
+            {
+                btnLeave.visible = true;
+            }
 
             var check = setting.GetChild("check").asButton.GetController("button");
             var close = setting.GetChild("close").asButton.GetController("button");
@@ -44,6 +59,19 @@ namespace Club
             rollText.text = d.rollText;
             notice.text = d.notice;
         }
+
+        private void onBtnLeaveClick(EventContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void onBtnDeleteClick(EventContext context)
+        {
+            Utils.ConfirmWindow.ShowBox(() => {
+                Api.Club.Delete(Data.Club.Id);
+            }, "确定解散该茶楼吗？");
+        }
+        
 
         void onBtnSaveClick()
         {

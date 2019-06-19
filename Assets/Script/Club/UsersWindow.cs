@@ -5,6 +5,9 @@ using Api;
 using System.Collections.Generic;
 using Data;
 using Network.Msg;
+using System;
+using Utils;
+using Notification;
 
 namespace Club
 {
@@ -21,6 +24,8 @@ namespace Club
 
         protected override void OnInit()
         {
+            bindEvents();
+
             this.contentPane = UIPackage.CreateObject("qipai", "ClubUserWindow").asCom;
             this.Center();
             this.modal = true;
@@ -29,13 +34,57 @@ namespace Club
 
         }
 
+        private void bindEvents()
+        {
+            Handler.Add<ResEditClubUser>(MsgID.ResEditClubUser, NotificationType.Network_OnResEditClubUser);
+
+
+            Handler.AddListenner(NotificationType.Network_OnResEditClubUser, OnResEditClubUser);
+            Handler.AddListenner(NotificationType.Network_OnResClubUsers, OnResClubUsers);
+        }
+
+        private void OnResClubUsers(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResClubUsers>();
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                return;
+            }
+            Data.Club.Users = data.users;
+            updateUserList();
+        }
+
+        private void OnResEditClubUser(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResEditClubUser>();
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                return;
+            }
+
+            if (data.clubId != Data.Club.Id)
+            {
+                Debug.Log("收到不是当前俱乐部的消息，来自俱乐部id：" + data.clubId);
+                return;
+            }
+
+            Api.Club.ClubUsers(Data.Club.Id);
+        }
+
         protected override void OnShown()
+        {
+            updateUserList();
+        }
+
+        void updateUserList()
         {
             userList.RemoveChildrenToPool();
 
             foreach (var user in Data.Club.Users)
             {
-                if(user.id == Data.User.Id)
+                if (user.id == Data.User.Id)
                 {
                     Data.Club.IsAdmin = user.admin;
                     Data.Club.IsBoss = Data.User.Id == Data.Club.Info.uid;
@@ -125,7 +174,7 @@ namespace Club
                 Utils.ConfirmWindow.ShowBox(() =>
                 {
                     doAction(btn, "add");
-                });
+                },"确定要把该用户从茶楼移除吗？");
             }
             else
             {
@@ -151,20 +200,11 @@ namespace Club
             // 如果已经是代付，就执行取消代付
             if (btn.selected)
             {
-                action = "_" + action;
+                action = "-" + action;
             }
 
-            //var j = new Api.Club().ChangeMemberStatus(int.Parse(uid), action);
-
-            //if (j["code"].n != 0)
-            //{
-            //    Utils.MsgBox.ShowErr(j["msg"].str, 2);
-            //    btn.selected = false;
-            //}
-
-            // 更新俱乐部信息
-            //EventCenter.Broadcast<string>(NoticeType.FreshClub, Data.Club.Id);
-            // 更新用户列表
+            Api.Club.EditClubUser(Data.Club.Id, int.Parse(uid), action);
+            
         }
     }
 }

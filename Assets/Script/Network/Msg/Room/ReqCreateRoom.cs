@@ -40,7 +40,7 @@ namespace Network.Msg
     {
         public int code;
         public string msg;
-        public int id;
+        public int roomId;
 
         public ResCreateRoom() : base(MsgID.ResCreateRoom)
         {
@@ -52,7 +52,7 @@ namespace Network.Msg
             var jsonData = JsonConvert.DeserializeObject<ResCreateRoom>(jsonString);
             this.code = jsonData.code;
             this.msg = jsonData.msg;
-            this.id = jsonData.id;
+            this.roomId = jsonData.roomId;
         }
 
         public override byte[] ToData()

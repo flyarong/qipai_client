@@ -52,7 +52,7 @@ namespace Api
             }
             new Utils.Msg(MsgID.ReqJoinClub).Add("clubId", clubId).Send();
         }
-        
+
         public static void Exit(int clubId)
         {
             if (clubId <= 0)
@@ -81,6 +81,20 @@ namespace Api
                 .Send();
         }
 
+        public static void EditClubUser(int clubId, int uid, string action)
+        {
+            if (clubId <= 0)
+            {
+                Debug.LogWarning("不合法的茶楼编号: " + clubId);
+                SceneManager.LoadScene("Menu");
+                return;
+            }
+            new Utils.Msg(MsgID.ReqEditClubUser).Add("clubId", clubId)
+                .Add("uid", uid)
+                .Add("action", action)
+                .Send();
+        }
+
         public static void Delete(int clubId)
         {
             if (clubId <= 0)
@@ -91,5 +105,23 @@ namespace Api
             }
             new Utils.Msg(MsgID.ReqDelClub).Add("clubId", clubId).Send();
         }
+
+        /// <summary>
+        /// 在茶楼中创建房间
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="tableId"></param>
+        public static void CreateRoom(int clubId, int tableId)
+        {
+            if (clubId <= 0)
+            {
+                Debug.LogWarning("不合法的茶楼编号: " + clubId);
+                SceneManager.LoadScene("Menu");
+                return;
+            }
+            new Utils.Msg(MsgID.ReqCreateClubRoom).Add("clubId", clubId).Add("tableId", tableId).Send();
+        }
+
+
     }
 }

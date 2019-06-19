@@ -34,10 +34,50 @@ namespace Club
             Handler.Init();
             Handler.Add<ResClub>(MsgID.ResClub, NotificationType.Network_OnResClub);
             Handler.Add<BroadcastJoinClub>(MsgID.BroadcastJoinClub, NotificationType.Network_OnBroadcastJoinClub);
-            
-            
+            Handler.Add<BroadcastDelClub>(MsgID.BroadcastDelClub, NotificationType.Network_OnBroadcastDelClub);
+            Handler.Add<ResCreateClubRoom>(MsgID.ResCreateClubRoom, NotificationType.Network_OnResCreateClubRoom);
+
+
             Handler.AddListenner(NotificationType.Network_OnResClub, OnResClub);
             Handler.AddListenner(NotificationType.Network_OnBroadcastJoinClub, OnBroadcastJoinClub);
+            Handler.AddListenner(NotificationType.Network_OnBroadcastDelClub, OnBroadcastDelClub);
+            Handler.AddListenner(NotificationType.Network_OnResCreateClubRoom, ResCreateClubRoom);
+        }
+
+        private void ResCreateClubRoom(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResCreateClubRoom>();
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg, 2);
+                return;
+            }
+            Data.Game.Id = data.roomId;
+            SceneManager.LoadScene("Game");
+        }
+
+        private void OnBroadcastDelClub(NotificationArg arg)
+        {
+            var data = arg.GetValue<BroadcastDelClub>();
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                exit();
+                return;
+            }
+
+            if (data.clubId != Data.Club.Id)
+            {
+                Debug.Log("收到不是当前俱乐部的消息，来自俱乐部id：" + data.clubId);
+                return;
+            }
+            
+            if (data.uid != Data.User.Id)
+            {
+                MsgBox.ShowErr("该茶楼被老板解散");
+            }
+            GRoot.inst.CloseAllWindows();
+            exit();
         }
 
         private void OnBroadcastJoinClub(NotificationArg arg)
@@ -45,7 +85,7 @@ namespace Club
             var data = arg.GetValue<BroadcastJoinClub>();
             if (data.code != 0)
             {
-                MsgBox.ShowErr(data.msg, 2);
+                MsgBox.ShowErr(data.msg);
                 exit();
                 return;
             }
@@ -73,6 +113,7 @@ namespace Club
             }
 
             Data.Club.Info = data.club;
+            Data.Club.IsBoss = data.club.uid == Data.User.Id;
 
             var info = ui.GetChild("info").asTextField;
             info.text = Data.Club.Id + "\n" + data.club.name;
@@ -114,12 +155,28 @@ namespace Club
             //GComponent table = Tables.GetFromPool("ui://1ad63yxfhon0bo").asCom;
             GComponent table = Tables.AddItemFromPool().asCom;
             var info = table.GetChild("info").asRichTextField;
+            for(var i=1; i<=10; i++)
+            {
+                var desk = table.GetChild("desk" + i);
+                desk.data = tableId;
+                desk.onClick.Set(onDeskClick);
+            }
+            
+
             Dictionary<string, string> vars = new Dictionary<string, string>();
             vars["id"] = tableId + "";
             vars["max"] = club.count + "";
             vars["score"] = scores[club.score];
             info.templateVars = vars;
             Tables.AddChild(table);
+        }
+
+        private void onDeskClick(EventContext context)
+        {
+            var desk = context.sender as GButton;
+            var tableId = int.Parse(desk.data+"");
+            Data.Club.TableId = tableId;
+            Api.Club.CreateRoom(Data.Club.Id,tableId);
         }
     }
 

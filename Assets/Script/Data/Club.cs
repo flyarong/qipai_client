@@ -17,6 +17,7 @@ namespace Data
         public static bool IsAdmin { get => isAdmin; set => isAdmin = value; }
         public static bool IsBoss { get => isBoss; set => isBoss = value; }
         public static int Id { set { PlayerPrefs.SetInt("currentClubId", value); } get { return PlayerPrefs.GetInt("currentClubId"); } }
+        public static int TableId { set { PlayerPrefs.SetInt("currentClubTableId", value); } get { return PlayerPrefs.GetInt("currentClubTableId"); } }
 
         public static List<ClubUser> Users { get => users; set => users = value; }
     }

@@ -133,7 +133,7 @@ public class Menu : MonoBehaviour
             MsgBox.ShowErr(data.msg, 2);
             return;
         }
-        Data.Game.Id = data.id;
+        Data.Game.Id = data.roomId;
 
         createRoomWindow.Hide();
         toGame();

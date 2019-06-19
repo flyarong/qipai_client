@@ -13,6 +13,7 @@ namespace Club
         GComponent mainUI;
         ManageWindow manageWindow;
         UsersWindow usersWindow;
+        GButton btnManage, btnLeave;
         // Use this for initialization
         void Start()
         {
@@ -20,14 +21,15 @@ namespace Club
 
             mainUI = GetComponent<UIPanel>().ui;
             manageWindow = new ManageWindow();
+            manageWindow.name = "manageWindow";
             usersWindow = new UsersWindow();
 
             var footer = mainUI.GetChild("footer").asCom;
-            var btnManage = footer.GetChild("btnManage").asButton;
+            btnManage = footer.GetChild("btnManage").asButton;
             btnManage.onClick.Add(onBtnManageClick);
             footer.GetChild("btnUsers").asButton.onClick.Add(onBtnUsersClick);
         }
-
+        
         private void bindEvents()
         {
             Handler.Add<BroadcastEditClub>(MsgID.BroadcastEditClub, NotificationType.Network_OnBroadcastEditClub);
@@ -77,8 +79,6 @@ namespace Club
         void onBtnUsersClick()
         {
             Api.Club.ClubUsers(Data.Club.Id);
-
-            
         }
         // Update is called once per frame
         void Update()

@@ -38,7 +38,6 @@ namespace Utils
         {
             ConfirmWindow confirm = msg == "" ? new ConfirmWindow(callback) : new ConfirmWindow(callback, msg);
             confirm.Show();
-            Debug.Log("GRoot.inst.parent.gameObjectName:" + GRoot.inst.parent.gameObjectName);
         }
     }
 

@@ -173,6 +173,14 @@ namespace Game
             {
                 Data.Game.Id = 0;
                 Data.Game.info = null;
+
+                // 如果clubId>0表示是从俱乐部进入房间的，直接退回俱乐部
+                if (Data.Club.Id > 0)
+                {
+                    SceneManager.LoadScene("Club");
+                    return;
+                }
+
                 SceneManager.LoadScene("Menu");
                 return;
             }
@@ -310,12 +318,15 @@ namespace Game
             if (Data.Club.Id > 0)
             {
                 text += "茶楼：" + Data.Club.Id + "\n";
+                text += "桌号：" + "第"+Data.Club.TableId + "桌\n";
             }
-            text += "房号：" + room.id;
-
-            text += "\n";
-            text += "底分：" + scores[room.score];
-            text += "\n";
+            else
+            {
+                text += "房号：" + room.id;
+            }
+            
+            
+            text += "底分：" + scores[room.score] + "\n";
             text += "局数：" + room.current + "/" + room.count;
 
             ui.GetChild("infoText").text = text;

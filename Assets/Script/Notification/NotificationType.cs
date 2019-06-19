@@ -30,5 +30,8 @@
         Network_OnBroadcastEditClub,
         Network_OnBroadcastJoinClub,
         Network_OnResClubUsers,
+        Network_OnBroadcastDelClub,
+        Network_OnResEditClubUser,
+        Network_OnResCreateClubRoom,
     }
 }
