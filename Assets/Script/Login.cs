@@ -40,7 +40,7 @@ public class Login : MonoBehaviour
             Debug.Log("切换注册界面按钮被点击");
             SceneManager.LoadScene("Reg");
         });
-        mainUI.GetChild("btnReset").asButton.color = Color.green;
+
         mainUI.GetChild("btnReset").onClick.Add(() =>
         {
             SceneManager.LoadScene("Reset");
@@ -106,12 +106,12 @@ public class Login : MonoBehaviour
     {
         if (!Regex.IsMatch(inputPhone.text, @"^1[34578]\d{9}$"))
         {
-            ShowError("手机号格式不正确");
+            Utils.MsgBox.ShowErr("手机号格式不正确");
             return;
         }
         else if (inputPass.text.Length < 6 || inputPass.text.Length > 30)
         {
-            ShowError("密码长度必须在6~30之间");
+            Utils.MsgBox.ShowErr("密码长度必须在6~30之间");
             return;
         }
 
@@ -119,11 +119,7 @@ public class Login : MonoBehaviour
 
     }
 
-
-    void ShowError(string msg)
-    {
-        MsgBox.ShowErr(msg);
-    }
+    
 }
 
 

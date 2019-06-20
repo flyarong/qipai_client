@@ -15,7 +15,7 @@ namespace Network.Msg
 
     public class RoomGameResult
     {
-
+        public int id;
         public int players;
         public int score;
         public int pay;

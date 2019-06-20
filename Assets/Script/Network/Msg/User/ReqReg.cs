@@ -38,7 +38,7 @@ namespace Network.Msg
 
 
     [Serializable]
-    public class ResReg : ErrMsg
+    public class ResReg : CommonMsg
     {
         public ResReg() : base(MsgID.ResReg)
         {

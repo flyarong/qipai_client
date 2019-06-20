@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace Network.Msg
 {
     [Serializable]
-    public class ResLoginByToken : ErrMsg
+    public class ResLoginByToken : CommonMsg
     {
         public string token;
 

@@ -70,7 +70,7 @@ namespace Api
                 SceneManager.LoadScene("Menu");
                 return;
             }
-            new Utils.Msg(MsgID.ReqLeaveRoom).Add("id", roomId).Send();
+            new Utils.Msg(MsgID.ReqLeaveRoom).Add("roomId", roomId).Send();
         }
 
         public static void Delete(int roomId)

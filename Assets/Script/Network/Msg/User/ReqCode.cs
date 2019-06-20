@@ -36,7 +36,7 @@ namespace Network.Msg
         }
     }
 
-    public class ResCode : ErrMsg
+    public class ResCode : CommonMsg
     {
         public ResCode() : base(MsgID.ResCode)
         {

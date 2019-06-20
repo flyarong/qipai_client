@@ -2,12 +2,12 @@
 
 namespace Network.Msg
 {
-    public class ErrMsg : BaseMsg
+    public class CommonMsg : BaseMsg
     {
         public int code;
         public string msg;
         
-        public ErrMsg(MsgID Id) : base(Id)
+        public CommonMsg(MsgID Id) : base(Id)
         {
         }
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using Network.Msg;
 using Network;
+using System;
 
 namespace Api
 {
@@ -15,12 +16,13 @@ namespace Api
 
         public static void LoginByToken()
         {
-            if (Data.User.Token == "") {
+            if (Data.User.Token == "")
+            {
                 return;
             }
             new Utils.Msg(MsgID.ReqLoginByToken).Add("token", Data.User.Token).Send();
         }
-        
+
         public static void Reg(LoginType type, string nick, string name, string pass, string code)
         {
             var msg = new ReqReg(type, nick, name, pass, code);
@@ -37,6 +39,14 @@ namespace Api
             Inst.SendMessage(msg.ToMessage());
         }
 
+        public static void GetResetCode(string phone)
+        {
+            var msg = new ReqCode(phone, CodeType.Reset);
+            Inst.SendMessage(msg.ToMessage());
+        }
+
+
+
         public static void GetUserInfo(int uid)
         {
             var req = new Utils.Msg(MsgID.ReqUserInfo);
@@ -45,6 +55,16 @@ namespace Api
                 req.Add("id", uid);
             }
             req.Send();
+        }
+
+        internal static void ChangePass(int type, string name, string pass, string code)
+        {
+            new Utils.Msg(MsgID.ReqReset)
+                .Add("type", type)
+                .Add("name", name)
+                .Add("pass", pass)
+                .Add("code", code)
+                .Send();
         }
     }
 }

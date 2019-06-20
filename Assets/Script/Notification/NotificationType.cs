@@ -7,6 +7,7 @@
         Network_OnResLogin,
         Network_OnResLoginByToken,
         Network_OnResReg,
+        Network_OnResReset,
         Network_OnResCode,
         Network_OnResCreateRoom,
         Network_OnResRoomList,

@@ -318,14 +318,14 @@ namespace Game
             if (Data.Club.Id > 0)
             {
                 text += "茶楼：" + Data.Club.Id + "\n";
-                text += "桌号：" + "第"+Data.Club.TableId + "桌\n";
+                text += "桌号：" + "第" + Data.Club.TableId + "桌\n";
             }
             else
             {
-                text += "房号：" + room.id;
+                text += "房号：" + room.id + "\n";
             }
-            
-            
+
+
             text += "底分：" + scores[room.score] + "\n";
             text += "局数：" + room.current + "/" + room.count;
 

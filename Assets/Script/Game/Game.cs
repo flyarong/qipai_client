@@ -97,7 +97,7 @@ namespace Game
             }
             Data.Game.TotalScore.Clear();
             Data.Game.Id = 0;
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene("History");
         }
 
         private void OnBroadcastCompareCard(NotificationArg arg)
