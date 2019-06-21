@@ -59,12 +59,12 @@ namespace Api
 
         internal static void ChangePass(int type, string name, string pass, string code)
         {
-            new Utils.Msg(MsgID.ReqReset)
-                .Add("type", type)
-                .Add("name", name)
-                .Add("pass", pass)
-                .Add("code", code)
-                .Send();
+            var req = new Utils.Msg(MsgID.ReqReset);
+            req.Add("type", type);
+            req.Add("name", name);
+            req.Add("pass", pass);
+            req.Add("code", code);
+            req.Send();
         }
     }
 }

@@ -26,8 +26,21 @@ public class Reset : MonoBehaviour
     {
         Handler.Init();
         Handler.Add<ResReset>(MsgID.ResReset, NotificationType.Network_OnResReset);
+        Handler.Add<ResCode>(MsgID.ResCode, Notification.NotificationType.Network_OnResCode);
 
         Handler.AddListenner(NotificationType.Network_OnResReset, OnResReset);
+        Handler.AddListenner(Notification.NotificationType.Network_OnResCode, OnResCode);
+    }
+
+    void OnResCode(NotificationArg arg)
+    {
+        var data = arg.GetValue<ResCode>();
+        if (data.code != 0)
+        {
+            Utils.MsgBox.ShowErr(data.msg, 2);
+            return;
+        }
+        Utils.MsgBox.ShowErr("验证码发送成功");
     }
 
     private void OnResReset(NotificationArg arg)
@@ -39,7 +52,7 @@ public class Reset : MonoBehaviour
             return;
         }
         Utils.MsgBox.ShowErr("密码重置成功");
-        SceneManager.LoadScene("Login");
+        //SceneManager.LoadScene("Login");
     }
 
     // Start is called before the first frame update

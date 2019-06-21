@@ -52,11 +52,12 @@ public class Reg : MonoBehaviour
     void OnResCode(NotificationArg arg)
     {
         var data = arg.GetValue<ResCode>();
-        if (data==null)
+        if (data.code!=0)
         {
+            Utils.MsgBox.ShowErr(data.msg, 2);
             return;
         }
-        Utils.MsgBox.ShowErr(data.msg, 2);
+        Utils.MsgBox.ShowErr("验证码发送成功");
     }
 
 
