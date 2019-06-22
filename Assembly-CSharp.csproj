@@ -223,6 +223,7 @@
     <Compile Include="Assets\Script\Club\ManageWindow.cs" />
     <Compile Include="Assets\Script\Club\UsersWindow.cs" />
     <Compile Include="Assets\Script\CommonHeader.cs" />
+    <Compile Include="Assets\Script\Connected.cs" />
     <Compile Include="Assets\Script\CreateClubWindow.cs" />
     <Compile Include="Assets\Script\CreateRoomWindow.cs" />
     <Compile Include="Assets\Script\Data\Club.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastScore.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastShowCard.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\ResBroadcastTimes.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\ResGamePlayers.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\ResGameResult.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\ResGameStart.cs" />
     <Compile Include="Assets\Script\Network\Msg\MsgID.cs" />

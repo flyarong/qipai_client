@@ -54,5 +54,10 @@ namespace Api
         {
             new Utils.Msg(MsgID.ReqGameResult).Add("page", page).Send();
         }
+
+        public static void GetGameUsers(int roomId)
+        {
+            new Utils.Msg(MsgID.ReqGamePlayers).Add("roomId", roomId).Send();
+        }
     }
 }

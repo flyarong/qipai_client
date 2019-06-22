@@ -44,7 +44,7 @@ namespace Game
         private void bindEvents()
         {
             Handler.Init();
-            Handler.Add<ResLoginByToken>(MsgID.ResLoginByToken, NotificationType.Network_OnResLoginByToken);
+
             Handler.Add<ResRoom>(MsgID.ResRoom, NotificationType.Network_OnResRoom);
             Handler.Add<ResJoinRoom>(MsgID.ResJoinRoom, NotificationType.Network_OnResJoinRoom);
             Handler.Add<ResSit>(MsgID.ResSit, NotificationType.Network_OnResSit);
@@ -53,9 +53,7 @@ namespace Game
             Handler.Add<BroadcastSitRoom>(MsgID.BroadcastSitRoom, NotificationType.Network_OnBroadcastSitRoom);
             Handler.Add<ResDeleteRoom>(MsgID.ResDeleteRoom, NotificationType.Network_OnResDeleteRoom);
 
-            Handler.AddListenner(NotificationType.Network_OnConnected, OnConnected);
-            Handler.AddListenner(NotificationType.Network_OnDisconnected, OnDisconnected);
-            Handler.AddListenner(NotificationType.Network_OnResLoginByToken, OnResLoginByToken);
+
             Handler.AddListenner(NotificationType.Network_OnResRoom, OnResRoom);
             Handler.AddListenner(NotificationType.Network_OnResJoinRoom, OnResJoinRoom);
             Handler.AddListenner(NotificationType.Network_OnResSit, OnResSit);
@@ -82,29 +80,7 @@ namespace Game
             Data.Game.Id = 0;
             SceneManager.LoadScene("Menu");
         }
-
-        private void OnConnected(NotificationArg arg)
-        {
-            Api.User.LoginByToken();
-        }
-
-        private void OnDisconnected(NotificationArg arg)
-        {
-            Manager.Inst.Connect();
-        }
-
-        private void OnResLoginByToken(NotificationArg arg)
-        {
-            var data = arg.GetValue<ResLoginByToken>();
-            if (data.code != 0)
-            {
-                MsgBox.ShowErr(data.msg, 2);
-                Data.User.Token = "";
-                SceneManager.LoadScene("Login");
-                return;
-            }
-            Data.User.Token = data.token;
-        }
+        
 
         private void OnBroadcastSitRoom(NotificationArg arg)
         {

@@ -32,17 +32,19 @@ namespace Club
         private void bindEvents()
         {
             Handler.Init();
+
             Handler.Add<ResClub>(MsgID.ResClub, NotificationType.Network_OnResClub);
             Handler.Add<BroadcastJoinClub>(MsgID.BroadcastJoinClub, NotificationType.Network_OnBroadcastJoinClub);
             Handler.Add<BroadcastDelClub>(MsgID.BroadcastDelClub, NotificationType.Network_OnBroadcastDelClub);
             Handler.Add<ResCreateClubRoom>(MsgID.ResCreateClubRoom, NotificationType.Network_OnResCreateClubRoom);
 
-
             Handler.AddListenner(NotificationType.Network_OnResClub, OnResClub);
             Handler.AddListenner(NotificationType.Network_OnBroadcastJoinClub, OnBroadcastJoinClub);
             Handler.AddListenner(NotificationType.Network_OnBroadcastDelClub, OnBroadcastDelClub);
             Handler.AddListenner(NotificationType.Network_OnResCreateClubRoom, ResCreateClubRoom);
+            
         }
+
 
         private void ResCreateClubRoom(NotificationArg arg)
         {
@@ -71,7 +73,7 @@ namespace Club
                 Debug.Log("收到不是当前俱乐部的消息，来自俱乐部id：" + data.clubId);
                 return;
             }
-            
+
             if (data.uid != Data.User.Id)
             {
                 MsgBox.ShowErr("该茶楼被老板解散");
@@ -89,7 +91,7 @@ namespace Club
                 exit();
                 return;
             }
-
+            
             if (data.uid == Data.User.Id)
             {
                 Api.Club.GetClub(Data.Club.Id);
@@ -155,13 +157,12 @@ namespace Club
             //GComponent table = Tables.GetFromPool("ui://1ad63yxfhon0bo").asCom;
             GComponent table = Tables.AddItemFromPool().asCom;
             var info = table.GetChild("info").asRichTextField;
-            for(var i=1; i<=10; i++)
+            for (var i = 1; i <= 10; i++)
             {
                 var desk = table.GetChild("desk" + i);
                 desk.data = tableId;
                 desk.onClick.Set(onDeskClick);
             }
-            
 
             Dictionary<string, string> vars = new Dictionary<string, string>();
             vars["id"] = tableId + "";
@@ -174,9 +175,9 @@ namespace Club
         private void onDeskClick(EventContext context)
         {
             var desk = context.sender as GButton;
-            var tableId = int.Parse(desk.data+"");
+            var tableId = int.Parse(desk.data + "");
             Data.Club.TableId = tableId;
-            Api.Club.CreateRoom(Data.Club.Id,tableId);
+            Api.Club.CreateRoom(Data.Club.Id, tableId);
         }
     }
 

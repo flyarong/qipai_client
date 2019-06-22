@@ -100,6 +100,8 @@
 
         ResGameResult, // 返回游戏战绩
 
+        ReqGamePlayers,        // 请求游戏玩家
+        ResGamePlayers,
 
 
         /****************俱乐部相关****************/

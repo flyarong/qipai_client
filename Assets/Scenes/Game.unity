@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 221100380}
   - component: {fileID: 221100379}
   - component: {fileID: 221100377}
+  - component: {fileID: 221100378}
   m_Layer: 5
   m_Name: UIPanel
   m_TagString: Untagged
@@ -204,6 +205,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b79295edfc8e8c346be28373e46db3a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &221100378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221100373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c805adde1e087945959be7a47035862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &221100379
@@ -311,7 +324,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 801674886}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.352834, y: -5, z: 0}
+  m_LocalPosition: {x: 9.462026, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
