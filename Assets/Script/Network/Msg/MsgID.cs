@@ -141,5 +141,11 @@
 
         ReqCreateClubRoom, // 创建俱乐部房间
         ResCreateClubRoom,
+
+        ReqClubRooms, // 获取指定俱乐部所有房间
+        ResClubRooms,
+
+        ReqClubRoomUsers, // 请求茶楼中房间的所有玩家座位信息
+        ResClubRoomUsers,
     }
 }

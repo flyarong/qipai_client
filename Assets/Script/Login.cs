@@ -51,6 +51,7 @@ public class Login : MonoBehaviour
     {
         Handler.Init();
         Handler.Add<ResLogin>(MsgID.ResLogin, NotificationType.Network_OnResLogin);
+        Handler.Add<ResLoginByToken>(MsgID.ResLoginByToken, NotificationType.Network_OnResLoginByToken);
 
         Handler.AddListenner(NotificationType.Network_OnConnected, OnConnected);
         Handler.AddListenner(NotificationType.Network_OnDisconnected, OnDisconnected);

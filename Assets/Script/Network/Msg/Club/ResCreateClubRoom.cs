@@ -9,6 +9,8 @@ namespace Network.Msg
     {
         public int code;
         public string msg;
+        public int uid;
+        public int clubId;
         public int roomId;
 
         public ResCreateClubRoom() : base(MsgID.ResCreateClubRoom)
@@ -21,6 +23,8 @@ namespace Network.Msg
             var jsonData = JsonConvert.DeserializeObject<ResCreateClubRoom>(jsonString);
             this.code = jsonData.code;
             this.msg = jsonData.msg;
+            this.uid = jsonData.uid;
+            this.clubId = jsonData.clubId;
             this.roomId = jsonData.roomId;
         }
 

@@ -80,7 +80,7 @@ namespace Game
             Data.Game.Id = 0;
             SceneManager.LoadScene("Menu");
         }
-        
+
 
         private void OnBroadcastSitRoom(NotificationArg arg)
         {
@@ -237,7 +237,17 @@ namespace Game
             if (data.code != 0)
             {
                 MsgBox.ShowErr(data.msg);
-                exit();
+                Data.Game.Id = 0;
+                Data.Game.info = null;
+                if (Data.Club.Id > 0)
+                {
+                    SceneManager.LoadScene("Club");
+                }
+                else
+                {
+                    SceneManager.LoadScene("Menu");
+                }
+
                 return;
             }
 

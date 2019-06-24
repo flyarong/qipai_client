@@ -123,5 +123,21 @@ namespace Api
         }
 
 
+        public static void Exit()
+        {
+            new Utils.Msg(MsgID.ReqExitClub).Send();
+        }
+
+
+        public static void ClubRooms(int clubId)
+        {
+            if (clubId <= 0)
+            {
+                Debug.LogWarning("不合法的茶楼编号: " + clubId);
+                SceneManager.LoadScene("Menu");
+                return;
+            }
+            new Utils.Msg(MsgID.ReqClubRooms).Add("clubId", clubId).Send();
+        }
     }
 }

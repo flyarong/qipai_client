@@ -36,7 +36,7 @@ namespace Api
                 return;
             }
 
-            new Utils.Msg(MsgID.ReqRoom).Add("id",roomId).Send();
+            new Utils.Msg(MsgID.ReqRoom).Add("roomId",roomId).Send();
         }
 
         public static void JoinRoom(int roomId)

@@ -35,5 +35,6 @@
         Network_OnResEditClubUser,
         Network_OnResCreateClubRoom,
         Network_OnResGameResult,
+        Network_OnResClubRooms,
     }
 }

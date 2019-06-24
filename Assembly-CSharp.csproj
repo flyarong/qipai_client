@@ -251,7 +251,10 @@
     <Compile Include="Assets\Script\Network\Msg\Club\BroadcastDelClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\BroadcastJoinClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResClub.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClubGameOver.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClubGameStart.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResClubList.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClubRooms.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResClubUsers.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResCreateClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResCreateClubRoom.cs" />

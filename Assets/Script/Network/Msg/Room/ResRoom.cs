@@ -14,6 +14,9 @@ namespace Network.Msg
         public int uid;
         public int startType;
         public int players;
+        public int clubId;
+        public int tableId;
+        public int status;
     }
 
 
