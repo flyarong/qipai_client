@@ -139,5 +139,10 @@ namespace Api
             }
             new Utils.Msg(MsgID.ReqClubRooms).Add("clubId", clubId).Send();
         }
+
+        public static void ClubRoomUsers(int roomId)
+        {
+            new Utils.Msg(MsgID.ReqClubRoomUsers).Add("roomId", roomId).Send();
+        }
     }
 }

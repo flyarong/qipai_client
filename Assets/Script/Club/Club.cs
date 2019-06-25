@@ -49,6 +49,10 @@ namespace Club
             Handler.Add<ResRoom>(MsgID.ResRoom, NotificationType.Network_OnResRoom);
             Handler.Add<ResClubGameStart>(MsgID.ResGameStart, NotificationType.Network_OnResGameStart);
             Handler.Add<ResClubGameOver>(MsgID.BroadcastGameOver, NotificationType.Network_OnBroadcastGameOver);
+            Handler.Add<ResClubRoomUsers>(MsgID.ResClubRoomUsers, NotificationType.Network_OnResClubRoomUsers);
+            Handler.Add<BroadcastSitClubRoom>(MsgID.BroadcastSitRoom, NotificationType.Network_OnBroadcastSitClubRoom);
+            Handler.Add<BroadcastLeaveClubRoom>(MsgID.ResLeaveRoom, NotificationType.Network_OnBroadcastLeaveClubRoom);
+
 
             Handler.AddListenner(NotificationType.Network_OnResClub, OnResClub);
             Handler.AddListenner(NotificationType.Network_OnBroadcastJoinClub, OnBroadcastJoinClub);
@@ -58,7 +62,75 @@ namespace Club
             Handler.AddListenner(NotificationType.Network_OnResRoom, OnResRoom);
             Handler.AddListenner(NotificationType.Network_OnResGameStart, OnResGameStart);
             Handler.AddListenner(NotificationType.Network_OnBroadcastGameOver, OnBroadcastGameOver);
+            Handler.AddListenner(NotificationType.Network_OnResClubRoomUsers, OnResClubRoomUsers);
+            Handler.AddListenner(NotificationType.Network_OnBroadcastSitClubRoom, OnBroadcastSitClubRoom);
+            Handler.AddListenner(NotificationType.Network_OnBroadcastLeaveClubRoom, OnBroadcastLeaveClubRoom);
+        }
 
+        private void OnBroadcastLeaveClubRoom(NotificationArg arg)
+        {
+            var data = arg.GetValue<BroadcastLeaveClubRoom>();
+
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                return;
+            }
+
+            updateDeskUser(data.tableId, data.deskId, null);
+        }
+
+        private void OnBroadcastSitClubRoom(NotificationArg arg)
+        {
+            var data = arg.GetValue<BroadcastSitClubRoom>();
+
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                return;
+            }
+
+            updateDeskUser(data.tableId, data.deskId, data.avatar,data.nick);
+        }
+
+        private void OnResClubRoomUsers(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResClubRoomUsers>();
+
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                return;
+            }
+            if (data.users == null)
+            {
+                return;
+            }
+            foreach (var u in data.users)
+            {
+                Debug.Log(u.nick);
+                updateDeskUser(data.tableId, u.deskId, u.avatar,u.nick);
+            }
+        }
+
+        void updateDeskUser(int tableId, int deskId, string avatar, string nick="")
+        {
+            var table = Tables.GetChildAt(tableId - 1).asCom;
+            var desk = table.GetChild("desk" + deskId);
+            var nickText = table.GetChild("nick" + deskId);
+            var avatarUi = desk.asCom.GetChild("avatar").asLoader;
+            avatarUi.url = avatar == null ? avatarUi.data + "" : "/static" + avatar;
+            if (avatar != null)
+            {
+                nickText.text = nick;
+                nickText.visible = true;
+                desk.onClick.Remove(onDeskClick);
+            }
+            else
+            {
+                nickText.visible = false;
+                desk.onClick.Set(onDeskClick);
+            }
         }
 
         private void OnBroadcastGameOver(NotificationArg arg)
@@ -96,7 +168,7 @@ namespace Club
                 MsgBox.ShowErr(data.msg);
                 return;
             }
-            if(data.clubId != Data.Club.Id)
+            if (data.clubId != Data.Club.Id)
             {
                 Debug.LogWarning("收到不是当前茶楼的消息");
                 return;
@@ -125,12 +197,15 @@ namespace Club
             }
 
             Dictionary<string, string> vars = new Dictionary<string, string>();
-            vars["id"] = room.tableId+"";
+            vars["id"] = room.tableId + "";
             vars["current"] = room.current + "";
             vars["count"] = room.count + "";
             vars["score"] = scores[room.score];
-            vars["status"] = room.status==0?"等待中":"游戏中";
+            vars["status"] = room.status == 0 ? "等待中" : "游戏中";
             info.templateVars = vars;
+
+            // 获取房间的玩家信息
+            Api.Club.ClubRoomUsers(room.id);
         }
 
         private void OnResClubRooms(NotificationArg arg)
@@ -226,7 +301,7 @@ namespace Club
             Data.Club.Id = 0;
             SceneManager.LoadScene("Menu");
         }
-        
+
         private void OnResClub(NotificationArg arg)
         {
             var data = arg.GetValue<ResClub>();
@@ -265,7 +340,7 @@ namespace Club
             Handler.HandleMessage();
         }
 
-        
+
 
 
         private void addItem(ClubInfo club, int tableId)

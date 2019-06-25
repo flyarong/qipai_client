@@ -34,8 +34,7 @@ namespace History
             contentPane.GetChild("btnDel").onClick.Add(onBtnNubmerClick);
             textField = contentPane.GetChild("text").asTextField;
         }
-
-
+        
         private void onBtnClearClick(EventContext context)
         {
             textField.text = "";
@@ -43,6 +42,7 @@ namespace History
 
         private void onBtnOkClick(EventContext context)
         {
+            if (textField.text == "") return;
             for (var i = 1; i <= 10; i++)
             {
                 var u = ui.GetChild("u" + i).asCom;

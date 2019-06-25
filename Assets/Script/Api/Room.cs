@@ -58,7 +58,7 @@ namespace Api
                 SceneManager.LoadScene("Menu");
                 return;
             }
-            new Utils.Msg(MsgID.ReqSit).Add("id", roomId).Send();
+            new Utils.Msg(MsgID.ReqSit).Add("roomId", roomId).Send();
         }
 
 
