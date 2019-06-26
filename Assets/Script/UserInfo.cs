@@ -52,7 +52,7 @@ public class UserInfo : MonoBehaviour
         userInfo.GetChild("textNick").asTextField.text = "昵称:" + Data.User.Info.nick;
         userInfo.GetChild("textId").asTextField.text = "ID:" + Data.User.Info.id;
         userInfo.GetChild("textGold").asTextField.text = Data.User.Info.card + "";
-        userInfo.GetChild("imgAvatar").asLoader.url = "/static" + Data.User.Info.avatar;
+        userInfo.GetChild("imgAvatar").asLoader.url = Config.HttpBaseHost + "/static" + Data.User.Info.avatar;
     }
    
     // Update is called once per frame

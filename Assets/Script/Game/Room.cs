@@ -130,7 +130,7 @@ namespace Game
             p.Info = info;
 
             p.PlayerUi.GetChild("name").text = data.user.nick;
-            p.PlayerUi.GetChild("avatar").asLoader.url = "/static" + data.user.avatar;
+            p.PlayerUi.GetChild("avatar").asLoader.url = Config.HttpBaseHost + "/static" + data.user.avatar;
             p.PlayerUi.visible = true;
 
         }

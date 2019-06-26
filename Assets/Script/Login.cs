@@ -28,7 +28,7 @@ public class Login : MonoBehaviour
             Debug.Log("切换注册界面按钮被点击");
             SceneManager.LoadScene("Reg");
         });
-        UIObjectFactory.SetLoaderExtension(typeof(Utils.HttpLoader));
+        UIObjectFactory.SetLoaderExtension(typeof(Utils.MyGLoader));
         Data.User.Token = PlayerPrefs.GetString("token");
         inputPhone = mainUI.GetChild("inputPhone").asTextInput;
         inputPass = mainUI.GetChild("inputPass").asTextInput;
@@ -51,23 +51,13 @@ public class Login : MonoBehaviour
     {
         Handler.Init();
         Handler.Add<ResLogin>(MsgID.ResLogin, NotificationType.Network_OnResLogin);
-        Handler.Add<ResLoginByToken>(MsgID.ResLoginByToken, NotificationType.Network_OnResLoginByToken);
-
-        Handler.AddListenner(NotificationType.Network_OnConnected, OnConnected);
-        Handler.AddListenner(NotificationType.Network_OnDisconnected, OnDisconnected);
+        
         Handler.AddListenner(NotificationType.Network_OnResLoginByToken, OnResLoginByToken);
         Handler.AddListenner(NotificationType.Network_OnResLogin, OnResLogin);
     }
 
-    private void OnConnected(NotificationArg arg)
-    {
-        Api.User.LoginByToken();
-    }
 
-    private void OnDisconnected(NotificationArg arg)
-    {
-        Manager.Inst.Connect();
-    }
+
     private void OnResLoginByToken(NotificationArg arg)
     {
         var data = arg.GetValue<ResLoginByToken>();

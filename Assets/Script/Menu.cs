@@ -40,8 +40,6 @@ public class Menu : MonoBehaviour
 
         mainUI.GetChild("right").asCom.GetChild("btnCreateClub").onClick.Add(() =>
         {
-            Debug.Log("创建茶楼按钮被点击");
-
             createClubWindow.Show();
             createClubWindow.position = new Vector3();
             createClubWindow.width = mainUI.width;
@@ -50,8 +48,6 @@ public class Menu : MonoBehaviour
 
         mainUI.GetChild("right").asCom.GetChild("btnCreateRoom").onClick.Add(() =>
         {
-            Debug.Log("创建房间按钮被点击");
-
             createRoomWindow.Show();
             createRoomWindow.position = new Vector3();
             createRoomWindow.width = mainUI.width;

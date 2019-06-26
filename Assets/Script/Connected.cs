@@ -1,8 +1,10 @@
 ﻿using Network;
 using Network.Msg;
 using Notification;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -21,12 +23,15 @@ public class Connected : MonoBehaviour
 
     private void OnConnected(NotificationArg arg)
     {
+        Debug.Log("网络连接成功");
         Api.User.LoginByToken();
     }
 
     private void OnDisconnected(NotificationArg arg)
     {
+        Debug.LogWarning("网络连接中断");
         Manager.Inst.Connect();
+
     }
 
     private void OnResLoginByToken(NotificationArg arg)
@@ -41,7 +46,6 @@ public class Connected : MonoBehaviour
         }
         Debug.Log(data.code + "  " + data.msg + "   " + data.token);
         Data.User.Token = data.token;
-
     }
 
 }

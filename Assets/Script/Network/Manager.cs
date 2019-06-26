@@ -24,8 +24,8 @@ namespace Network
             }
         }
 
-        public string host = "192.168.1.103";
-        public int port = 8899;
+        public string host = Config.ServerHost;
+        public int port = Config.ServerPort;
 
         public Queue<Message> m_msgQueue = new Queue<Message>();
         // for queue
@@ -61,7 +61,16 @@ namespace Network
                 return;
             }
             TimeSpan timeout = new TimeSpan(0, 0, 5);
-            m_gameSocket.Connect(host, port, timeout);
+            try
+            {
+                m_gameSocket.Connect(host, port, timeout);
+            }
+            catch 
+            {
+                // 连接失败，重新连接
+                m_gameSocket.Reset();
+                NotificationCenter.Inst.PushEvent(NotificationType.Network_OnDisconnected, null);
+            }
         }
 
         /// <summary>

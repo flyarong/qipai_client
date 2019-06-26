@@ -223,6 +223,7 @@
     <Compile Include="Assets\Script\Club\ManageWindow.cs" />
     <Compile Include="Assets\Script\Club\UsersWindow.cs" />
     <Compile Include="Assets\Script\CommonHeader.cs" />
+    <Compile Include="Assets\Script\Config.cs" />
     <Compile Include="Assets\Script\Connected.cs" />
     <Compile Include="Assets\Script\CreateClubWindow.cs" />
     <Compile Include="Assets\Script\CreateRoomWindow.cs" />
@@ -299,9 +300,10 @@
     <Compile Include="Assets\Script\UserInfo.cs" />
     <Compile Include="Assets\Script\Utils\ConfirmWindow.cs" />
     <Compile Include="Assets\Script\Utils\Handler.cs" />
-    <Compile Include="Assets\Script\Utils\HttpLoader.cs" />
+    <Compile Include="Assets\Script\Utils\IconManager.cs" />
     <Compile Include="Assets\Script\Utils\Msg.cs" />
     <Compile Include="Assets\Script\Utils\Msgbox.cs" />
+    <Compile Include="Assets\Script\Utils\MyGLoader.cs" />
     <Compile Include="Assets\UnityPackages\JsonNetSample\JsonNetSample.cs" />
     <None Include="Assets\JSON\readme.txt" />
     <None Include="Assets\FairyGUI\Resources\Shaders\AddOn\FairyGUI-BlurFilter.shader" />

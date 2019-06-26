@@ -256,7 +256,7 @@ SpriteRenderer:
   m_Size: {x: 13.34, y: 7.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &377366353
@@ -416,6 +416,7 @@ GameObject:
   - component: {fileID: 1263811942}
   - component: {fileID: 1263811943}
   - component: {fileID: 1263811944}
+  - component: {fileID: 1263811946}
   m_Layer: 5
   m_Name: UIPanel
   m_TagString: Untagged
@@ -479,7 +480,7 @@ Transform:
   m_GameObject: {fileID: 1263811937}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.015391909, y: 0.015391909, z: 0.015391909}
+  m_LocalScale: {x: 0.015624999, y: 0.015624999, z: 0.015624999}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -542,6 +543,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7776f37e9b5e1f42b62e52d038f697f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1263811946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263811937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c805adde1e087945959be7a47035862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1964623521
@@ -625,7 +638,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964623521}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.742603, y: -5, z: 0}
+  m_LocalPosition: {x: 11.371268, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

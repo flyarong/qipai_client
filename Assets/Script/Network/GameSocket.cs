@@ -77,7 +77,6 @@ namespace Network
             else
             {
                 Reset();
-                Debug.LogWarning("Failed to connect server.");
                 this.onDisonnected(null);
             }
         }
