@@ -28,8 +28,22 @@ namespace Club
             bindEvents();
             ui = GetComponent<UIPanel>().ui;
             Tables = ui.GetChild("tableList").asCom.GetChild("tables").asList;
-            var btnQuit = ui.GetChild("btnQuit").asButton;
+            var btnQuit = ui.GetChild("header").asCom.GetChild("btnQuit").asButton;
             btnQuit.onClick.Add(onBtnQuit);
+            var btnNotice = ui.GetChild("header").asCom.GetChild("btnNotice").asButton;
+            btnNotice.onClick.Add(onBtnNotice);
+        }
+
+        private void onBtnNotice(EventContext context)
+        {
+            MsgWindow msgWindow = new MsgWindow();
+
+            msgWindow.Show();
+            msgWindow.position = new Vector2();
+            msgWindow.width = ui.width;
+            msgWindow.height = ui.height;
+            msgWindow.SetTitle("本茶楼公告");
+            msgWindow.SetMsg("没有消息<img src='http://192.168.1.103:9988/static/avatar/Avatar115.png' width='200' height='200' />");
         }
 
         private void onBtnQuit(EventContext context)
@@ -315,7 +329,7 @@ namespace Club
             Data.Club.Info = data.club;
             Data.Club.IsBoss = data.club.uid == Data.User.Id;
 
-            var info = ui.GetChild("info").asTextField;
+            var info = ui.GetChild("header").asCom.GetChild("info").asTextField;
             info.text = Data.Club.Id + "\n" + data.club.name;
 
             var roll = ui.GetChild("rollText").asCom;

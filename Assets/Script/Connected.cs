@@ -1,4 +1,5 @@
-﻿using Network;
+﻿using FairyGUI;
+using Network;
 using Network.Msg;
 using Notification;
 using System;
@@ -11,6 +12,7 @@ using Utils;
 
 public class Connected : MonoBehaviour
 {
+    bool isConnected = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,14 +26,16 @@ public class Connected : MonoBehaviour
     private void OnConnected(NotificationArg arg)
     {
         Debug.Log("网络连接成功");
+        isConnected = true;
         Api.User.LoginByToken();
     }
 
     private void OnDisconnected(NotificationArg arg)
     {
         Debug.LogWarning("网络连接中断");
+        
+        isConnected = false;
         Manager.Inst.Connect();
-
     }
 
     private void OnResLoginByToken(NotificationArg arg)
@@ -46,6 +50,14 @@ public class Connected : MonoBehaviour
         }
         Debug.Log(data.code + "  " + data.msg + "   " + data.token);
         Data.User.Token = data.token;
+    }
+
+    void Update()
+    {
+        if (!isConnected)
+        {
+            Utils.MsgBox.ShowErr("网络重连中···");
+        }
     }
 
 }

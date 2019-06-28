@@ -96,11 +96,11 @@ namespace Club
         void addUserItem(ClubUser user)
         {
             GComponent item = userList.AddItemFromPool().asCom;
-            item.GetChild("imgAvatar").asLoader.url = "/static" + user.avatar;
+            item.GetChild("imgAvatar").asLoader.url = Config.HttpBaseHost + "/static" + user.avatar;
             item.GetChild("textId").text = "ID:" + user.id;
             item.GetChild("textNick").text = "昵称:" + user.nick;
 
-            var btnPayer = item.GetChild("btnPayer").asButton;
+            //var btnPayer = item.GetChild("btnPayer").asButton;
             var btnAdmin = item.GetChild("btnAdmin").asButton;
             var btnCheck = item.GetChild("btnCheck").asButton;
             var btnDisable = item.GetChild("btnDisable").asButton;
@@ -127,7 +127,7 @@ namespace Club
             }
 
 
-            btnPayer.visible = b;
+          //  btnPayer.visible = b;
             btnAdmin.visible = b;
             btnCheck.visible = b;
             btnDisable.visible = b;
@@ -138,7 +138,7 @@ namespace Club
             btnCheck.selected = user.status != 0;
             btnDisable.selected = user.status == 2;
 
-            btnPayer.onClick.Add(onBtnPayerClick);
+           // btnPayer.onClick.Add(onBtnPayerClick);
             btnAdmin.onClick.Add(onBtnAdminClick);
             btnCheck.onClick.Add(onBtnCheckClick);
             btnDisable.onClick.Add(onBtnDisableClick);

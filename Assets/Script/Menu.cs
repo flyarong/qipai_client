@@ -73,6 +73,29 @@ public class Menu : MonoBehaviour
         footer.GetChild("btnHistory").onClick.Add(()=> {
             SceneManager.LoadScene("History");
         });
+
+        footer.GetChild("btnRule").onClick.Add(()=> {
+            MsgWindow msgWindow = new MsgWindow();
+            
+            msgWindow.Show();
+            msgWindow.position = new Vector2();
+            msgWindow.width = mainUI.width;
+            msgWindow.height = mainUI.height;
+            msgWindow.SetTitle("游戏规则");
+            msgWindow.SetMsg("规则内容");
+        });
+
+
+        footer.GetChild("btnMsg").onClick.Add(() => {
+            MsgWindow msgWindow = new MsgWindow();
+
+            msgWindow.Show();
+            msgWindow.position = new Vector2();
+            msgWindow.width = mainUI.width;
+            msgWindow.height = mainUI.height;
+            msgWindow.SetTitle("消息通知");
+            msgWindow.SetMsg("没有消息<img src='http://192.168.1.103:9988/static/avatar/Avatar115.png' width='200' height='200' />");
+        });
     }
 
     private void BindListenners()

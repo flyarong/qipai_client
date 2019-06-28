@@ -245,6 +245,9 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="LitJson">
+      <HintPath>Assets/Plugins/LitJson.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Assets/UnityPackages/JsonNet/Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -256,6 +259,12 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
+    </Reference>
+    <Reference Include="ChannelPurchase">
+      <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.xiaomi@1.0.3/ChannelPurchase.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityStore">
+      <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.xiaomi@1.0.3/UnityStore.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
@@ -622,6 +631,14 @@
       <Project>{C12CEEC6-100C-58A2-DE36-314E4DE5E40B}</Project>
       <Name>Unity.CollabProxy.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="Editor.csproj">
+      <Project>{B2E402A9-DAB0-44FA-0EB3-EAC8D63ADBEE}</Project>
+      <Name>Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="XiaomiSupport.csproj">
+      <Project>{A2A6A8B2-DDE1-D596-6008-90CE9610175C}</Project>
+      <Name>XiaomiSupport</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.csproj">
       <Project>{07A21C90-D344-AE1A-8456-9910C203B41A}</Project>
       <Name>Unity.TextMeshPro</Name>
@@ -784,28 +801,71 @@
     <Compile Include="Assets\FairyGUI\Scripts\Utils\ZipReader.cs" />
     <Compile Include="Assets\JSON\JSONObject.cs" />
     <Compile Include="Assets\JSON\VectorTemplates.cs" />
+    <Compile Include="Assets\Script\Api\Club.cs" />
+    <Compile Include="Assets\Script\Api\Game.cs" />
     <Compile Include="Assets\Script\Api\Room.cs" />
     <Compile Include="Assets\Script\Api\User.cs" />
+    <Compile Include="Assets\Script\Club\Club.cs" />
+    <Compile Include="Assets\Script\Club\ClubList.cs" />
+    <Compile Include="Assets\Script\Club\Footer.cs" />
+    <Compile Include="Assets\Script\Club\ManageWindow.cs" />
+    <Compile Include="Assets\Script\Club\UsersWindow.cs" />
     <Compile Include="Assets\Script\CommonHeader.cs" />
+    <Compile Include="Assets\Script\Config.cs" />
+    <Compile Include="Assets\Script\Connected.cs" />
     <Compile Include="Assets\Script\CreateClubWindow.cs" />
     <Compile Include="Assets\Script\CreateRoomWindow.cs" />
     <Compile Include="Assets\Script\Data\Club.cs" />
+    <Compile Include="Assets\Script\Data\Game.cs" />
     <Compile Include="Assets\Script\Data\Player.cs" />
-    <Compile Include="Assets\Script\Data\Room.cs" />
     <Compile Include="Assets\Script\Data\User.cs" />
     <Compile Include="Assets\Script\ErrorWindow.cs" />
+    <Compile Include="Assets\Script\Game\Card.cs" />
+    <Compile Include="Assets\Script\Game\CardManager.cs" />
+    <Compile Include="Assets\Script\Game\Game.cs" />
+    <Compile Include="Assets\Script\Game\Player.cs" />
+    <Compile Include="Assets\Script\Game\RightWindow.cs" />
+    <Compile Include="Assets\Script\Game\Room.cs" />
+    <Compile Include="Assets\Script\Game\RoomList.cs" />
+    <Compile Include="Assets\Script\History\CalcWindow.cs" />
+    <Compile Include="Assets\Script\History\History.cs" />
     <Compile Include="Assets\Script\JoinWindow.cs" />
     <Compile Include="Assets\Script\Loading.cs" />
     <Compile Include="Assets\Script\Login.cs" />
     <Compile Include="Assets\Script\Menu.cs" />
-    <Compile Include="Assets\Script\MenuEvenManager.cs" />
     <Compile Include="Assets\Script\Network\GameSocket.cs" />
     <Compile Include="Assets\Script\Network\Manager.cs" />
     <Compile Include="Assets\Script\Network\Message.cs" />
     <Compile Include="Assets\Script\Network\Msg\BaseMsg.cs" />
-    <Compile Include="Assets\Script\Network\Msg\ErrMsg.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\BroadcastDelClub.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\BroadcastJoinClub.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\BroadcastLeaveClubRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\BroadcastSitClubRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClub.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClubGameOver.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClubGameStart.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClubList.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClubRooms.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClubRoomUsers.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResClubUsers.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResCreateClub.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResCreateClubRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResEditClub.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResEditClubUser.cs" />
+    <Compile Include="Assets\Script\Network\Msg\CommonMsg.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastBanker.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastCompareCard.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastGameOver.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastScore.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastShowCard.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\ResBroadcastTimes.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\ResGamePlayers.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\ResGameResult.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\ResGameStart.cs" />
     <Compile Include="Assets\Script\Network\Msg\MsgID.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\BroadcastSitRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ReqCreateRoom.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\ResDeleteRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ResJoinRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ResLeaveRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ResRoom.cs" />
@@ -815,6 +875,7 @@
     <Compile Include="Assets\Script\Network\Msg\User\ReqReg.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResLogin.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResLoginByToken.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResReset.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResUserInfo.cs" />
     <Compile Include="Assets\Script\Notification\Notification.cs" />
     <Compile Include="Assets\Script\Notification\NotificationCenter.cs" />
@@ -822,17 +883,15 @@
     <Compile Include="Assets\Script\Reg.cs" />
     <Compile Include="Assets\Script\Reset.cs" />
     <Compile Include="Assets\Script\RollText.cs" />
-    <Compile Include="Assets\Script\Room\RightWindow.cs" />
-    <Compile Include="Assets\Script\Room\Room.cs" />
-    <Compile Include="Assets\Script\Room\RoomList.cs" />
     <Compile Include="Assets\Script\RoomEventManager.cs" />
     <Compile Include="Assets\Script\SettingWindow.cs" />
     <Compile Include="Assets\Script\UserInfo.cs" />
     <Compile Include="Assets\Script\Utils\ConfirmWindow.cs" />
     <Compile Include="Assets\Script\Utils\Handler.cs" />
-    <Compile Include="Assets\Script\Utils\HttpLoader.cs" />
+    <Compile Include="Assets\Script\Utils\IconManager.cs" />
     <Compile Include="Assets\Script\Utils\Msg.cs" />
     <Compile Include="Assets\Script\Utils\Msgbox.cs" />
+    <Compile Include="Assets\Script\Utils\MyGLoader.cs" />
     <Compile Include="Assets\UnityPackages\JsonNetSample\JsonNetSample.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -868,6 +927,9 @@
     <None Include="Packages\com.unity.textmeshpro\Scripts\Runtime\Unity.TextMeshPro.asmdef" />
     <None Include="Packages\com.unity.textmeshpro\Tests\Editor\Unity.TextMeshPro.Editor.Tests.asmdef" />
     <None Include="Packages\com.unity.textmeshpro\Tests\Runtime\Unity.TextMeshPro.Tests.asmdef" />
+    <None Include="Packages\com.unity.xiaomi\Xiaomi.asmdef" />
+    <None Include="Packages\com.unity.xiaomi\XiaomiSupport\Editor\Editor.asmdef" />
+    <None Include="Packages\com.unity.xiaomi\XiaomiSupport\XiaomiSupport.asmdef" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

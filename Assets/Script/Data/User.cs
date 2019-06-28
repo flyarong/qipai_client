@@ -8,11 +8,9 @@ namespace Data
     public static class User
     {
         // 用户位置
-        private static int pos;
         private static int id;
         private static Network.Msg.UserInfo info = null;
         private static string token;
-        public static int Pos { get => pos; set => pos = value; }
 
 
         public static int Id { get => id; set => id = value; }
@@ -31,7 +29,18 @@ namespace Data
             }
         }
 
-        public static Network.Msg.UserInfo Info { get => info; set { info = value; id = info.id; } }
+        public static Network.Msg.UserInfo Info
+        {
+            get => info;
+            set
+            {
+                info = value;
+                if (info != null)
+                {
+                    id = info.id;
+                }
+            }
+        }
     }
 
 }

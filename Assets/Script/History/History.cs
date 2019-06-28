@@ -29,6 +29,11 @@ namespace History
 
             ui.GetChild("btnBack").onClick.Add(() =>
             {
+                if (Data.Club.Id > 0)
+                {
+                    SceneManager.LoadScene("Club");
+                    return;
+                }
                 SceneManager.LoadScene("Menu");
             });
 
@@ -126,7 +131,7 @@ namespace History
 
                 userUi.visible = true;
                 var userInfo = userUi.GetChild("userInfo").asCom;
-                userInfo.GetChild("imgAvatar").asLoader.url = "/static" + u.avatar;
+                userInfo.GetChild("imgAvatar").asLoader.url =Config.HttpBaseHost + "/static" + u.avatar;
 
                 var nick = userInfo.GetChild("textNick");
                 var id = userInfo.GetChild("textId");

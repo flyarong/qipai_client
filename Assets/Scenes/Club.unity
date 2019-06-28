@@ -171,7 +171,7 @@ Transform:
   m_GameObject: {fileID: 68352511}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.014124294, y: 0.014124294, z: 0.014124294}
+  m_LocalScale: {x: 0.015625, y: 0.015625, z: 0.015625}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -200,10 +200,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a723f7fd716aac049aa24e9186f18685, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleMode: 0
+  scaleMode: 1
   screenMatchMode: 0
-  designResolutionX: 0
-  designResolutionY: 0
+  designResolutionX: 1136
+  designResolutionY: 640
   fallbackScreenDPI: 96
   defaultSpriteDPI: 96
   constantScaleFactor: 1
@@ -244,7 +244,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f80e175206756e849a438c8f29057771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: RollText
 --- !u!114 &68352519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,7 +419,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387227567}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.816384, y: -5, z: 0}
+  m_LocalPosition: {x: 10.61832, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

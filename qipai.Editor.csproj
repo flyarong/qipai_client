@@ -296,6 +296,9 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="LitJson">
+      <HintPath>Assets/Plugins/LitJson.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Assets/UnityPackages/JsonNet/Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -313,6 +316,12 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll</HintPath>
+    </Reference>
+    <Reference Include="ChannelPurchase">
+      <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.xiaomi@1.0.3/ChannelPurchase.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityStore">
+      <HintPath>D:/projects/unity/qipai/Library/PackageCache/com.unity.xiaomi@1.0.3/UnityStore.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
@@ -692,6 +701,14 @@
       <Project>{C12CEEC6-100C-58A2-DE36-314E4DE5E40B}</Project>
       <Name>Unity.CollabProxy.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="Editor.csproj">
+      <Project>{B2E402A9-DAB0-44FA-0EB3-EAC8D63ADBEE}</Project>
+      <Name>Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="XiaomiSupport.csproj">
+      <Project>{A2A6A8B2-DDE1-D596-6008-90CE9610175C}</Project>
+      <Name>XiaomiSupport</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.csproj">
       <Project>{07A21C90-D344-AE1A-8456-9910C203B41A}</Project>
       <Name>Unity.TextMeshPro</Name>
@@ -745,6 +762,9 @@
     <None Include="Packages\com.unity.textmeshpro\Scripts\Runtime\Unity.TextMeshPro.asmdef" />
     <None Include="Packages\com.unity.textmeshpro\Tests\Editor\Unity.TextMeshPro.Editor.Tests.asmdef" />
     <None Include="Packages\com.unity.textmeshpro\Tests\Runtime\Unity.TextMeshPro.Tests.asmdef" />
+    <None Include="Packages\com.unity.xiaomi\Xiaomi.asmdef" />
+    <None Include="Packages\com.unity.xiaomi\XiaomiSupport\Editor\Editor.asmdef" />
+    <None Include="Packages\com.unity.xiaomi\XiaomiSupport\XiaomiSupport.asmdef" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
