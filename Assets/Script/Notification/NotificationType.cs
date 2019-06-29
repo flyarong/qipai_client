@@ -39,5 +39,8 @@
         Network_OnResClubRoomUsers,
         Network_OnBroadcastSitClubRoom,
         Network_OnBroadcastLeaveClubRoom,
+        Network_OnResExitClub,
+        Network_OnResNotice,
+        Network_OnResRollText,
     }
 }

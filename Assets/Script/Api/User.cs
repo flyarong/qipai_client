@@ -66,6 +66,16 @@ namespace Api
             req.Add("code", code);
             req.Send();
         }
+
+        public static void GetNotice()
+        {
+            new Utils.Msg(MsgID.ReqNotice).Send();
+        }
+
+        public static void GetRollText()
+        {
+            new Utils.Msg(MsgID.ReqRollText).Send();
+        }
     }
 }
 

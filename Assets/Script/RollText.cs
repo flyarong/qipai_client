@@ -25,6 +25,10 @@ public class RollText : MonoBehaviour
         {
             text.SetPosition(pos.x - 1, pos.y, pos.z);
         }
+        else
+        {
+            text.text = "欢迎光临";
+        }
 
         if (pos.x < -text.width)
         {

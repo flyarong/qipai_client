@@ -5,43 +5,41 @@
         NoPermission = 100,
 
         ReqLogin,     // 登录请求
-
         ResLogin,     // 响应登录结果
 
         ReqReg,       // 用户注册
-
         ResReg,       // 响应注册结果
 
         ReqReset,     // 重置密码
-
         ResReset,     // 响应重置密码结果
 
         ReqBind,      // 账号绑定
-
         ResBind,      // 响应绑定结果
 
         ReqUserInfo, // 获取用户信息
-
         ResUserInfo, // 响应用户信息
 
         ReqCode,    // 请求手机验证码
-
         ResCode,     // 返回验证码发送结果
 
         ReqLoginByToken, // 通过token登录
-
         ResLoginByToken,
+
+        ReqNotice,  // 请求公告通知信息
+        ResNotice,
+
+        ReqRollText, // 获取滚动字幕内容
+        ResRollText,
 
 
         /*************房间相关************/
 
         // 创建房间
         ReqCreateRoom = 201,
-
         ResCreateRoom,
+
         // 房间列表
         ReqRoomList,
-
         ResRoomList,
         // 房间信息
         ReqRoom,

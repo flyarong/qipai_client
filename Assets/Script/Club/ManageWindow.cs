@@ -62,7 +62,10 @@ namespace Club
 
         private void onBtnLeaveClick(EventContext context)
         {
-            throw new NotImplementedException();
+            Utils.ConfirmWindow.ShowBox(() => {
+                Api.Club.Exit(Data.Club.Id);
+                Hide();
+            }, "确定退出该茶楼吗？");
         }
 
         private void onBtnDeleteClick(EventContext context)

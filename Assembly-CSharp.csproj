@@ -264,6 +264,7 @@
     <Compile Include="Assets\Script\Network\Msg\Club\ResCreateClubRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResEditClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResEditClubUser.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResExitClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\CommonMsg.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastBanker.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastCompareCard.cs" />
@@ -287,7 +288,9 @@
     <Compile Include="Assets\Script\Network\Msg\User\ReqReg.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResLogin.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResLoginByToken.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResNotice.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResReset.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResRollText.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResUserInfo.cs" />
     <Compile Include="Assets\Script\Notification\Notification.cs" />
     <Compile Include="Assets\Script\Notification\NotificationCenter.cs" />

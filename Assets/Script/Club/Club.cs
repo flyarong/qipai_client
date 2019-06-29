@@ -43,7 +43,7 @@ namespace Club
             msgWindow.width = ui.width;
             msgWindow.height = ui.height;
             msgWindow.SetTitle("本茶楼公告");
-            msgWindow.SetMsg("没有消息<img src='http://192.168.1.103:9988/static/avatar/Avatar115.png' width='200' height='200' />");
+            msgWindow.SetMsg(Data.Club.Info.notice!=""? Data.Club.Info.notice:"<center>茶楼老板没有编辑公告</center>");
         }
 
         private void onBtnQuit(EventContext context)
@@ -66,6 +66,7 @@ namespace Club
             Handler.Add<ResClubRoomUsers>(MsgID.ResClubRoomUsers, NotificationType.Network_OnResClubRoomUsers);
             Handler.Add<BroadcastSitClubRoom>(MsgID.BroadcastSitRoom, NotificationType.Network_OnBroadcastSitClubRoom);
             Handler.Add<BroadcastLeaveClubRoom>(MsgID.ResLeaveRoom, NotificationType.Network_OnBroadcastLeaveClubRoom);
+            Handler.Add<ResExitClub>(MsgID.ResExitClub, NotificationType.Network_OnResExitClub);
 
 
             Handler.AddListenner(NotificationType.Network_OnResClub, OnResClub);
@@ -79,6 +80,24 @@ namespace Club
             Handler.AddListenner(NotificationType.Network_OnResClubRoomUsers, OnResClubRoomUsers);
             Handler.AddListenner(NotificationType.Network_OnBroadcastSitClubRoom, OnBroadcastSitClubRoom);
             Handler.AddListenner(NotificationType.Network_OnBroadcastLeaveClubRoom, OnBroadcastLeaveClubRoom);
+            Handler.AddListenner(NotificationType.Network_OnResExitClub, OnResExitClub);
+        }
+
+        private void OnResExitClub(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResExitClub>();
+
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                return;
+            }
+            if (data.clubId != Data.Club.Id)
+            {
+                Debug.Log("收到不是当前茶楼的消息");
+                return;
+            }
+            exit();
         }
 
         private void OnBroadcastLeaveClubRoom(NotificationArg arg)
@@ -247,7 +266,7 @@ namespace Club
             var data = arg.GetValue<ResCreateClubRoom>();
             if (data.code != 0)
             {
-                MsgBox.ShowErr(data.msg, 2);
+                MsgBox.ShowErr(data.msg);
                 return;
             }
 
