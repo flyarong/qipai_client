@@ -833,6 +833,7 @@
     <Compile Include="Assets\Script\Loading.cs" />
     <Compile Include="Assets\Script\Login.cs" />
     <Compile Include="Assets\Script\Menu.cs" />
+    <Compile Include="Assets\Script\MsgWindow.cs" />
     <Compile Include="Assets\Script\Network\GameSocket.cs" />
     <Compile Include="Assets\Script\Network\Manager.cs" />
     <Compile Include="Assets\Script\Network\Message.cs" />
@@ -852,6 +853,7 @@
     <Compile Include="Assets\Script\Network\Msg\Club\ResCreateClubRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResEditClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResEditClubUser.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResExitClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\CommonMsg.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastBanker.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastCompareCard.cs" />
@@ -875,7 +877,9 @@
     <Compile Include="Assets\Script\Network\Msg\User\ReqReg.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResLogin.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResLoginByToken.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResNotice.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResReset.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResRollText.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResUserInfo.cs" />
     <Compile Include="Assets\Script\Notification\Notification.cs" />
     <Compile Include="Assets\Script\Notification\NotificationCenter.cs" />
@@ -901,6 +905,7 @@
     <None Include="Assets\FairyGUI\Resources\Shaders\FairyGUI-Image.shader" />
     <None Include="Assets\FairyGUI\Resources\Shaders\FairyGUI-Text.shader" />
     <None Include="Assets\JSON\readme.txt" />
+    <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
     <None Include="Packages\com.unity.analytics\DataPrivacy\Unity.Analytics.DataPrivacy.asmdef" />
     <None Include="Packages\com.unity.analytics\Tests\Editor\Unity.Analytics.StandardEvents\Unity.Analytics.StandardEvents.EditorTests.asmdef" />
     <None Include="Packages\com.unity.analytics\Tests\Runtime\DataPrivacy\Unity.Analytics.DataPrivacy.Tests.asmdef" />

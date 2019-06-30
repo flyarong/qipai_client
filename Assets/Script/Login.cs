@@ -21,7 +21,7 @@ public class Login : MonoBehaviour
     private void Awake()
     {
         BindListenners();
-        
+
         mainUI = GetComponent<UIPanel>().ui;
         mainUI.GetChild("btnReg").onClick.Add(() =>
         {
@@ -45,13 +45,38 @@ public class Login : MonoBehaviour
         {
             SceneManager.LoadScene("Reset");
         });
+
+#if UNITY_IPHONE
+#elif UNITY_ANDROID
+        AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+        jo.Call("RegisterToWeChat", "wx98734283bb3e480f", "e4fb077a6678bbb1101aec0791fde3b9");
+#endif
+
+        mainUI.GetChild("btnWeChat").onClick.Add(() =>
+        {
+#if UNITY_IPHONE
+#elif UNITY_ANDROID
+            jo.Call("weiLogin");
+#endif
+        });
+    }
+
+    public void CallBack(string json)
+    {
+        //Utils.MsgBox.ShowErr(json,1000);
+    }
+
+    public void ResCode(string code)
+    {
+        Utils.MsgBox.ShowErr(code,1000);
     }
 
     private void BindListenners()
     {
         Handler.Init();
         Handler.Add<ResLogin>(MsgID.ResLogin, NotificationType.Network_OnResLogin);
-        
+
         Handler.AddListenner(NotificationType.Network_OnResLoginByToken, OnResLoginByToken);
         Handler.AddListenner(NotificationType.Network_OnResLogin, OnResLogin);
     }
@@ -109,7 +134,7 @@ public class Login : MonoBehaviour
 
     }
 
-    
+
 }
 
 
