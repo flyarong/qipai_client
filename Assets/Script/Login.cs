@@ -24,7 +24,7 @@ public class Login : MonoBehaviour
 #elif UNITY_ANDROID
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
-        jo.Call("RegisterToWeChat", "wx98734283bb3e480f", "e4fb077a6678bbb1101aec0791fde3b9");
+        jo.Call("RegisterToWeChat", Config.WeChatAppId);
 #endif
 
         BindListenners();

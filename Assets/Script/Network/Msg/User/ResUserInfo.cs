@@ -11,6 +11,7 @@ namespace Network.Msg
         public string avatar;
         public string ip;
         public string address;
+        public int sex;  // 1为男性，2为女性
         public int card;
         public DateTime createAt;
     }

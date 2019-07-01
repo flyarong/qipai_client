@@ -4,6 +4,7 @@ using Notification;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
@@ -17,6 +18,12 @@ namespace History
         CalcWindow calcWindow;
         private void Awake()
         {
+//#if UNITY_IPHONE
+//#elif UNITY_ANDROID
+//            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+//            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+//            jo.Call("RegisterToWeChat", Config.WeChatAppId);
+//#endif
 
             bindEvents();
 
@@ -63,12 +70,35 @@ namespace History
 
             ui.GetChild("btnShare").onClick.Add(() =>
             {
-             
+                StartCoroutine(CaptureScreenshot());
             });
             
         }
 
+        string imageFilePath;
+        private IEnumerator CaptureScreenshot()
+        {
+            yield return new WaitForEndOfFrame();
 
+            Texture2D texture2D = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, true);
+            texture2D.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+            texture2D.Apply();
+            imageFilePath = Application.persistentDataPath + "/" + DateTime.Now.ToFileTime() + ".jpg";
+            Debug.Log(imageFilePath);
+
+            File.WriteAllBytes(imageFilePath, texture2D.EncodeToPNG());
+            Destroy(texture2D);
+            texture2D = null;
+            Resources.UnloadUnusedAssets();
+            GC.Collect();
+
+#if UNITY_IPHONE
+#elif UNITY_ANDROID
+            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+            jo.Call("shareImage", imageFilePath);
+#endif
+        }
 
         private void bindEvents()
         {
@@ -141,7 +171,7 @@ namespace History
 
                 userUi.visible = true;
                 var userInfo = userUi.GetChild("userInfo").asCom;
-                userInfo.GetChild("imgAvatar").asLoader.url = Config.HttpBaseHost + "/static" + u.avatar;
+                userInfo.GetChild("imgAvatar").asLoader.url = Utils.Helper.GetReallyImagePath(u.avatar);
 
                 var nick = userInfo.GetChild("textNick");
                 var id = userInfo.GetChild("textId");

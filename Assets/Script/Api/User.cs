@@ -85,6 +85,18 @@ namespace Api
         {
             new Utils.Msg(MsgID.ReqRollText).Send();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="roomId">房间编号</param>
+        /// <param name="deskId">座位编号</param>
+        /// <param name="voiceId">语音编号0-9</param>
+        /// <param name="sex">性别，女0，男1</param>
+        public static void SayDefaultVoice(int roomId, int deskId, int voiceId, int sex)
+        {
+            new Utils.Msg(MsgID.ReqDefaultVoice).Add("voiceId", voiceId).Add("roomId", roomId).Add("deskId", deskId).Add("sex", sex).Send();
+        }
     }
 }
 

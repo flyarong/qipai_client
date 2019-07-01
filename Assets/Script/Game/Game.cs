@@ -5,6 +5,7 @@ using Notification;
 using System.Collections.Generic;
 using FairyGUI;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace Game
 {
@@ -58,7 +59,16 @@ namespace Game
             ui.GetChild("btnTimes2").onClick.Add(onBtnTimesClick);
             ui.GetChild("btnTimes3").onClick.Add(onBtnTimesClick);
             ui.GetChild("btnTimes4").onClick.Add(onBtnTimesClick);
+
+            ui.GetChild("defaultVoice").asComboBox.onChanged.Set(defaultVoiceChanged);
         }
+
+        private void defaultVoiceChanged(EventContext context)
+        {
+            var defaultVoice = context.sender as GComboBox;
+            Api.User.SayDefaultVoice(Data.Game.Id, Data.Game.DeskId, defaultVoice.selectedIndex, Data.User.Info.sex == 2 ? 0 : 1);
+        }
+
         // Use this for initialization
         void Start()
         {
@@ -69,6 +79,7 @@ namespace Game
             Handler.Add<BroadcastShowCard>(MsgID.BroadcastShowCard, NotificationType.Network_OnBroadcastShowCard);
             Handler.Add<BroadcastCompareCard>(MsgID.BroadcastCompareCard, NotificationType.Network_OnBroadcastCompareCard);
             Handler.Add<BroadcastGameOver>(MsgID.BroadcastGameOver, NotificationType.Network_OnBroadcastGameOver);
+            Handler.Add<BroadcastDefaultVoice>(MsgID.BroadcastDefaultVoice, NotificationType.Network_OnBroadcastDefaultVoice);
 
 
             Handler.AddListenner(NotificationType.Network_OnResGameStart, OnResGameStart);
@@ -78,9 +89,33 @@ namespace Game
             Handler.AddListenner(NotificationType.Network_OnBroadcastShowCard, OnBroadcastShowCard);
             Handler.AddListenner(NotificationType.Network_OnBroadcastCompareCard, OnBroadcastCompareCard);
             Handler.AddListenner(NotificationType.Network_OnBroadcastGameOver, OnBroadcastGameOver);
+            Handler.AddListenner(NotificationType.Network_OnBroadcastDefaultVoice, OnBroadcastDefaultVoice);
 
         }
 
+        private void OnBroadcastDefaultVoice(NotificationArg arg)
+        {
+            var data = arg.GetValue<BroadcastDefaultVoice>();
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg, 2);
+                return;
+            }
+            if (data.roomId != Data.Game.Id)
+            {
+                Debug.Log("收到不属于该房间的消息，来自房间号：" + data.roomId);
+                return;
+            }
+            
+            if (data.voiceId<0 || data.voiceId>9 || data.sex <0 || data.sex > 1)
+            {
+                Debug.Log("声音编号或性别不合法");
+                return;
+            }
+            
+            gameAudio.clip = Resources.Load<AudioClip>("Game/audio/voice/voice_"+data.voiceId+"_"+data.sex);
+            gameAudio.Play();
+        }
 
         private void OnBroadcastGameOver(NotificationArg arg)
         {
@@ -111,7 +146,7 @@ namespace Game
 
             // 隐藏网络延迟导致迟收到选庄包显示的下注按钮
             hideSetScoreTips();
-            ui.GetChild("btnScores").visible = false; 
+            ui.GetChild("btnScores").visible = false;
 
             var games = data.games;
             foreach (var game in games)
@@ -275,12 +310,13 @@ namespace Game
                     var zhuang = p.PlayerUi.GetChild("zhuang");
                     var zScale = zhuang.scale;
                     zhuang.position = zhuang.GlobalToLocal(cardCenterPlace.position);
-                    
+
                     zhuang.SetScale(4f, 4f);
                     zhuang.visible = true;
 
                     zhuang.TweenMove(new Vector2(p.zhuangPos.x, p.zhuangPos.y), 0.5f);
-                    zhuang.TweenScale(new Vector2(zScale.x, zScale.y), 0.5f).OnComplete(()=> {
+                    zhuang.TweenScale(new Vector2(zScale.x, zScale.y), 0.5f).OnComplete(() =>
+                    {
                         zhuang.SetScale(1f, 1f);
                     });
                 }
@@ -327,6 +363,11 @@ namespace Game
                 MsgBox.ShowErr(data.msg, 2);
                 return;
             }
+
+            // 游戏开始，隐藏复制房号按钮。显示默认语音下拉框
+            ui.GetChild("btnCopy").visible = false;
+            ui.GetChild("defaultVoice").visible = true;
+
 
             // 每次游戏开始，都更新一下房间信息
             Api.Room.GetRoom(Data.Game.Id);

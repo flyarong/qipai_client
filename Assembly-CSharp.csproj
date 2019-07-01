@@ -276,6 +276,7 @@
     <Compile Include="Assets\Script\Network\Msg\Game\ResGameResult.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\ResGameStart.cs" />
     <Compile Include="Assets\Script\Network\Msg\MsgID.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Room\BroadcastDefaultVoice.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\BroadcastSitRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ReqCreateRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Room\ResDeleteRoom.cs" />
@@ -302,6 +303,7 @@
     <Compile Include="Assets\Script\RoomEventManager.cs" />
     <Compile Include="Assets\Script\SettingWindow.cs" />
     <Compile Include="Assets\Script\UserInfo.cs" />
+    <Compile Include="Assets\Script\Utils\CaptureScreenshotMgr.cs" />
     <Compile Include="Assets\Script\Utils\ConfirmWindow.cs" />
     <Compile Include="Assets\Script\Utils\Handler.cs" />
     <Compile Include="Assets\Script\Utils\Helper.cs" />

@@ -34,6 +34,9 @@
         ReqLoginByWeChatCode, // 微信登录
         ResLoginByWeChatCode,
 
+        ReqDefaultVoice, // 请求发送默认语音
+        BroadcastDefaultVoice,
+
         /*************房间相关************/
 
         // 创建房间
