@@ -6,6 +6,7 @@
         Network_OnDisconnected,
         Network_OnResLogin,
         Network_OnResLoginByToken,
+        Network_OnResLoginByWeChatCode,
         Network_OnResReg,
         Network_OnResReset,
         Network_OnResCode,

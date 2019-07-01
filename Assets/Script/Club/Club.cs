@@ -152,7 +152,7 @@ namespace Club
             var desk = table.GetChild("desk" + deskId);
             var nickText = table.GetChild("nick" + deskId);
             var avatarUi = desk.asCom.GetChild("avatar").asLoader;
-            avatarUi.url = avatar == null ? avatarUi.data + "" : Config.HttpBaseHost + "/static" + avatar;
+            avatarUi.url = avatar == null ? avatarUi.data + "" : Utils.Helper.GetReallyImagePath(avatar) ;
             if (avatar != null)
             {
                 nickText.text = nick;

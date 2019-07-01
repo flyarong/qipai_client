@@ -96,7 +96,7 @@ namespace Club
         void addUserItem(ClubUser user)
         {
             GComponent item = userList.AddItemFromPool().asCom;
-            item.GetChild("imgAvatar").asLoader.url = Config.HttpBaseHost + "/static" + user.avatar;
+            item.GetChild("imgAvatar").asLoader.url = Utils.Helper.GetReallyImagePath(user.avatar);
             item.GetChild("textId").text = "ID:" + user.id;
             item.GetChild("textNick").text = "昵称:" + user.nick;
 

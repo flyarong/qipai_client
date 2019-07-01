@@ -288,6 +288,7 @@
     <Compile Include="Assets\Script\Network\Msg\User\ReqReg.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResLogin.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResLoginByToken.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResLoginByWeChatCode.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResNotice.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResReset.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResRollText.cs" />
@@ -303,6 +304,7 @@
     <Compile Include="Assets\Script\UserInfo.cs" />
     <Compile Include="Assets\Script\Utils\ConfirmWindow.cs" />
     <Compile Include="Assets\Script\Utils\Handler.cs" />
+    <Compile Include="Assets\Script\Utils\Helper.cs" />
     <Compile Include="Assets\Script\Utils\IconManager.cs" />
     <Compile Include="Assets\Script\Utils\Msg.cs" />
     <Compile Include="Assets\Script\Utils\Msgbox.cs" />

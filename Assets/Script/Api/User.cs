@@ -23,6 +23,15 @@ namespace Api
             new Utils.Msg(MsgID.ReqLoginByToken).Add("token", Data.User.Token).Send();
         }
 
+        public static void LoginByWeChatCode(string code)
+        {
+            if (code == "")
+            {
+                return;
+            }
+            new Utils.Msg(MsgID.ReqLoginByWeChatCode).Add("code", code).Send();
+        }
+
         public static void Reg(LoginType type, string nick, string name, string pass, string code)
         {
             var msg = new ReqReg(type, nick, name, pass, code);

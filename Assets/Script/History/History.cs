@@ -17,6 +17,7 @@ namespace History
         CalcWindow calcWindow;
         private void Awake()
         {
+
             bindEvents();
 
             ui = GetComponent<UIPanel>().ui;
@@ -58,7 +59,16 @@ namespace History
             {
                 calcWindow.Show();
             });
+
+
+            ui.GetChild("btnShare").onClick.Add(() =>
+            {
+             
+            });
+            
         }
+
+
 
         private void bindEvents()
         {
@@ -131,7 +141,7 @@ namespace History
 
                 userUi.visible = true;
                 var userInfo = userUi.GetChild("userInfo").asCom;
-                userInfo.GetChild("imgAvatar").asLoader.url =Config.HttpBaseHost + "/static" + u.avatar;
+                userInfo.GetChild("imgAvatar").asLoader.url = Config.HttpBaseHost + "/static" + u.avatar;
 
                 var nick = userInfo.GetChild("textNick");
                 var id = userInfo.GetChild("textId");

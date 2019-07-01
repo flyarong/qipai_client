@@ -31,6 +31,8 @@
         ReqRollText, // 获取滚动字幕内容
         ResRollText,
 
+        ReqLoginByWeChatCode, // 微信登录
+        ResLoginByWeChatCode,
 
         /*************房间相关************/
 
