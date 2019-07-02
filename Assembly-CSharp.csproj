@@ -293,6 +293,7 @@
     <Compile Include="Assets\Script\Network\Msg\User\ResNotice.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResReset.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResRollText.cs" />
+    <Compile Include="Assets\Script\Network\Msg\User\ResShareText.cs" />
     <Compile Include="Assets\Script\Network\Msg\User\ResUserInfo.cs" />
     <Compile Include="Assets\Script\Notification\Notification.cs" />
     <Compile Include="Assets\Script\Notification\NotificationCenter.cs" />
@@ -303,7 +304,6 @@
     <Compile Include="Assets\Script\RoomEventManager.cs" />
     <Compile Include="Assets\Script\SettingWindow.cs" />
     <Compile Include="Assets\Script\UserInfo.cs" />
-    <Compile Include="Assets\Script\Utils\CaptureScreenshotMgr.cs" />
     <Compile Include="Assets\Script\Utils\ConfirmWindow.cs" />
     <Compile Include="Assets\Script\Utils\Handler.cs" />
     <Compile Include="Assets\Script\Utils\Helper.cs" />

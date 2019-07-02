@@ -18,13 +18,6 @@ namespace History
         CalcWindow calcWindow;
         private void Awake()
         {
-//#if UNITY_IPHONE
-//#elif UNITY_ANDROID
-//            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-//            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
-//            jo.Call("RegisterToWeChat", Config.WeChatAppId);
-//#endif
-
             bindEvents();
 
             ui = GetComponent<UIPanel>().ui;
@@ -173,11 +166,15 @@ namespace History
                 var userInfo = userUi.GetChild("userInfo").asCom;
                 userInfo.GetChild("imgAvatar").asLoader.url = Utils.Helper.GetReallyImagePath(u.avatar);
 
-                var nick = userInfo.GetChild("textNick");
-                var id = userInfo.GetChild("textId");
+                var nick = userInfo.GetChild("textNick").asTextField;
+                var id = userInfo.GetChild("textId").asTextField;
                 nick.text = "昵称:" + u.nick;
                 id.text = "ID:" + u.uid;
-
+                if(u.uid == Data.User.Id)
+                {
+                    nick.color = new Color(255, 255, 0);
+                    id.color = new Color(255, 255, 0);
+                }
 
                 var score = userUi.GetChild("score").asTextField;
                 TextFormat tf = score.textFormat;

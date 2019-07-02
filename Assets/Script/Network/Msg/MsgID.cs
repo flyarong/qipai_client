@@ -37,6 +37,9 @@
         ReqDefaultVoice, // 请求发送默认语音
         BroadcastDefaultVoice,
 
+        ReqShareText, // 请求分享的内容
+        ResShareText,
+
         /*************房间相关************/
 
         // 创建房间

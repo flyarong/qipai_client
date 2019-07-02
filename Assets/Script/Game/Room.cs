@@ -36,6 +36,15 @@ namespace Game
             right = new RightWindow();
             ui.GetChild("btnSetting").onClick.Add(onSettingClick);
             btnStart = ui.GetChild("btnStart").asButton;
+            ui.GetChild("btnCopy").onClick.Add(()=> {
+                var content = "房间号:"+Data.Game.Id;
+                if (Data.Club.Id > 0)
+                {
+                    content = "茶楼编号:"+Data.Club.Id+"  第"+ Data.Club.TableId + "桌";
+                }
+                UnityEngine.GUIUtility.systemCopyBuffer = content;
+                Utils.MsgBox.ShowErr("房间号已复制到剪贴板，在聊天输入框长按粘贴即可");
+            });
 
         }
 

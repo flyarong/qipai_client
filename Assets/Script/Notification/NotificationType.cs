@@ -44,5 +44,6 @@
         Network_OnResNotice,
         Network_OnResRollText,
         Network_OnBroadcastDefaultVoice,
+        Network_OnResShareText,
     }
 }

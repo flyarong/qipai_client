@@ -86,6 +86,11 @@ namespace Api
             new Utils.Msg(MsgID.ReqRollText).Send();
         }
 
+        public static void GetShareText()
+        {
+            new Utils.Msg(MsgID.ReqShareText).Send();
+        }
+
         /// <summary>
         /// 
         /// </summary>

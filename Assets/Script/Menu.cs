@@ -110,6 +110,10 @@ public class Menu : MonoBehaviour
         footer.GetChild("btnMsg").onClick.Add(() => {
             Api.User.GetNotice();
         });
+
+        footer.GetChild("btnShare").onClick.Add(() => {
+            Api.User.GetShareText();
+        });
     }
 
     private void BindListenners()
@@ -120,6 +124,7 @@ public class Menu : MonoBehaviour
         Handler.Add<ResCreateClub>(MsgID.ResCreateClub, NotificationType.Network_OnResCreateClub);
         Handler.Add<ResNotice>(MsgID.ResNotice, NotificationType.Network_OnResNotice);
         Handler.Add<ResRollText>(MsgID.ResRollText, NotificationType.Network_OnResRollText);
+        Handler.Add<ResShareText>(MsgID.ResShareText, NotificationType.Network_OnResShareText);
 
         
         
@@ -127,6 +132,23 @@ public class Menu : MonoBehaviour
         Handler.AddListenner(NotificationType.Network_OnResCreateClub, OnResCreateClub);
         Handler.AddListenner(NotificationType.Network_OnResNotice, OnResNotice);
         Handler.AddListenner(NotificationType.Network_OnResRollText, OnResRollText);
+        Handler.AddListenner(NotificationType.Network_OnResShareText, OnResShareText);
+    }
+
+    private void OnResShareText(NotificationArg arg)
+    {
+        var data = arg.GetValue<ResShareText>();
+        if (data.code != 0)
+        {
+            MsgBox.ShowErr(data.msg);
+            return;
+        }
+#if UNITY_IPHONE
+#elif UNITY_ANDROID
+        AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+        jo.Call("shareText", data.shareText);
+#endif
     }
 
     private void OnResRollText(NotificationArg arg)
