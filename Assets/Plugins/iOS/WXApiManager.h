@@ -1,3 +1,4 @@
+
 //
 //  WXApiManager.h
 //  Unity-iPhone
@@ -8,29 +9,24 @@
 #ifndef WXApiManager_h
 #define WXApiManager_h
 
-
-#endif /* WXApiManager_h */
-
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "WXApi.h"
 #import "WXApiObject.h"
 
-@protocol WXAuthDelegate <NSObject>
+#import <Foundation/Foundation.h>
 
-@optional
-- (void)wxAuthSucceed:(NSString*)code;
-- (void)wxAuthDenied;
-- (void)wxAuthCancel;
+@interface WXApiManager : NSObject
 
+#ifdef __cplusplus
+
+extern "C" {
+#endif
+    void RegToWechat(const char * appId);
+    void LoginWeChat();
+//    void shareImg(const char * path);
+//    void shareText(const char * text);
+#ifdef __cplusplus
+}
+#endif
 @end
-
-@interface WXApiManager : NSObject <WXApiDelegate>
-
-/**
- *  严格单例，唯一获得实例的方法.
- *
- *  @return 实例对象.
- */
-+ (instancetype)sharedManager;
-@end
+#endif /* WXApiManager_h */

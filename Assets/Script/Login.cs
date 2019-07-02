@@ -11,6 +11,9 @@ using Network.Msg;
 using System;
 using Notification;
 using Newtonsoft.Json;
+#if UNITY_IPHONE || UNITY_IOS
+using System.Runtime.InteropServices;
+#endif
 
 public class Login : MonoBehaviour
 {
@@ -18,10 +21,18 @@ public class Login : MonoBehaviour
     GTextInput inputPass;
     GComponent mainUI;
 
+#if UNITY_IPHONE
+
+    [DllImport("__Internal")]
+    private static extern void RegToWechat(string appId);
+    [DllImport("__Internal")]
+    private static extern void LoginWeChat();
+
+#endif
     private void Awake()
     {
 #if UNITY_IPHONE
-        _registerApp(Config.WeChatAppId);
+       RegToWechat(Config.WeChatAppId);
 #elif UNITY_ANDROID
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
@@ -59,7 +70,7 @@ public class Login : MonoBehaviour
         mainUI.GetChild("btnWeChat").onClick.Add(() =>
         {
 #if UNITY_IPHONE
-            LoginWeiChat();
+            LoginWeChat();
 #elif UNITY_ANDROID
             jo.Call("weiLogin");
 #endif
