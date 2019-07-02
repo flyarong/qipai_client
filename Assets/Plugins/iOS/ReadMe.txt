@@ -1,0 +1,1 @@
+使用教程：1下载资源包解压文件。将WXApiManager.h和WXApiManager.mm放入你的unity的Plugins/iOS目录下。导出xcode项目，再根据Xcode配置文件一步步操作即可。不需要导入SDK文件包括 libWeChatSDK.a，WXApi.h，WXApiObject.h 这三个文件。Xcode集成会自动集成。默认使用CocoaPods集成，不会的自行百度非常简单。

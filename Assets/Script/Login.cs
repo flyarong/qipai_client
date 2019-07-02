@@ -21,6 +21,7 @@ public class Login : MonoBehaviour
     private void Awake()
     {
 #if UNITY_IPHONE
+        _registerApp(Config.WeChatAppId);
 #elif UNITY_ANDROID
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
@@ -58,6 +59,7 @@ public class Login : MonoBehaviour
         mainUI.GetChild("btnWeChat").onClick.Add(() =>
         {
 #if UNITY_IPHONE
+            LoginWeiChat();
 #elif UNITY_ANDROID
             jo.Call("weiLogin");
 #endif
