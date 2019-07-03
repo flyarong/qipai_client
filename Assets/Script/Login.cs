@@ -32,7 +32,7 @@ public class Login : MonoBehaviour
     private void Awake()
     {
 #if UNITY_IPHONE
-       RegToWechat(Config.WeChatAppId);
+        RegToWechat(Config.WeChatAppId);
 #elif UNITY_ANDROID
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
@@ -64,8 +64,6 @@ public class Login : MonoBehaviour
         {
             SceneManager.LoadScene("Reset");
         });
-
-
 
         mainUI.GetChild("btnWeChat").onClick.Add(() =>
         {

@@ -26,9 +26,8 @@
     return instance;
 }
 
-#pragma mark - Public Methods
 //这是向微信终端注册你的appid
-void RegToWechat(const char* appId)
+void RegToWechat(char* appId)
 {
     NSString *weichatId = [NSString stringWithFormat:@"%s", appId];
     [WXApi registerApp:weichatId];

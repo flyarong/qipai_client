@@ -21,7 +21,7 @@
 
 extern "C" {
 #endif
-    void RegToWechat(const char * appId);
+    void RegToWechat(char * appId);
     void LoginWeChat();
 //    void shareImg(const char * path);
 //    void shareText(const char * text);
