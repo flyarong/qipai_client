@@ -9,6 +9,15 @@
    return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
 
 2，找到url type设置 “你的微信注册ID”
-快捷操作：复制插件目录下的wechat.plist中的CFBundleURLTypes健 粘贴到Info.plist中
+Unity-Phone -> Info -> URL Types
+点+ 之后
+Identifier 填写微信开放平台上填写的BundleID（这里是包名）。
+URL Schemes 填写微信APPID
 
 3. 添加链接参数，否则会报错。 Build Settings -> Linking -> Other Linker Flags 添加两个选项 -ObjC -all_load
+
+4. 添加依赖。 
+libsqlite3.tbd
+libc.tbd
+Libs.tbd
+CoreTelephony.framework
