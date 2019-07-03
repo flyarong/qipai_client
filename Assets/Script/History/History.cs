@@ -8,6 +8,9 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils;
+#if UNITY_IPHONE || UNITY_IOS
+using System.Runtime.InteropServices;
+#endif
 
 namespace History
 {
@@ -16,6 +19,11 @@ namespace History
         GComponent ui;
         List<GComponent> users = new List<GComponent>();
         CalcWindow calcWindow;
+        
+#if UNITY_IPHONE
+        [DllImport("__Internal")]
+        private static extern void ShareImage(string path);
+#endif
         private void Awake()
         {
             bindEvents();
@@ -86,6 +94,7 @@ namespace History
             GC.Collect();
 
 #if UNITY_IPHONE
+            ShareImage(imageFilePath);
 #elif UNITY_ANDROID
             AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");

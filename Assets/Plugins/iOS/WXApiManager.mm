@@ -39,7 +39,7 @@ void LoginWeiCha()
 }
 extern "C"
 {
-    float _WeichatLogin()
+    void WechatLogin()
     {
         NSLog(@"ios微信登陆");
         //构造SendAuthReq结构体
@@ -49,14 +49,44 @@ extern "C"
         // req.openID          = kAuthOpenID;
         //第三方向微信终端发送一个SendAuthReq消息结构
         [WXApi sendReq:req];
+    }
+    
+    void ShareText(const char *text)
+    {
+        SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+        req.bText = YES;
+        req.text = [NSString stringWithUTF8String:text];
+        req.scene = WXSceneSession;
+        [WXApi sendReq:req];
+    }
+    
+    void ShareImage(const char *path)
+    {
+        NSLog(@"图片分享开始：%s\n", path);
+        UIImage *image = [UIImage imageNamed:[NSString stringWithUTF8String:path]];
+        NSData* imageData = UIImageJPEGRepresentation(image, 0.3);
         
-        return 1;
+        WXImageObject *imageObject = [WXImageObject object];
+        imageObject.imageData = imageData;
+        
+        WXMediaMessage *message = [WXMediaMessage message];
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"res5"
+                                                             ofType:@"jpg"];
+        message.thumbData = [NSData dataWithContentsOfFile:filePath];
+        message.mediaObject = imageObject;
+        
+        SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+        req.bText = NO;
+        req.message = message;
+        req.scene = WXSceneSession;
+        NSLog(@"图片分享结果：%d\n",[WXApi sendReq:req]);
     }
 }
 
 #pragma mark - WXApiDelegate
 -(void)onReq:(BaseReq*)req {
     // just leave it here, WeChat will not call our app
+    NSLog(@"req login\n");
 }
 
 -(void)onResp:(BaseResp*)resp {

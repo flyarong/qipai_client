@@ -8,6 +8,11 @@ using Utils;
 using Network;
 using Notification;
 using Network.Msg;
+
+#if UNITY_IPHONE || UNITY_IOS
+using System.Runtime.InteropServices;
+#endif
+
 public class Menu : MonoBehaviour
 {
     private GComponent mainUI;
@@ -16,6 +21,10 @@ public class Menu : MonoBehaviour
     private JoinWindow joinWindow;
     GComponent list;
 
+#if UNITY_IPHONE
+    [DllImport("__Internal")]
+    private static extern void ShareText(string text);
+#endif
     void Awake()
     {
         BindListenners();
@@ -144,6 +153,7 @@ public class Menu : MonoBehaviour
             return;
         }
 #if UNITY_IPHONE
+        ShareText(data.shareText);
 #elif UNITY_ANDROID
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
