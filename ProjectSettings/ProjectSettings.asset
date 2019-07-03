@@ -158,7 +158,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.yue.nn
     Standalone: com.yue.nn
-    iOS: com.yue.nn
+    iOS: com.okpassl.com
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 17
