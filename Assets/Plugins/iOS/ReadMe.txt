@@ -1,6 +1,8 @@
 
 1，找到UnityAppController.mm 
-   添加  #import <WXApi.h>  #import "WXApiManager.h"
+   添加  
+#import "WXApi.h" 
+#import "WXApiManager.h"
    找到 application didFinishLaunchingWithOptions
     添加：
      //注册微信id
