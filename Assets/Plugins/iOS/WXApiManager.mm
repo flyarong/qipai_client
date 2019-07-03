@@ -1,4 +1,3 @@
-
 //
 //  WXApiManager.m
 //  Unity-iPhone
@@ -26,14 +25,8 @@
     return instance;
 }
 
-//这是向微信终端注册你的appid
-void RegToWechat(char* appId)
-{
-    NSString *weichatId = [NSString stringWithFormat:@"%s", appId];
-    [WXApi registerApp:weichatId];
-}
-
-void LoginWeChat()
+#pragma mark - Public Methods
+void LoginWeiCha()
 {
     NSLog(@"WXApiManager ios微信登陆");
     //构造SendAuthReq结构体
@@ -43,6 +36,22 @@ void LoginWeChat()
     // req.openID          = kAuthOpenID;
     //第三方向微信终端发送一个SendAuthReq消息结构
     [WXApi sendReq:req];
+}
+extern "C"
+{
+    float _WeichatLogin()
+    {
+        NSLog(@"ios微信登陆");
+        //构造SendAuthReq结构体
+        SendAuthReq* req    =[[SendAuthReq alloc]init];
+        req.scope           = @"snsapi_userinfo";
+        req.state           = @"123";
+        // req.openID          = kAuthOpenID;
+        //第三方向微信终端发送一个SendAuthReq消息结构
+        [WXApi sendReq:req];
+        
+        return 1;
+    }
 }
 
 #pragma mark - WXApiDelegate
@@ -62,7 +71,7 @@ void LoginWeChat()
                 NSLog(@"WXErrCodeAuthDeny:code:%@,state:%@\n", authResp.code, authResp.state);
                 break;
             case WXErrCodeUserCancel:
-                NSLog(@"WXErrCodeUserCancel:code:%@,state:%@\n", authResp.code, authResp.state);
+                 NSLog(@"WXErrCodeUserCancel:code:%@,state:%@\n", authResp.code, authResp.state);
                 break;
             default:
                 NSLog(@"resp.errCode:code:%@,state:%@\n", authResp.code, authResp.state);
