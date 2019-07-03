@@ -23,16 +23,16 @@ public class Login : MonoBehaviour
 
 #if UNITY_IPHONE
 
-    [DllImport("__Internal")]
-    private static extern void RegToWechat(string appId);
-    [DllImport("__Internal")]
-    private static extern void LoginWeChat();
+    //[DllImport("__Internal")]
+    //private static extern void RegToWechat(string appId);
+    //[DllImport("__Internal")]
+    //private static extern void LoginWeChat();
 
 #endif
     private void Awake()
     {
 #if UNITY_IPHONE
-        RegToWechat(Config.WeChatAppId);
+    //    RegToWechat(Config.WeChatAppId);
 #elif UNITY_ANDROID
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
@@ -68,7 +68,7 @@ public class Login : MonoBehaviour
         mainUI.GetChild("btnWeChat").onClick.Add(() =>
         {
 #if UNITY_IPHONE
-            LoginWeChat();
+         //   LoginWeChat();
 #elif UNITY_ANDROID
             jo.Call("weiLogin");
 #endif
