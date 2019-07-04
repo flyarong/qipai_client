@@ -17,6 +17,7 @@ namespace Game
         GButton btnStart;
         RightWindow right;
         AudioSource roomAudio;
+        GComponent tips;
         private string[] scores = {
             "1/2",
             "2/4",
@@ -33,6 +34,8 @@ namespace Game
             roomAudio = audioObj.AddComponent<AudioSource>();
             //Data.Room.Players.Clear();
             ui = GetComponent<UIPanel>().ui;
+            tips = ui.GetChild("tips").asCom;
+            tips.sortingOrder = 1000;
             right = new RightWindow();
             ui.GetChild("btnSetting").onClick.Add(onSettingClick);
             btnStart = ui.GetChild("btnStart").asButton;
@@ -46,9 +49,12 @@ namespace Game
                 Utils.MsgBox.ShowErr("房间号已复制到剪贴板，在聊天输入框长按粘贴即可");
             });
 
+            ui.GetChild("btnRefresh").onClick.Add(() =>
+            {
+                Api.Room.JoinRoom(Data.Game.Id);
+            });
         }
-
-
+        
 
         private void bindEvents()
         {
@@ -221,6 +227,10 @@ namespace Game
             {
                 btnStart.visible = true;
             }
+            else
+            {
+                ShowTips("您已准备好，等待房主开始游戏···");
+            }
         }
 
         // 添加玩家
@@ -349,6 +359,18 @@ namespace Game
             Handler.HandleMessage();
         }
 
+
+        void ShowTips(string text)
+        {
+            tips.visible = true;
+            tips.GetChild("text").text = text;
+        }
+
+        void HideTips()
+        {
+            this.CancelInvoke();
+            tips.visible = false;
+        }
 
     }
 

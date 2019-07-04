@@ -184,6 +184,11 @@ namespace History
                     nick.color = new Color(255, 255, 0);
                     id.color = new Color(255, 255, 0);
                 }
+                else
+                {
+                    nick.color = new Color(255, 255, 255);
+                    id.color = new Color(255, 255, 255);
+                }
 
                 var score = userUi.GetChild("score").asTextField;
                 TextFormat tf = score.textFormat;

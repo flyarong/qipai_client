@@ -130,6 +130,9 @@ namespace Game
                 Debug.Log("收到不属于该房间的消息，来自房间号：" + data.roomId);
                 return;
             }
+
+            ui.GetChild("defaultVoice").visible = false;
+
             Data.Game.TotalScore.Clear();
             Data.Game.Id = 0;
             SceneManager.LoadScene("History");
