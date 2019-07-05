@@ -11,6 +11,7 @@ namespace Data
         // 用户当前所在房间编号
         public static int Id { set { PlayerPrefs.SetInt("currentRoomId", value); } get { return PlayerPrefs.GetInt("currentRoomId"); } }
         public static int DeskId; // 当前用户所在座位号
+        public static bool IsSecondPlayer = false; // 记录自己是否是当前房间的第二个玩家
         public static Dictionary<int, Player> Players = new Dictionary<int, Player>(); // 当前房间所有玩家
         public static RoomInfo info = new RoomInfo();
         public static TotalScore TotalScore = new TotalScore();

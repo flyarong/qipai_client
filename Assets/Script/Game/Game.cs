@@ -131,7 +131,7 @@ namespace Game
                 return;
             }
 
-            ui.GetChild("defaultVoice").visible = false;
+            ui.GetChild("defaultVoice").asComboBox.Dispose();
 
             Data.Game.TotalScore.Clear();
             Data.Game.Id = 0;
@@ -642,7 +642,8 @@ namespace Game
             this.CancelInvoke();
             tips.visible = false;
         }
-
+        
+       
     }
 
 }

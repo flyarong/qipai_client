@@ -39,11 +39,12 @@ namespace Game
             right = new RightWindow();
             ui.GetChild("btnSetting").onClick.Add(onSettingClick);
             btnStart = ui.GetChild("btnStart").asButton;
-            ui.GetChild("btnCopy").onClick.Add(()=> {
-                var content = "房间号:"+Data.Game.Id;
+            ui.GetChild("btnCopy").onClick.Add(() =>
+            {
+                var content = "房间号:" + Data.Game.Id;
                 if (Data.Club.Id > 0)
                 {
-                    content = "茶楼编号:"+Data.Club.Id+"  第"+ Data.Club.TableId + "桌";
+                    content = "茶楼编号:" + Data.Club.Id + "  第" + Data.Club.TableId + "桌";
                 }
                 UnityEngine.GUIUtility.systemCopyBuffer = content;
                 Utils.MsgBox.ShowErr("房间号已复制到剪贴板，在聊天输入框长按粘贴即可");
@@ -51,10 +52,12 @@ namespace Game
 
             ui.GetChild("btnRefresh").onClick.Add(() =>
             {
-                Api.Room.JoinRoom(Data.Game.Id);
+                Utils.ConfirmWindow.ShowBox(() =>
+                {
+                    Api.Room.JoinRoom(Data.Game.Id);
+                }, "当游戏界面卡主的时候，点此刷新游戏。\n如果多次刷新还是无效，请尝试退出游戏重进。");
             });
         }
-        
 
         private void bindEvents()
         {
@@ -114,8 +117,6 @@ namespace Game
             AddPlayer(data.deskId, data.uid);
             Api.User.GetUserInfo(data.uid);
 
-            roomAudio.clip = Resources.Load<AudioClip>("Game/audio/game_sit");
-            roomAudio.Play();
         }
 
         private void OnResUserInfo(NotificationArg arg)
@@ -185,6 +186,12 @@ namespace Game
             }
             player.PlayerUi.visible = false;
             Data.Game.Players.Remove(data.uid);
+
+            // 如果我是新房主，就显示开始按钮
+            if (data.newBoss == Data.User.Id)
+            {
+                btnStart.visible = true;
+            }
         }
 
         /// <summary>
@@ -298,6 +305,14 @@ namespace Game
             if (!Data.Game.Players.ContainsKey(uid))
             {
                 Data.Game.Players.Add(uid, player);
+
+                // 自己坐下，不用播放声音
+                if (uid != Data.User.Id)
+                {
+                    roomAudio.clip = Resources.Load<AudioClip>("Game/audio/game_sit");
+                    roomAudio.Play();
+                }
+
             }
 
             return player;

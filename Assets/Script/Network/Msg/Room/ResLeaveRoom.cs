@@ -11,6 +11,7 @@ namespace Network.Msg
         public string msg;
         public int roomId;
         public int uid;
+        public int newBoss;
 
         public ResLeaveRoom() : base(MsgID.ResLeaveRoom)
         {
@@ -24,6 +25,7 @@ namespace Network.Msg
             msg = jsonData.msg;
             roomId = jsonData.roomId;
             uid = jsonData.uid;
+            newBoss = jsonData.newBoss;
         }
 
         public override byte[] ToData()
