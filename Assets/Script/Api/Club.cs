@@ -21,6 +21,19 @@ namespace Api
             req.Send();
         }
 
+        public static void EditClubRoom(int clubId, int tableId, int players, int score, int start, int count, int times)
+        {
+            var req = new Utils.Msg(MsgID.ReqEditClubRoom);
+            req.Add("clubId", clubId);
+            req.Add("tableId", tableId);
+            req.Add("players", players);
+            req.Add("score", score);
+            req.Add("start", start);
+            req.Add("count", count);
+            req.Add("times", times);
+            req.Send();
+        }
+
         public static void Clubs()
         {
             new Utils.Msg(MsgID.ReqClubs).Send();

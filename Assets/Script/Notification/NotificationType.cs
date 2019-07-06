@@ -45,5 +45,6 @@
         Network_OnResRollText,
         Network_OnBroadcastDefaultVoice,
         Network_OnResShareText,
+        Network_OnResEditClubRoom,
     }
 }

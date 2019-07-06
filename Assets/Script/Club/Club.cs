@@ -15,6 +15,7 @@ namespace Club
     {
         private GComponent ui;
         GList Tables;
+        EditClubRoomWindow editClubRoomWindow;
         string[] scores = {
             "1/2",
             "2/4",
@@ -32,6 +33,7 @@ namespace Club
             btnQuit.onClick.Add(onBtnQuit);
             var btnNotice = ui.GetChild("header").asCom.GetChild("btnNotice").asButton;
             btnNotice.onClick.Add(onBtnNotice);
+            
         }
 
         private void onBtnNotice(EventContext context)
@@ -67,6 +69,7 @@ namespace Club
             Handler.Add<BroadcastSitClubRoom>(MsgID.BroadcastSitRoom, NotificationType.Network_OnBroadcastSitClubRoom);
             Handler.Add<BroadcastLeaveClubRoom>(MsgID.ResLeaveRoom, NotificationType.Network_OnBroadcastLeaveClubRoom);
             Handler.Add<ResExitClub>(MsgID.ResExitClub, NotificationType.Network_OnResExitClub);
+            Handler.Add<ResEditClubRoom>(MsgID.ResEditClubRoom, NotificationType.Network_OnResEditClubRoom);
 
 
             Handler.AddListenner(NotificationType.Network_OnResClub, OnResClub);
@@ -81,6 +84,25 @@ namespace Club
             Handler.AddListenner(NotificationType.Network_OnBroadcastSitClubRoom, OnBroadcastSitClubRoom);
             Handler.AddListenner(NotificationType.Network_OnBroadcastLeaveClubRoom, OnBroadcastLeaveClubRoom);
             Handler.AddListenner(NotificationType.Network_OnResExitClub, OnResExitClub);
+            Handler.AddListenner(NotificationType.Network_OnResEditClubRoom, OnResEditClubRoom);
+        }
+
+        private void OnResEditClubRoom(NotificationArg arg)
+        {
+            var data = arg.GetValue<ResEditClubRoom>();
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg);
+                return;
+            }
+            if (data.clubId != Data.Club.Id)
+            {
+                Debug.Log("收到不是当前茶楼的消息");
+                return;
+            }
+            // 更新茶楼信息
+            Api.Club.GetClub(Data.Club.Id);
+            editClubRoomWindow.Hide();
         }
 
         private void OnResExitClub(NotificationArg arg)
@@ -357,7 +379,19 @@ namespace Club
             Tables.RemoveChildrenToPool();
             for (var i = 1; i <= 10; i++)
             {
-                addItem(data.club, i);
+                ClubInfo t=null;
+                if (data.tables != null)
+                {
+                    foreach (var v in data.tables)
+                    {
+                        if (v.id == i)
+                        {
+                            t = v;
+                        }
+                    }
+                }
+                
+                addItem(t==null?data.club:t, i);
             }
         }
 
@@ -373,9 +407,7 @@ namespace Club
             Handler.HandleMessage();
         }
 
-
-
-
+        
         private void addItem(ClubInfo club, int tableId)
         {
             GComponent table = Tables.AddItemFromPool().asCom;
@@ -394,6 +426,23 @@ namespace Club
             vars["score"] = scores[club.score];
             info.templateVars = vars;
             Tables.AddChild(table);
+
+            var btnEditRoom = table.GetChild("btnEditRoom");
+            btnEditRoom.data = tableId;
+            btnEditRoom.onClick.Set(editRoom);
+            
+        }
+
+        private void editRoom(EventContext context)
+        {
+            var btnEditRoom = context.sender as GButton;
+            int tableId = (int)btnEditRoom.data;
+
+            editClubRoomWindow = new EditClubRoomWindow(Data.Club.Id, tableId);
+            editClubRoomWindow.Show();
+            editClubRoomWindow.position = new Vector3();
+            editClubRoomWindow.width = ui.width;
+            editClubRoomWindow.height = ui.height;
         }
 
         private void onDeskClick(EventContext context)

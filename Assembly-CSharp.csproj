@@ -218,6 +218,7 @@
     <Compile Include="Assets\Script\Api\User.cs" />
     <Compile Include="Assets\Script\Club\Club.cs" />
     <Compile Include="Assets\Script\Club\ClubList.cs" />
+    <Compile Include="Assets\Script\Club\EditClubRoomWindow.cs" />
     <Compile Include="Assets\Script\Club\Footer.cs" />
     <Compile Include="Assets\Script\Club\ManageWindow.cs" />
     <Compile Include="Assets\Script\Club\UsersWindow.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Assets\Script\Network\Msg\Club\ResCreateClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResCreateClubRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResEditClub.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Club\ResEditClubRoom.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResEditClubUser.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResExitClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\CommonMsg.cs" />

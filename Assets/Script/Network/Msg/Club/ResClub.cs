@@ -50,6 +50,7 @@ namespace Network.Msg
         public int code;
         public string msg;
         public ClubInfo club;
+        public List<ClubInfo> tables;
 
         public ResClub() : base(MsgID.ResClub)
         {
@@ -62,6 +63,7 @@ namespace Network.Msg
             this.code = jsonData.code;
             this.msg = jsonData.msg;
             this.club = jsonData.club;
+            tables = jsonData.tables;
         }
 
         public override byte[] ToData()

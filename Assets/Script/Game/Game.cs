@@ -61,6 +61,9 @@ namespace Game
             ui.GetChild("btnTimes4").onClick.Add(onBtnTimesClick);
 
             ui.GetChild("defaultVoice").asComboBox.onChanged.Set(defaultVoiceChanged);
+
+            ui.GetChild("btnKanpai").onClick.Add(kanpai);
+            ui.GetChild("btnLiangpai").onClick.Add(liangpai);
         }
 
         private void defaultVoiceChanged(EventContext context)
@@ -106,14 +109,14 @@ namespace Game
                 Debug.Log("收到不属于该房间的消息，来自房间号：" + data.roomId);
                 return;
             }
-            
-            if (data.voiceId<0 || data.voiceId>9 || data.sex <0 || data.sex > 1)
+
+            if (data.voiceId < 0 || data.voiceId > 9 || data.sex < 0 || data.sex > 1)
             {
                 Debug.Log("声音编号或性别不合法");
                 return;
             }
-            
-            gameAudio.clip = Resources.Load<AudioClip>("Game/audio/voice/voice_"+data.voiceId+"_"+data.sex);
+
+            gameAudio.clip = Resources.Load<AudioClip>("Game/audio/voice/voice_" + data.voiceId + "_" + data.sex);
             gameAudio.Play();
         }
 
@@ -150,11 +153,13 @@ namespace Game
             // 隐藏网络延迟导致迟收到选庄包显示的下注按钮
             hideSetScoreTips();
             ui.GetChild("btnScores").visible = false;
+            ui.GetChild("btnKanpai").visible = false;
+            ui.GetChild("btnLiangpai").visible = false;
 
             var games = data.games;
             foreach (var game in games)
             {
-                var me = game.playerId == Data.User.Id;
+                var me = game.playerId == Data.User.Id && !isLiangpai;
                 PutCard(game.deskId, game.cards, game.cardType, me);
                 showNiu(game.playerId, game.cardType);
                 Debug.Log(game.playerId + ":" + game.totalScore);
@@ -227,6 +232,7 @@ namespace Game
             }
         }
 
+        GameInfo myGameInfo = null; // 记录当局自己的游戏信息，包括牌型，牌，座位号等
         private void OnBroadcastShowCard(NotificationArg arg)
         {
             var data = arg.GetValue<BroadcastShowCard>();
@@ -244,13 +250,46 @@ namespace Game
                     PutCard(p.DeskId, "-1|-1|-1|-1|-1");
                     continue;
                 }
+                myGameInfo = game;
 
-                PutCard(p.DeskId, game.cards, game.cardType);
             }
+
+            ui.GetChild("btnKanpai").visible = true;
 
             HideTips();
             ui.GetChild("btnScores").visible = false;
 
+        }
+
+        private void kanpai(EventContext context)
+        {
+            if (myGameInfo == null) return;
+
+            // 找出底牌
+            var arr1 = myCards.Split('|');
+
+            foreach (var v in myGameInfo.cards.Split('|'))
+            {
+                if (v != "-1" && -1 == Array.IndexOf<string>(arr1, v))
+                {
+                    myCards += "|-|" + v;
+                }
+            }
+
+            PutCard(myGameInfo.deskId, myCards);
+
+            ui.GetChild("btnKanpai").visible = false;
+            ui.GetChild("btnLiangpai").visible = true;
+            isLiangpai = false;
+        }
+
+        bool isLiangpai = false; // 记录是否亮过牌，用于决定是否要再次播放牌型语音
+        private void liangpai(EventContext context)
+        {
+            PutCard(myGameInfo.deskId, myGameInfo.cards, myGameInfo.cardType, true);
+            ui.GetChild("btnLiangpai").visible = false;
+            isLiangpai = true;
+            myGameInfo = null; // 设置为空，为下一句做准备
         }
 
         private void OnBroadcastScore(NotificationArg arg)
@@ -332,7 +371,7 @@ namespace Game
             }
 
             hideSetScoreTips();
-            nScoreTips = 10;
+            nScoreTips = 5;
             showSetScoreTips();
         }
 
@@ -357,6 +396,8 @@ namespace Game
         {
             Api.Game.Start(Data.Game.Id);
         }
+
+        string myCards = ""; // 每把的四张牌，用于看牌不打乱前4张顺序
         private void OnResGameStart(NotificationArg arg)
         {
 
@@ -383,6 +424,7 @@ namespace Game
             {
                 if (p.DeskId == data.game.deskId)
                 {
+                    myCards = data.game.cards;
                     PutCard(p.DeskId, data.game.cards + "|-|-1", true);
                 }
                 else
@@ -642,8 +684,8 @@ namespace Game
             this.CancelInvoke();
             tips.visible = false;
         }
-        
-       
+
+
     }
 
 }
