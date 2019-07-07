@@ -215,28 +215,20 @@ public class Menu : MonoBehaviour
         Data.Game.Id = data.roomId;
 
         createRoomWindow.Hide();
-        toGame();
-    }
-
-    void toGame()
-    {
         SceneManager.LoadScene("Game");
-    }
-
-    void toClub()
-    {
-        SceneManager.LoadScene("Club");
     }
 
     private void Start()
     {
         if (Data.Game.Id > 0)
         {
-            Invoke("toGame", 0.5f);
+            SceneManager.LoadScene("Game");
+            return;
         }
         else if (Data.Club.Id > 0)
         {
-            Invoke("toClub", 0.5f);
+            SceneManager.LoadScene("Club");
+            return;
         }
         Api.User.GetRollText();
     }

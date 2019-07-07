@@ -17,6 +17,7 @@ namespace Network.Msg
         public int clubId;
         public int tableId;
         public int status;
+        public int times;
     }
 
 

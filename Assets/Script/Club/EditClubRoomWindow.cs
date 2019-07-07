@@ -37,7 +37,11 @@ namespace Club
         protected override void OnShown()
         {
             base.OnShown();
-            
+            var info = Data.Club.Info;
+            roomTypeController.selectedIndex = info.players / 2 - 3;
+            scoreBox.selectedIndex = info.score;
+            countBox.selectedIndex = info.count/10-1;
+            timesBox.selectedIndex = info.times;
         }
 
         private void onBtnCreateClubClick()

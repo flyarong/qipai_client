@@ -18,6 +18,8 @@ namespace Game
         RightWindow right;
         AudioSource roomAudio;
         GComponent tips;
+        GComponent roomRule;
+
         private string[] scores = {
             "1/2",
             "2/4",
@@ -26,7 +28,13 @@ namespace Game
             "5/10",
             "10/20"
         };
-
+        private string[] rules = {
+            "牛一→牛牛 分别对应 1→10倍",
+            "牛牛x5 牛九x4 牛八x3 牛七x2",
+            "牛牛x3 牛九x2 牛八x2 牛七x2",
+            "牛牛x3 牛九x2 牛八x2 牛七x1",
+            "牛牛x4 牛九x2 牛八x2 牛七x2"
+        };
         private void Awake()
         {
             bindEvents();
@@ -57,6 +65,24 @@ namespace Game
                     Api.Room.JoinRoom(Data.Game.Id);
                 }, "当游戏界面卡主的时候，点此刷新游戏。\n如果多次刷新还是无效，请尝试退出游戏重进。");
             });
+
+            roomRule = UIPackage.CreateObject("qipai", "roomRule").asCom;
+            var ruleText = roomRule.GetChild("ruleText").asRichTextField;
+            var btnRule = ui.GetChild("btnRule");
+            btnRule.onClick.Add(() =>
+            {
+                var info = Data.Game.info;
+                Dictionary<string, string> vars = new Dictionary<string, string>();
+                vars.Add("players", info.players+"");
+                vars.Add("score", scores[info.score]);
+                vars.Add("pay", info.pay == 0 ? "老板付款" : "AA付款");
+                vars.Add("count", info.count+"");
+                vars.Add("rule",rules[info.times]);
+                ruleText.templateVars = vars;
+                GRoot.inst.ShowPopup(roomRule);
+                roomRule.Center();
+            });
+            
         }
 
         private void bindEvents()
@@ -96,7 +122,7 @@ namespace Game
             }
             MsgBox.ShowErr("房间已解散", 1);
             Data.Game.Id = 0;
-            SceneManager.LoadScene("Menu");
+            LeaveRoom();
         }
 
 
@@ -150,7 +176,17 @@ namespace Game
             p.PlayerUi.visible = true;
 
         }
+        void LeaveRoom()
+        {
+            // 如果clubId>0表示是从俱乐部进入房间的，直接退回俱乐部
+            if (Data.Club.Id > 0)
+            {
+                SceneManager.LoadScene("Club");
+                return;
+            }
 
+            SceneManager.LoadScene("Menu");
+        }
         private void OnResLeaveRoom(NotificationArg arg)
         {
             var data = arg.GetValue<ResLeaveRoom>();
@@ -166,14 +202,7 @@ namespace Game
                 Data.Game.Id = 0;
                 Data.Game.info = null;
 
-                // 如果clubId>0表示是从俱乐部进入房间的，直接退回俱乐部
-                if (Data.Club.Id > 0)
-                {
-                    SceneManager.LoadScene("Club");
-                    return;
-                }
-
-                SceneManager.LoadScene("Menu");
+                LeaveRoom();
                 return;
             }
 
@@ -213,7 +242,7 @@ namespace Game
                 {
                     Data.Game.Id = data.roomId;
                     Data.Game.info = null;
-                    SceneManager.LoadScene("Menu");
+                    LeaveRoom();
                     return;
                 }
                 exit();
@@ -234,7 +263,7 @@ namespace Game
             {
                 btnStart.visible = true;
             }
-            else
+            else if(Data.Game.info.status==0)
             {
                 ShowTips("您已准备好，等待房主开始游戏···");
             }
@@ -265,14 +294,7 @@ namespace Game
                 MsgBox.ShowErr(data.msg);
                 Data.Game.Id = 0;
                 Data.Game.info = null;
-                if (Data.Club.Id > 0)
-                {
-                    SceneManager.LoadScene("Club");
-                }
-                else
-                {
-                    SceneManager.LoadScene("Menu");
-                }
+                LeaveRoom();
 
                 return;
             }

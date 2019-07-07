@@ -116,8 +116,22 @@ namespace Game
                 return;
             }
 
+
+            var index = data.deskId - Data.Game.DeskId;
+            if (index < 0)
+            {
+                index = 10 + index;
+            }
+
+            var playerUi = ui.GetChild("player" + (index + 1)).asCom;
+            var c = playerUi.GetController("speak");
+            c.selectedIndex = 1;
             gameAudio.clip = Resources.Load<AudioClip>("Game/audio/voice/voice_" + data.voiceId + "_" + data.sex);
             gameAudio.Play();
+            playerUi.TweenScale(new Vector2(1, 1), 2).OnComplete(() =>
+            {
+                c.selectedIndex = 0;
+            });
         }
 
         private void OnBroadcastGameOver(NotificationArg arg)
@@ -178,7 +192,7 @@ namespace Game
                 {
                     scoreUi.text = "" + game.totalScore;
                 }
-                scoreUi.TweenMoveY(p.scorePos.y + offsetY, 1f).OnComplete(() =>
+                scoreUi.TweenMoveY(p.scorePos.y + offsetY, 2f).OnComplete(() =>
                 {
                     scoreUi.position = p.scorePos;
                     scoreUi.text = Data.Game.TotalScore.Get(Data.Game.Id, game.playerId) + "";
@@ -400,7 +414,6 @@ namespace Game
         string myCards = ""; // 每把的四张牌，用于看牌不打乱前4张顺序
         private void OnResGameStart(NotificationArg arg)
         {
-
             var data = arg.GetValue<ResGameStart>();
             if (data.code != 0)
             {

@@ -16,6 +16,7 @@ namespace Club
         private GComponent ui;
         GList Tables;
         EditClubRoomWindow editClubRoomWindow;
+        
         string[] scores = {
             "1/2",
             "2/4",
@@ -33,7 +34,7 @@ namespace Club
             btnQuit.onClick.Add(onBtnQuit);
             var btnNotice = ui.GetChild("header").asCom.GetChild("btnNotice").asButton;
             btnNotice.onClick.Add(onBtnNotice);
-            
+
         }
 
         private void onBtnNotice(EventContext context)
@@ -399,6 +400,11 @@ namespace Club
         // Start is called before the first frame update
         void Start()
         {
+            if (Data.Game.Id > 0)
+            {
+                SceneManager.LoadScene("Game");
+                return;
+            }
             Api.Club.Join(Data.Club.Id);
         }
 
