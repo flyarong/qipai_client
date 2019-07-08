@@ -20,7 +20,7 @@ namespace Game
         GComponent cardCenterPlace;  // 桌子中心牌堆的位置
         GButton btnStart;
         GComponent tips;
-
+        
         GButton btnScore1, btnScore2;
         private string[] scores = {
             "1/2",
@@ -123,12 +123,16 @@ namespace Game
                 index = 10 + index;
             }
 
+            
+            gameAudio.clip = Resources.Load<AudioClip>("Game/audio/voice/voice_" + data.voiceId + "_" + data.sex);
+            gameAudio.Play();
+
+            // 自己不用显示
+            if (data.deskId == Data.Game.DeskId) return;
             var playerUi = ui.GetChild("player" + (index + 1)).asCom;
             var c = playerUi.GetController("speak");
             c.selectedIndex = 1;
-            gameAudio.clip = Resources.Load<AudioClip>("Game/audio/voice/voice_" + data.voiceId + "_" + data.sex);
-            gameAudio.Play();
-            playerUi.TweenScale(new Vector2(1, 1), 2).OnComplete(() =>
+            playerUi.TweenScale(new Vector2(1, 1), 3).OnComplete(() =>
             {
                 c.selectedIndex = 0;
             });
@@ -163,9 +167,8 @@ namespace Game
                 MsgBox.ShowErr(data.msg, 2);
                 return;
             }
-
-            // 隐藏网络延迟导致迟收到选庄包显示的下注按钮
             hideSetScoreTips();
+            // 隐藏网络延迟导致迟收到选庄包显示的下注按钮
             ui.GetChild("btnScores").visible = false;
             ui.GetChild("btnKanpai").visible = false;
             ui.GetChild("btnLiangpai").visible = false;
@@ -269,10 +272,10 @@ namespace Game
             }
 
             ui.GetChild("btnKanpai").visible = true;
-
-            HideTips();
             ui.GetChild("btnScores").visible = false;
-
+            hideSetScoreTips();
+            nKanpaiTips = 10;
+            showKanpaiTips();
         }
 
         private void kanpai(EventContext context)
@@ -321,9 +324,10 @@ namespace Game
                 // 如果是自己，就播放下注音乐
                 gameAudio.clip = Resources.Load<AudioClip>("Game/audio/game_setScore");
                 gameAudio.Play();
-                ui.GetChild("btnScores").visible = false;
             }
+            ui.GetChild("btnScores").visible = false;
             Debug.Log(data.game.playerId + " 下注：" + data.game.score);
+            //hideSetScoreTips();
         }
 
 
@@ -421,6 +425,9 @@ namespace Game
                 return;
             }
 
+            // 隐藏提示框
+            ui.GetController("panel").selectedIndex = 0;
+
             // 游戏开始，隐藏复制房号按钮。显示默认语音下拉框
             ui.GetChild("btnCopy").visible = false;
             ui.GetChild("defaultVoice").visible = true;
@@ -492,14 +499,13 @@ namespace Game
         int nTimesTips = 0;
         void showSetTimesTips()
         {
-
+            if (nTimesTips <= 0) return;
             if (nTimesTips > 0)
             {
                 Invoke("showSetTimesTips", 1);
+                ShowTips("发牌完毕，抢庄中(" + nTimesTips + ")···");
             }
-
-            ShowTips("发牌完毕，抢庄中(" + nTimesTips + ")···");
-            if (nTimesTips <= 0)
+            else
             {
                 HideTips();
             }
@@ -514,12 +520,13 @@ namespace Game
         int nScoreTips = 0;
         void showSetScoreTips()
         {
+            if (nScoreTips <= 0) return;
             if (nScoreTips > 0)
             {
                 Invoke("showSetScoreTips", 1);
+                ShowTips("下注中(" + nScoreTips + ")···");
             }
-            ShowTips("下注中(" + nScoreTips + ")···");
-            if (nScoreTips <= 0)
+            else
             {
                 HideTips();
             }
@@ -528,6 +535,28 @@ namespace Game
         void hideSetScoreTips()
         {
             nScoreTips = 0;
+            HideTips();
+        }
+
+
+        int nKanpaiTips = 0;
+        void showKanpaiTips()
+        {
+            if (nKanpaiTips <= 0) return;
+            if (nKanpaiTips > 0)
+            {
+                Invoke("showKanpaiTips", 1);
+                ShowTips("玩家看牌中(" + nKanpaiTips + ")···");
+            }
+            else
+            {
+                HideTips();
+            }
+            nKanpaiTips--;
+        }
+        void hideKanpaiTips()
+        {
+            nKanpaiTips = 0;
             HideTips();
         }
 

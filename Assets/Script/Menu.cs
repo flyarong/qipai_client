@@ -218,16 +218,24 @@ public class Menu : MonoBehaviour
         SceneManager.LoadScene("Game");
     }
 
+    void toGame()
+    {
+        SceneManager.LoadScene("Game");
+    }
+    void toClub()
+    {
+        SceneManager.LoadScene("Club");
+    }
     private void Start()
     {
         if (Data.Game.Id > 0)
         {
-            SceneManager.LoadScene("Game");
+            Invoke("toGame", 1); // 延迟调用加载个人信息
             return;
         }
         else if (Data.Club.Id > 0)
         {
-            SceneManager.LoadScene("Club");
+            Invoke("toClub", 1);
             return;
         }
         Api.User.GetRollText();

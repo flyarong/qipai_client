@@ -110,6 +110,7 @@ namespace Game
         private void OnResDeleteRoom(NotificationArg arg)
         {
             var data = arg.GetValue<ResDeleteRoom>();
+
             if (data.code != 0)
             {
                 MsgBox.ShowErr(data.msg, 2);
@@ -215,11 +216,12 @@ namespace Game
             }
             player.PlayerUi.visible = false;
             Data.Game.Players.Remove(data.uid);
-
+            
             // 如果我是新房主，就显示开始按钮
             if (data.newBoss == Data.User.Id)
             {
                 btnStart.visible = true;
+                HideTips();
             }
         }
 
@@ -266,6 +268,13 @@ namespace Game
             else if(Data.Game.info.status==0)
             {
                 ShowTips("您已准备好，等待房主开始游戏···");
+            }
+            
+            // 如果游戏开始后重新进入游戏，显示提示层
+            if(Data.Game.info.current > 0)
+            {
+                ui.GetController("panel").selectedIndex = 1;
+                ui.GetChild("panel").sortingOrder = 20000;
             }
         }
 
