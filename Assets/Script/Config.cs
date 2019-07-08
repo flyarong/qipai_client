@@ -6,5 +6,5 @@ public class Config
     public static string HttpBaseHost = "http://47.108.69.255:9988";
     public static string ServerHost = "47.108.69.255";
     public static int ServerPort = 8899;
-    public static string WeChatAppId = "wx98734283bb3e480f";
+    public static string WeChatAppId = "wx95ffdfe60fda9906";
 }
