@@ -177,7 +177,8 @@ namespace Network
                         if (msg.MessageID == 0)
                         {
                             Message hb = new Message(0, new byte[] { });
-                            PushMessage(hb);
+                            // PushMessage(hb); // 删除这句，直接在线程中发送消息
+                            m_socket.Send(hb.ToArray()); // 直接在线程中发送消息，这样后台运行也没关系
                         }
                         else
                         {
