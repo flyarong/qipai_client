@@ -37,6 +37,7 @@ namespace Network.Msg
         public int startType;
         public int pay;
         public int times;
+        public bool tui;
         public int special;
         public int uid;
         public bool close;

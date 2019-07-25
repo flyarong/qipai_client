@@ -46,5 +46,6 @@
         Network_OnBroadcastDefaultVoice,
         Network_OnResShareText,
         Network_OnResEditClubRoom,
+        Network_OnBroadcastAllScore,
     }
 }

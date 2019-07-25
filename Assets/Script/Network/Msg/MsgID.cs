@@ -108,7 +108,7 @@
 
         ReqGamePlayers,        // 请求游戏玩家
         ResGamePlayers,
-
+        BroadcastAllScore, // 通知推注
 
         /****************俱乐部相关****************/
         ReqCreateClub = 401, // 创建俱乐部

@@ -9,7 +9,7 @@ namespace Api
 
     public static class Club
     {
-        public static void Create(int players, int score, int start, int count, int pay, int times)
+        public static void Create(int players, int score, int start, int count, int pay, int times, int tui)
         {
             var req = new Utils.Msg(MsgID.ReqCreateClub);
             req.Add("players", players);
@@ -17,11 +17,12 @@ namespace Api
             req.Add("start", start);
             req.Add("count", count);
             req.Add("pay", pay);
+            req.Add("tui", tui != 0);
             req.Add("times", times);
             req.Send();
         }
 
-        public static void EditClubRoom(int clubId, int tableId, int players, int score, int start, int count, int times)
+        public static void EditClubRoom(int clubId, int tableId, int players, int score, int start, int count, int times, int tui)
         {
             var req = new Utils.Msg(MsgID.ReqEditClubRoom);
             req.Add("clubId", clubId);
@@ -31,6 +32,7 @@ namespace Api
             req.Add("start", start);
             req.Add("count", count);
             req.Add("times", times);
+            req.Add("tui", tui != 0);
             req.Send();
         }
 

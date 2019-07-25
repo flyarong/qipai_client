@@ -10,7 +10,7 @@ namespace Api
     public static class Room
     {
         private static Manager Inst = Manager.Inst;
-        public static void Create(int players, int score, int start, int count, int pay, int times)
+        public static void Create(int players, int score, int start, int count, int pay, int times, int tui)
         {
             var req = new Utils.Msg(MsgID.ReqCreateRoom);
             req.Add("players", players);
@@ -19,6 +19,7 @@ namespace Api
             req.Add("count", count);
             req.Add("pay", pay);
             req.Add("times", times);
+            req.Add("tui", tui!=0);
             req.Send();
         }
 

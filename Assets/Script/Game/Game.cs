@@ -20,8 +20,8 @@ namespace Game
         GComponent cardCenterPlace;  // 桌子中心牌堆的位置
         GButton btnStart;
         GComponent tips;
-        
-        GButton btnScore1, btnScore2;
+
+        GButton btnScore1, btnScore2, btnScore3;
         private string[] scores = {
             "1/2",
             "2/4",
@@ -48,8 +48,10 @@ namespace Game
             btnStart = ui.GetChild("btnStart").asButton;
             btnScore1 = ui.GetChild("btnScore1").asButton;
             btnScore2 = ui.GetChild("btnScore2").asButton;
+            btnScore3 = ui.GetChild("btnScore3").asButton;
             btnScore1.onClick.Add(onScore);
             btnScore2.onClick.Add(onScore);
+            btnScore3.onClick.Add(onScore);
 
             btnStart.onClick.Add(onBtnStartClick);
 
@@ -83,6 +85,7 @@ namespace Game
             Handler.Add<BroadcastCompareCard>(MsgID.BroadcastCompareCard, NotificationType.Network_OnBroadcastCompareCard);
             Handler.Add<BroadcastGameOver>(MsgID.BroadcastGameOver, NotificationType.Network_OnBroadcastGameOver);
             Handler.Add<BroadcastDefaultVoice>(MsgID.BroadcastDefaultVoice, NotificationType.Network_OnBroadcastDefaultVoice);
+            Handler.Add<BroadcastAllScore>(MsgID.BroadcastAllScore, NotificationType.Network_OnBroadcastAllScore);
 
 
             Handler.AddListenner(NotificationType.Network_OnResGameStart, OnResGameStart);
@@ -93,6 +96,55 @@ namespace Game
             Handler.AddListenner(NotificationType.Network_OnBroadcastCompareCard, OnBroadcastCompareCard);
             Handler.AddListenner(NotificationType.Network_OnBroadcastGameOver, OnBroadcastGameOver);
             Handler.AddListenner(NotificationType.Network_OnBroadcastDefaultVoice, OnBroadcastDefaultVoice);
+            Handler.AddListenner(NotificationType.Network_OnBroadcastAllScore, OnBroadcastAllScore);
+
+        }
+
+        private void OnBroadcastAllScore(NotificationArg arg)
+        {
+            var data = arg.GetValue<BroadcastAllScore>();
+
+
+            if (data.code != 0)
+            {
+                MsgBox.ShowErr(data.msg, 2);
+                return;
+            }
+            if (data.roomId != Data.Game.Id)
+            {
+                Debug.Log("收到不属于该房间的消息，来自房间号：" + data.roomId);
+                return;
+            }
+
+            if (data.users == null)
+            {
+                return;
+            }
+
+
+            TuiUser t = null;
+
+            foreach (var v in data.users)
+            {
+                if (v.uid != Data.User.Id)
+                {
+                    continue;
+                }
+                t = v;
+            }
+
+
+            if (t == null)  // 如果不能推注，隐藏第3个按钮
+            {
+                btnScore3.title = "0";
+                btnScore3.visible = false;
+            }
+            else
+            {
+                btnScore3.title = t.score + "";
+                btnScore3.visible = true;
+            }
+
 
         }
 
@@ -123,7 +175,7 @@ namespace Game
                 index = 10 + index;
             }
 
-            
+
             gameAudio.clip = Resources.Load<AudioClip>("Game/audio/voice/voice_" + data.voiceId + "_" + data.sex);
             gameAudio.Play();
 
@@ -274,7 +326,7 @@ namespace Game
             ui.GetChild("btnKanpai").visible = true;
             ui.GetChild("btnScores").visible = false;
             hideSetScoreTips();
-            nKanpaiTips = 10;
+            nKanpaiTips = 6;
             showKanpaiTips();
         }
 
@@ -284,7 +336,6 @@ namespace Game
 
             // 找出底牌
             var arr1 = myCards.Split('|');
-
             foreach (var v in myGameInfo.cards.Split('|'))
             {
                 if (v != "-1" && -1 == Array.IndexOf<string>(arr1, v))
@@ -293,7 +344,7 @@ namespace Game
                 }
             }
 
-            PutCard(myGameInfo.deskId, myCards);
+            PutCard(myGameInfo.deskId, myCards.Split('|').Length > 6 ? myGameInfo.cards : myCards);
 
             ui.GetChild("btnKanpai").visible = false;
             ui.GetChild("btnLiangpai").visible = true;
@@ -339,7 +390,6 @@ namespace Game
 
         void onScore(EventContext e)
         {
-
             GButton btn = e.sender as GButton;
             Api.Game.SetScore(Data.Game.Id, int.Parse(btn.title));
         }
@@ -463,7 +513,7 @@ namespace Game
 
             ui.GetChild("btnTimes").visible = true;
 
-            nTimesTips = 10;
+            nTimesTips = 6;
             showSetTimesTips();
 
             foreach (var p in Data.Game.Players.Values)

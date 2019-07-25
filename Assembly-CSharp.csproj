@@ -268,6 +268,7 @@
     <Compile Include="Assets\Script\Network\Msg\Club\ResEditClubUser.cs" />
     <Compile Include="Assets\Script\Network\Msg\Club\ResExitClub.cs" />
     <Compile Include="Assets\Script\Network\Msg\CommonMsg.cs" />
+    <Compile Include="Assets\Script\Network\Msg\Game\BroadcastAllScore.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastBanker.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastCompareCard.cs" />
     <Compile Include="Assets\Script\Network\Msg\Game\BroadcastGameOver.cs" />

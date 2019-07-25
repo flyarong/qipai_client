@@ -9,6 +9,7 @@ public class CreateClubWindow : Window
     Controller roomTypeController; // 房间类型
     GComboBox scoreBox; // 底分
     GComboBox payBox; // 房费付款方式
+    GComboBox tuiBox; // 推注
     GComboBox countBox; // 局数
     GComboBox timesBox; // 翻倍规则
     public CreateClubWindow()
@@ -25,6 +26,7 @@ public class CreateClubWindow : Window
         roomTypeController = this.contentPane.GetController("roomType");
         scoreBox = this.contentPane.GetChild("score").asComboBox;
         payBox = this.contentPane.GetChild("pay").asComboBox;
+        tuiBox = this.contentPane.GetChild("tui").asComboBox;
         countBox = this.contentPane.GetChild("count").asComboBox;
         timesBox = this.contentPane.GetChild("times").asComboBox;
 
@@ -45,6 +47,7 @@ public class CreateClubWindow : Window
         int roomType = roomTypeController.selectedIndex;
         int score = scoreBox.selectedIndex;
         int pay = payBox.selectedIndex;
+        int tui = tuiBox.selectedIndex;
         int count = countBox.selectedIndex;
         int start = 1; // 固定只有首位可以开始游戏
         int times = timesBox.selectedIndex;
@@ -52,6 +55,6 @@ public class CreateClubWindow : Window
         int players = (roomType + 3) * 2 ;
         count = (count + 1) * 10;
 
-        Api.Club.Create(players, score, start, count, pay, times);
+        Api.Club.Create(players, score, start, count, pay, times,tui);
     }
 }
